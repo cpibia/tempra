@@ -138,9 +138,24 @@ authRoutes.post('/logout', zValidator('json', z.object({ refreshToken: z.string(
   return c.json({ ok: true });
 });
 
+/**
+ * Il token e' firmato e valido fino alla scadenza, ma questo non basta:
+ * un account cancellato deve risultare inesistente subito, non entro i
+ * quindici minuti di vita del token. Qui la verifica sul database si paga
+ * volentieri, perche' l'endpoint viene chiamato di rado.
+ */
 authRoutes.get('/me', requireAuth, async (c) => {
   const user = c.get('user');
-  return c.json({ id: user.sub, email: user.email });
+  const existing = await db.query.users.findFirst({
+    where: eq(schema.users.id, user.sub),
+    columns: { id: true, email: true, createdAt: true },
+  });
+
+  if (!existing) {
+    return c.json({ error: 'Account non piu esistente' }, 401);
+  }
+
+  return c.json({ id: existing.id, email: existing.email, createdAt: existing.createdAt });
 });
 
 authRoutes.delete('/me', requireAuth, async (c) => {

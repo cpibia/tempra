@@ -46,9 +46,11 @@ deploy, e lo scenario A (solo PWA) e' molto piu' semplice.
 
 ### Il repository
 
-**Attenzione: al momento della scrittura di questa guida la cartella
-`/Users/cristianpibia/Docker/Gym` non e' un repository git.** Coolify puo'
-clonare solo da un remote, quindi il primo passo e' inizializzare e pubblicare.
+**Aggiornamento: il repository esiste ed e' pubblico**, su
+`https://github.com/cpibia/tempra`, branch di deploy `main`. I passi di
+inizializzazione qui sotto restano validi solo per una copia nuova del progetto.
+Essendo il repository pubblico, su Coolify si sceglie la sorgente
+*Public Repository* e non serve nessuna deploy key.
 
 Prima di tutto, verificare che non ci siano segreti da tracciare:
 

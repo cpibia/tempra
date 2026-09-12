@@ -43,6 +43,12 @@ server {
     add_header Cross-Origin-Opener-Policy "same-origin" always;
     add_header Cross-Origin-Resource-Policy "same-origin" always;
 
+    # Il TLS lo termina il proxy davanti, ma l'intestazione la deve emettere
+    # l'applicazione: senza, la prima visita su http resta attaccabile.
+    # Sei mesi, sottodomini inclusi (anche l'API e' solo su https), niente
+    # preload: quello si chiede quando si e' certi di non tornare indietro.
+    add_header Strict-Transport-Security "max-age=15552000; includeSubDomains" always;
+
     # Content-Security-Policy.
     # Nessuno script in linea: il bootstrap del tema sta in /theme-init.js, quindi
     # basta 'self' e non serve mantenere l'hash di uno script incorporato.
