@@ -118,9 +118,25 @@ export async function login(email: string, password: string): Promise<void> {
   }));
 }
 
+/**
+ * Svuota tutte le cache del service worker.
+ * Serve all'uscita e alla cancellazione dei dati: qualunque cosa sia rimasta
+ * in Cache Storage non deve sopravvivere alla fine della sessione.
+ */
+export async function clearCaches(): Promise<void> {
+  if (typeof caches === 'undefined') return;
+  try {
+    const names = await caches.keys();
+    await Promise.all(names.map((name) => caches.delete(name)));
+  } catch {
+    // Se il browser nega l'accesso alle cache non c'e' nulla da ripulire.
+  }
+}
+
 export async function logout(): Promise<void> {
   const tokens = readTokens();
   writeTokens(null);
+  await clearCaches();
   if (tokens) {
     await fetch(`${BASE_URL}/api/auth/logout`, {
       method: 'POST',
@@ -137,6 +153,7 @@ export async function currentAccount(): Promise<{ id: string; email: string }> {
 export async function deleteAccount(): Promise<void> {
   await request('/api/auth/me', { method: 'DELETE' });
   writeTokens(null);
+  await clearCaches();
 }
 
 // --- Sincronizzazione -------------------------------------------------------

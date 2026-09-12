@@ -30,6 +30,8 @@ export interface AdaptRules {
 export interface ConditionRule {
   id: string;
   label: string;
+  /** Versione breve per i chip di selezione, dove lo spazio e' poco. */
+  shortLabel: string;
   aliases: string[];
   group: ConditionGroup;
   severity: ConditionSeverity;

@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 import { precacheAndRoute, cleanupOutdatedCaches, createHandlerBoundToURL } from 'workbox-precaching';
 import { NavigationRoute, registerRoute } from 'workbox-routing';
-import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
+import { CacheFirst } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
@@ -49,10 +49,17 @@ registerRoute(
   }),
 );
 
-registerRoute(
-  ({ url }) => url.pathname.startsWith('/api/'),
-  new StaleWhileRevalidate({ cacheName: 'tempra-api' }),
-);
+/**
+ * Le risposte dell'API non vengono mai messe in cache.
+ *
+ * Sembrerebbe un'ottimizzazione gratuita, ed e' invece un problema serio:
+ * /api/sync/pull restituisce tutti i documenti dell'utente, condizioni di
+ * salute comprese, e Cache Storage li conserverebbe in chiaro, indicizzati per
+ * URL, senza svuotarsi al logout. Su un dispositivo condiviso il secondo
+ * account vedrebbe i dati del primo.
+ *
+ * Non serve nemmeno: l'applicazione legge da IndexedDB, non dalla rete.
+ */
 
 // L'aggiornamento non e' mai forzato a meta' allenamento: si applica su richiesta.
 self.addEventListener('message', (event) => {

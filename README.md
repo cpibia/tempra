@@ -354,8 +354,8 @@ Comandi disponibili:
 | `npm run build` | Compila la PWA per la produzione |
 | `npm run build:api` | Compila l'API |
 | `npm run typecheck` | Controlla i tipi su tutti i pacchetti |
-| `npm run test` | Test unitari (67 test) |
-| `npm run test:e2e` | Test end to end e verifica WCAG (32 test) |
+| `npm run test` | Test unitari (69 test) |
+| `npm run test:e2e` | Test end to end e verifica WCAG (46 test) |
 | `npm run data:all` | Rigenera immagini, catalogo e regole sanitarie |
 | `npm run docker:up` | Avvia lo stack completo in Docker |
 
@@ -419,23 +419,33 @@ piu' comune con questo tipo di stack.
 ## Test
 
 ```bash
-npm run test        # 67 test unitari
-npm run test:e2e    # 32 test end to end, verifica WCAG inclusa
+npm run test        # 69 test unitari
+npm run test:e2e    # 46 test end to end, verifica WCAG inclusa
 ```
 
 Cosa coprono:
 
 - **Motore** (47 test): formule del massimale e loro coerenza reciproca, tabella ripetizioni e percentuali, rilevamento dei record, e un blocco di invarianti sul generatore verificate su **360 combinazioni** di obiettivo, luogo, livello e giorni. Fra le invarianti: nessun esercizio ripetuto nella stessa seduta, mai attrezzatura non disponibile, mai stretching negli slot di forza, durata sempre entro il tempo dichiarato, volume sopra il minimo efficace sui grandi distretti, e nessun esercizio escluso per salute che rientra dalla finestra.
-- **API** (9 test): hash delle password, verifica a tempo costante, robustezza su hash malformati.
+- **API** (11 test): hash delle password, verifica a tempo costante, robustezza su hash malformati, e il limite sui calcoli in parallelo che impedisce a una raffica di accessi di esaurire la memoria.
 - **PWA** (11 test): il timer di recupero, con particolare attenzione al fatto che il tempo si legge dall'orologio e sopravvive a un ricaricamento della pagina.
-- **End to end** (32 test): il percorso completo dall'onboarding al riepilogo, il ripristino della sessione dopo un reload, la ricerca nel catalogo, e la verifica WCAG con axe su cinque schermate per due temi e due larghezze di schermo.
+- **End to end** (46 test): il percorso completo dall'onboarding al riepilogo, il ripristino della sessione dopo un reload, la ricerca nel catalogo, l'assenza di scorrimento orizzontale su ogni schermata, e la verifica WCAG con axe su cinque schermate per due temi e due larghezze di schermo.
 
 I test hanno trovato difetti veri durante lo sviluppo, non solo confermato il
 codice: un errore di classificazione per cui "Crunch" veniva riconosciuto come
 esercizio ad alto impatto (la parola "run" e' dentro "crunch"), la barra del
 recupero tagliata a 320 pixel, un profilo appena creato che veniva rimandato
-all'onboarding per una condizione di corsa, e scrypt che falliva in container per
-il limite di memoria predefinito di Node.
+all'onboarding per una condizione di corsa, scrypt che falliva in container per
+il limite di memoria predefinito di Node, e uno scorrimento orizzontale su tutta
+la pagina causato dalla larghezza minima automatica di una colonna di griglia.
+
+Il progetto e' passato anche per una **revisione di sicurezza** completa, i cui
+quattro rilievi di gravita' alta sono stati corretti e verificati: le condizioni
+di salute non lasciano piu' il dispositivo nemmeno con la sincronizzazione
+attiva, le risposte dell'API non finiscono piu' in Cache Storage, l'intestazione
+`X-Forwarded-For` non e' piu' falsificabile per aggirare i limiti sulle
+richieste, e i calcoli di hash hanno un tetto di parallelismo. Il rapporto
+completo, con lo stato di ogni rilievo, e' in
+[`docs/security-review.md`](docs/security-review.md).
 
 ---
 

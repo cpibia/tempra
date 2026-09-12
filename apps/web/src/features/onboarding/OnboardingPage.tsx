@@ -377,7 +377,7 @@ export default function OnboardingPage() {
                       onClick={() => toggleCondition(condition.id)}
                     >
                       {draft.conditions.includes(condition.id) && <Check size={14} aria-hidden="true" />}
-                      {condition.label}
+                      {condition.shortLabel}
                     </button>
                   ))}
                 </div>

@@ -51,9 +51,33 @@ export const requireAuth: MiddlewareHandler<AuthedContext> = async (c, next) => 
   return undefined;
 };
 
-/** Indirizzo del chiamante, tenendo conto del proxy che sta davanti al servizio. */
+/**
+ * Indirizzo del chiamante.
+ *
+ * X-Forwarded-For e' un'intestazione che chiunque puo' scrivere: prendere il
+ * primo valore significa lasciare che sia il client a dichiarare il proprio
+ * indirizzo, e quindi rendere aggirabile qualunque limite basato su di esso.
+ * Ogni proxy AGGIUNGE in coda l'indirizzo da cui ha ricevuto la connessione,
+ * quindi con N proxy fidati il valore attendibile e' l'N-esimo da destra.
+ */
 export function clientIp(c: Context): string {
-  const forwarded = c.req.header('x-forwarded-for');
-  if (forwarded) return forwarded.split(',')[0]!.trim();
-  return c.req.header('cf-connecting-ip') ?? c.req.header('x-real-ip') ?? 'unknown';
+  const hops = env.trustedProxyHops;
+
+  if (hops > 0) {
+    const forwarded = c.req.header('x-forwarded-for');
+    if (forwarded) {
+      const chain = forwarded.split(',').map((value) => value.trim()).filter(Boolean);
+      const candidate = chain[chain.length - hops];
+      if (candidate) return normalizeIp(candidate);
+    }
+  }
+
+  const socket = (c.env as { incoming?: { socket?: { remoteAddress?: string } } } | undefined)
+    ?.incoming?.socket?.remoteAddress;
+  return normalizeIp(socket ?? 'unknown');
+}
+
+/** Taglia il valore a una lunghezza ragionevole: e' pur sempre input esterno. */
+function normalizeIp(value: string): string {
+  return value.slice(0, 45);
 }

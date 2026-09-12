@@ -12,6 +12,20 @@ import { isSignedIn, isSyncConfigured, pull, push, type DocumentKind, type SyncD
 
 const CURSOR_KEY = 'tempra.syncCursor';
 
+/**
+ * Le condizioni di salute sono dati di categoria particolare ex articolo 9 del
+ * GDPR, e l'interfaccia promette che restano sul dispositivo. La promessa si
+ * mantiene togliendole dal documento prima di inviarlo, non fidandosi del fatto
+ * che nessuno le guardi.
+ *
+ * Il costo e' che su un secondo dispositivo vanno reinserite. E' un prezzo
+ * accettabile: la scheda gia' generata le riflette comunque, perche' gli
+ * esercizi esclusi non ci sono.
+ */
+function redactHealthData(profile: Profile): Profile {
+  return { ...profile, conditions: [] };
+}
+
 const readCursor = (): string | undefined => {
   try {
     return localStorage.getItem(CURSOR_KEY) ?? undefined;
@@ -43,7 +57,7 @@ async function collectLocalDocuments(): Promise<SyncDocument[]> {
   };
 
   for (const profile of await db.profiles.toArray()) {
-    add('profile', profile.id, profile, profile.updatedAt);
+    add('profile', profile.id, redactHealthData(profile), profile.updatedAt);
   }
   for (const plan of await db.plans.toArray()) {
     add('plan', plan.id, plan, plan.updatedAt, plan.deletedAt);
@@ -81,7 +95,9 @@ async function applyRemoteDocuments(documents: SyncDocument[]): Promise<number> 
         const remote = doc.payload as Profile;
         const local = await db.profiles.get(remote.id);
         if (!local || local.updatedAt < remote.updatedAt) {
-          await db.profiles.put(remote);
+          // Le condizioni locali non vengono mai sovrascritte da quelle remote,
+          // che per costruzione sono vuote: cancellarle sarebbe una perdita di dati.
+          await db.profiles.put({ ...remote, conditions: local?.conditions ?? [] });
           applied += 1;
         }
         break;
@@ -139,6 +155,11 @@ export async function runSync(): Promise<SyncReport | null> {
   if (!isSyncConfigured() || !isSignedIn()) return null;
   if (typeof navigator !== 'undefined' && navigator.onLine === false) return null;
 
+  // La sincronizzazione va attivata esplicitamente: senza questo controllo
+  // basterebbe una sessione ancora valida per far partire un invio non voluto.
+  const current = await getSettings();
+  if (!current.syncEnabled) return null;
+
   const local = await collectLocalDocuments();
   let pushed = 0;
   let skipped = 0;
@@ -163,8 +184,7 @@ export async function runSync(): Promise<SyncReport | null> {
   }
 
   const at = new Date().toISOString();
-  const settings = await getSettings();
-  if (settings.syncEnabled) await saveSettings({ lastSyncAt: at });
+  await saveSettings({ lastSyncAt: at });
 
   return { pushed, pulled, skipped, at };
 }

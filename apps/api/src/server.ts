@@ -14,7 +14,18 @@ import { syncRoutes } from './routes/sync';
 const app = new Hono();
 
 app.use('*', logger());
-app.use('*', secureHeaders());
+// L'API restituisce soltanto JSON: nessuna risorsa deve poter essere caricata
+// a partire dalle sue risposte, e nessuna pagina deve poterla incorniciare.
+app.use('*', secureHeaders({
+  contentSecurityPolicy: {
+    defaultSrc: ["'none'"],
+    frameAncestors: ["'none'"],
+    baseUri: ["'none'"],
+    formAction: ["'none'"],
+  },
+  crossOriginResourcePolicy: 'same-site',
+  referrerPolicy: 'no-referrer',
+}));
 app.use('*', compress());
 
 app.use('/api/*', cors({

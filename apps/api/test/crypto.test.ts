@@ -51,3 +51,23 @@ describe('identificativi e token', () => {
     expect(sha256('tempra')).toHaveLength(64);
   });
 });
+
+describe('limite di calcoli in parallelo', () => {
+  it('serve tutte le richieste anche quando arrivano insieme', async () => {
+    // Senza il semaforo dieci accessi contemporanei occuperebbero 640 MiB.
+    // Con il semaforo si accodano: devono comunque completare tutti.
+    const results = await Promise.all(
+      Array.from({ length: 6 }, (_, i) => hashPassword(`password-numero-${i}`)),
+    );
+    expect(new Set(results).size).toBe(6);
+    expect(results.every((hash) => hash.startsWith('scrypt$'))).toBe(true);
+  });
+
+  it('rifiuta hash con parametri fuori scala senza calcolarli', async () => {
+    // Un hash manomesso con N enorme sarebbe un modo per esaurire la memoria.
+    const malicious = 'scrypt$1073741824$8$2$AAAAAAAAAAAAAAAAAAAAAA==$AAAA';
+    const start = Date.now();
+    expect(await verifyPassword('qualsiasi', malicious)).toBe(false);
+    expect(Date.now() - start).toBeLessThan(500);
+  });
+});

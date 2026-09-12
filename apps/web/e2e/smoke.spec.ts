@@ -104,6 +104,63 @@ test('la sessione sopravvive a un ricaricamento della pagina', async ({ page }) 
   await expect(page.getByRole('checkbox').first()).toBeChecked();
 });
 
+/**
+ * Lo scorrimento orizzontale su mobile e' sempre un difetto, e a schermi stretti
+ * viola il criterio 1.4.10 sul reflow. axe non lo rileva, quindi va verificato qui.
+ */
+test.describe('nessuno scorrimento orizzontale', () => {
+  const routes = ['/', '/schede', '/esercizi', '/progressi', '/impostazioni', '/storico'];
+
+  for (const route of routes) {
+    test(`la pagina ${route} sta nella larghezza dello schermo`, async ({ page }) => {
+      await completeOnboarding(page);
+      await page.getByRole('button', { name: 'No grazie, la costruisco da solo' }).click();
+      await page.goto(route);
+      await page.waitForLoadState('networkidle');
+
+      const overflow = await page.evaluate(() => {
+        const width = document.documentElement.clientWidth;
+        // Chi sfora ma sta dentro un contenitore che scorre di suo (la riga
+        // dei filtri, una tabella larga) non e' un difetto: e' il pattern voluto.
+        const inScroller = (el: Element) => {
+          let node: Element | null = el.parentElement;
+          while (node && node !== document.body) {
+            const overflowX = getComputedStyle(node).overflowX;
+            if (overflowX === 'auto' || overflowX === 'scroll') return true;
+            node = node.parentElement;
+          }
+          return false;
+        };
+        return {
+          scrollWidth: document.documentElement.scrollWidth,
+          clientWidth: width,
+          colpevoli: [...document.querySelectorAll('body *')]
+            .filter((el) => el.getBoundingClientRect().right > width + 1 && !inScroller(el))
+            .slice(0, 5)
+            .map((el) => `${el.tagName}.${(el as HTMLElement).className}`),
+        };
+      });
+
+      expect(overflow.colpevoli).toEqual([]);
+      expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth);
+    });
+  }
+
+  test('anche la scheda di un esercizio dal nome lungo', async ({ page }) => {
+    await completeOnboarding(page);
+    await page.getByRole('button', { name: 'No grazie, la costruisco da solo' }).click();
+    await page.goto('/esercizi/panca-piana-con-bilanciere-presa-media');
+    await expect(page.getByRole('heading', { name: 'Scheda tecnica' })).toBeVisible();
+    await page.waitForLoadState('networkidle');
+
+    const overflow = await page.evaluate(() => ({
+      scrollWidth: document.documentElement.scrollWidth,
+      clientWidth: document.documentElement.clientWidth,
+    }));
+    expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth);
+  });
+});
+
 test.describe('accessibilita', () => {
   const routes: [string, string][] = [
     ['/', 'home'],

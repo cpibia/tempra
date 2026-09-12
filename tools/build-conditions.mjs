@@ -154,6 +154,7 @@ for (const [id, raw] of Object.entries(RULES.conditions)) {
   out.push({
     id,
     label: raw.label_it,
+    shortLabel: '',
     aliases: raw.aliases_it ?? [],
     group: GROUP_MAP[raw.group] ?? 'other',
     severity: severityOf(condition),
@@ -168,6 +169,44 @@ for (const [id, raw] of Object.entries(RULES.conditions)) {
   });
 }
 
+/**
+ * Etichette brevi per i chip di selezione.
+ *
+ * Le etichette cliniche sono descrittive ("Spalla: cuffia dei rotatori e
+ * impingement subacromiale"). Tagliare ai due punti le accorcia, ma tre
+ * condizioni del ginocchio diventerebbero tre chip identici: inutilizzabile.
+ * Quindi il taglio si accorcia solo finche' resta distinguibile.
+ */
+function assignShortLabels(conditions) {
+  const prefixOf = (label) => {
+    const beforeColon = label.split(/[:(]/)[0].trim();
+    // Si taglia alla virgola solo se l'etichetta e' troppo lunga per un chip:
+    // "Artrosi di anca, ginocchio e mano" ci sta, e amputarla la renderebbe
+    // meno precisa senza guadagnare nulla.
+    if (beforeColon.length <= 34) return beforeColon;
+    return beforeColon.split(',')[0].trim();
+  };
+  const counts = new Map();
+  for (const c of conditions) {
+    const prefix = prefixOf(c.label);
+    counts.set(prefix, (counts.get(prefix) ?? 0) + 1);
+  }
+
+  for (const c of conditions) {
+    const prefix = prefixOf(c.label);
+    if (counts.get(prefix) === 1) {
+      c.shortLabel = prefix;
+      continue;
+    }
+    // Prefisso ambiguo: si tiene anche la parte che distingue, ridotta
+    // alle prime parole significative.
+    const rest = c.label.slice(prefix.length).replace(/^[:,(\s]+/, '');
+    const words = rest.split(/\s+/).filter((w) => !/^(e|di|del|della|dei|delle|da|il|la|lo)$/i.test(w));
+    c.shortLabel = `${prefix}: ${words.slice(0, 2).join(' ')}`.replace(/[),.]+$/, '');
+  }
+}
+
+assignShortLabels(out);
 out.sort((a, b) => a.label.localeCompare(b.label, 'it'));
 
 // Gli identificativi diventano indici nel catalogo ordinato: stessa informazione,

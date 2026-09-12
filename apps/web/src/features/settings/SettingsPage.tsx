@@ -9,6 +9,7 @@ import {
 import { db, getProfile, getSettings, saveSettings } from '../../db/db';
 import { saveProfile } from '../../db/repo';
 import { applyTheme, type ThemeChoice } from '../../lib/theme';
+import { clearCaches } from '../../lib/api';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { Button } from '../../components/ui/Button';
 import { ConfirmDialog } from '../../components/ui/Sheet';
@@ -241,7 +242,7 @@ export default function SettingsPage() {
                         aria-pressed={profile.conditions.includes(condition.id)}
                         onClick={() => toggleCondition(condition.id)}
                       >
-                        {condition.label}
+                        {condition.shortLabel}
                       </button>
                     ))}
                   </div>
@@ -324,6 +325,15 @@ export default function SettingsPage() {
         onCancel={() => setConfirmWipe(false)}
         onConfirm={async () => {
           await db.delete();
+          // Anche le cache del service worker e le chiavi locali, altrimenti
+          // "cancella tutto" lascerebbe indietro qualcosa.
+          await clearCaches();
+          try {
+            localStorage.clear();
+            sessionStorage.clear();
+          } catch {
+            // Storage non disponibile: non c'e' nulla da cancellare.
+          }
           window.location.href = '/';
         }}
       />

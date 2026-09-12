@@ -15,20 +15,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="color-scheme" content="dark light" />
-    <script>
-      // Applica il tema salvato prima del primo paint, per evitare il lampo di tema sbagliato.
-      (function () {
-        try {
-          var t = localStorage.getItem('tempra.theme') || 'dark';
-          var resolved = t === 'system'
-            ? (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
-            : t;
-          document.documentElement.dataset.theme = resolved;
-        } catch (e) {
-          document.documentElement.dataset.theme = 'dark';
-        }
-      })();
-    </script>
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root"></div>

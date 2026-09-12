@@ -65,6 +65,8 @@ services:
       # Origine della PWA, non dell'API. Senza barra finale.
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
       REGISTRATION_OPEN: ${REGISTRATION_OPEN:-true}
+      TRUSTED_PROXY_HOPS: ${TRUSTED_PROXY_HOPS:-1}
+      MAX_CONCURRENT_HASHES: ${MAX_CONCURRENT_HASHES:-2}
     expose:
       - '3000'
 
@@ -79,6 +81,10 @@ services:
         # valida e supportata.
         VITE_API_URL: ${VITE_API_URL:-}
     restart: unless-stopped
+    environment:
+      # Origine ammessa da connect-src nella Content-Security-Policy.
+      # Deve coincidere con VITE_API_URL, senza barra finale.
+      API_ORIGIN: ${VITE_API_URL:-}
     expose:
       - '8080'
 

@@ -13,10 +13,10 @@
     "db:migrate": "tsx src/db/migrate.ts"
   },
   "dependencies": {
-    "@tempra/core": "*",
     "@hono/node-server": "^1.19.2",
     "@hono/zod-validator": "^0.7.2",
-    "drizzle-orm": "^0.44.5",
+    "@tempra/core": "*",
+    "drizzle-orm": "^0.45.2",
     "hono": "^4.9.6",
     "jose": "^6.1.0",
     "postgres": "^3.4.7",

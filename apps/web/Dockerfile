@@ -34,7 +34,16 @@ RUN npm run build --workspace=@tempra/web
 FROM nginx:1.27-alpine AS runtime
 
 RUN rm /etc/nginx/conf.d/default.conf
-COPY apps/web/nginx.conf /etc/nginx/conf.d/tempra.conf
+
+# L'immagine nginx sostituisce le variabili nei file sotto /etc/nginx/templates
+# all'avvio del container, e scrive il risultato in /etc/nginx/conf.d.
+# Serve per iniettare l'origine dell'API nella Content-Security-Policy, che
+# cambia da installazione a installazione.
+COPY apps/web/templates/tempra.conf.template /etc/nginx/templates/tempra.conf.template
+
+# Origine dell'API ammessa da connect-src. Vuota se non si usa la sincronizzazione.
+ENV API_ORIGIN=""
+ENV NGINX_ENVSUBST_TEMPLATE_SUFFIX=".template" 
 # La proprieta' si imposta durante la copia: un chown ricorsivo successivo
 # duplicherebbe in un secondo livello i 26 MB di immagini degli esercizi.
 COPY --chown=nginx:nginx --from=build /app/apps/web/dist /usr/share/nginx/html
@@ -42,8 +51,11 @@ COPY --chown=nginx:nginx --from=build /app/apps/web/dist /usr/share/nginx/html
 # Nginx gira come utente non privilegiato: la porta 8080 non richiede root.
 RUN touch /var/run/nginx.pid \
     && chown nginx:nginx /var/run/nginx.pid \
-    && chown -R nginx:nginx /var/cache/nginx
+    && chown -R nginx:nginx /var/cache/nginx /etc/nginx/conf.d
 
+# Il processo gira come utente non privilegiato: il punto di ingresso
+# dell'immagine scrive la configurazione generata in /etc/nginx/conf.d, che
+# sopra viene reso scrivibile da nginx.
 USER nginx
 EXPOSE 8080
 

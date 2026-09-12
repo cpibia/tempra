@@ -30,6 +30,13 @@ export const env = {
   refreshTokenTtlSec: Number(optional('REFRESH_TOKEN_TTL_SEC', String(60 * 60 * 24 * 60))),
   /** Disattiva la registrazione di nuovi account: utile su istanze personali. */
   registrationOpen: optional('REGISTRATION_OPEN', 'true') === 'true',
+  /**
+   * Quanti proxy fidati stanno davanti al servizio.
+   * X-Forwarded-For e' un'intestazione che il client puo' scrivere: con un
+   * proxy davanti, l'unico valore attendibile e' quello che il proxy stesso
+   * ha aggiunto in coda. Con il valore 0 si ignora del tutto l'intestazione.
+   */
+  trustedProxyHops: Math.max(0, Number(optional('TRUSTED_PROXY_HOPS', '1'))),
 };
 
 export const isProduction = env.nodeEnv === 'production';
