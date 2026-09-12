@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "npm run dev --workspace=@tempra/web",
     "dev:api": "npm run dev --workspace=@tempra/api",
-    "build": "npm run build --workspace=@tempra/core && npm run build --workspace=@tempra/web",
+    "build": "npm run build --workspace=@tempra/web",
     "build:api": "npm run build --workspace=@tempra/api",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
