@@ -1,0 +1,12 @@
+# Tempra e' un'applicazione, non un sito da indicizzare: le pagine sono
+# generate lato client e non contengono contenuti utili a un motore di ricerca.
+# Resta indicizzabile la sola pagina iniziale.
+
+User-agent: *
+Allow: /$
+Disallow: /allenamento
+Disallow: /schede
+Disallow: /progressi
+Disallow: /storico
+Disallow: /impostazioni
+Disallow: /onboarding

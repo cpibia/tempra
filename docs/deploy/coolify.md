@@ -259,6 +259,9 @@ Nella scheda **Environment Variables**:
 | `JWT_SECRET` | no | generato, vedi sezione 5 |
 | `ALLOWED_ORIGINS` | no | `https://tempra.dominio.it` |
 | `REGISTRATION_OPEN` | no | `true` per il primo accesso, poi `false` |
+| `TRUSTED_PROXY_HOPS` | no | `1` dietro Coolify, che mette Traefik davanti |
+| `MAX_CONCURRENT_HASHES` | no | `2`, da alzare solo con molta memoria disponibile |
+| `API_ORIGIN` | no, derivata da `VITE_API_URL` nel compose | `https://api.tempra.dominio.it` |
 | `VITE_API_URL` | **sì, spuntare "Build Variable"** | `https://api.tempra.dominio.it` |
 
 #### La trappola numero uno: VITE_API_URL
@@ -417,6 +420,9 @@ Legenda della colonna *Quando*:
 | `JWT_SECRET` | Runtime | `api` | **Sì** (scenario B) | `openssl rand -base64 48` | Cambiarla invalida tutte le sessioni attive |
 | `ALLOWED_ORIGINS` | Runtime | `api` | **Sì** in pratica | `https://tempra.dominio.it` | Lista separata da virgole, senza barra finale. Il default del codice e' `http://localhost:5173`, inutile in produzione |
 | `REGISTRATION_OPEN` | Runtime | `api` | No, default `true` | `false` | Mettere `false` dopo aver creato il proprio account. Solo la stringa esatta `true` apre le registrazioni |
+| `TRUSTED_PROXY_HOPS` | Runtime | `api` | No, default `1` | `1` | Quanti proxy fidati stanno davanti. Su Coolify c'e' Traefik, quindi `1`. Un valore troppo alto permette a un client di dichiarare un indirizzo falso e aggirare i limiti sulle richieste; `0` ignora del tutto `X-Forwarded-For` |
+| `MAX_CONCURRENT_HASHES` | Runtime | `api` | No, default `2` | `2` | Calcoli di hash password in parallelo. Ognuno occupa 64 MiB: alzarlo solo se il server ha memoria da spendere |
+| `API_ORIGIN` | Runtime | `web` | No | `https://api.tempra.dominio.it` | Origine ammessa da `connect-src` nella Content-Security-Policy servita da nginx. Nel compose viene derivata da `VITE_API_URL`: va impostata a mano solo se si esegue l'immagine senza compose. Senza di essa il browser blocca le chiamate all'API |
 | `NODE_ENV` | Runtime | `api` | Impostata dal compose | `production` | Alza il pool di connessioni da 3 a 10 e nasconde i dettagli degli errori |
 | `PORT` | Runtime | `api` | Impostata dal compose | `3000` | Se si cambia, cambiare anche `expose` e l'healthcheck |
 | `ACCESS_TOKEN_TTL_SEC` | Runtime | `api` | No, default `900` | `900` | Durata del token di accesso, in secondi |
@@ -464,7 +470,7 @@ Motivi per preferire i due sottodomini a una configurazione tipo
 2. **Il routing lato client.** nginx ha `try_files $uri $uri/ /index.html`: ogni
    percorso sconosciuto restituisce la PWA. Un `/api` servito dallo stesso host
    richiederebbe una `location` dedicata con `proxy_pass`, cioe' modificare
-   `nginx.conf` e introdurre un secondo punto in cui il routing puo' rompersi.
+   la configurazione di nginx e introdurre un secondo punto in cui il routing puo' rompersi.
 3. **Il codice e' gia' scritto cosi'.** Il client compone `BASE_URL + path` dove
    i path iniziano con `/api/auth/...` e `/api/sync/...`. Con
    `VITE_API_URL=https://api.tempra.dominio.it` le chiamate diventano
@@ -551,7 +557,7 @@ Traefik non e' un proxy di caching e Coolify non gli aggiunge nessun middleware
 di cache: applica solo redirezione a HTTPS e compressione. Una risposta che
 attraversa Traefik non viene memorizzata da nessuna parte.
 
-La parte importante e' gia' risolta lato applicazione, in `apps/web/nginx.conf`:
+La parte importante e' gia' risolta lato applicazione, in `apps/web/templates/tempra.conf.template`:
 
 ```nginx
 location = /sw.js {
@@ -888,6 +894,29 @@ sufficiente e resta autodescritta.
 ---
 
 ## 12. Modifiche necessarie ai file esistenti
+
+> **Stato: tutte applicate.**
+>
+> Questa sezione e' stata scritta durante l'analisi, quando le modifiche non
+> erano ancora state fatte. Sono state applicate tutte, insieme a quelle emerse
+> dalla revisione di sicurezza (vedi `docs/security-review.md`). Resta qui
+> perche' spiega il **perche'** di scelte che nel codice finito sembrerebbero
+> arbitrarie.
+>
+> Una differenza rispetto a quanto proposto sotto: la configurazione di nginx
+> non si chiama piu' `apps/web/nginx.conf` ma
+> **`apps/web/templates/tempra.conf.template`**, e viene elaborata all'avvio del
+> container dal meccanismo dei template dell'immagine ufficiale. Serve a
+> iniettare l'origine dell'API dentro la direttiva `connect-src` della
+> Content-Security-Policy, che cambia da installazione a installazione. Il
+> problema degli `add_header` nelle `location` e' stato risolto in modo diverso
+> da quanto proposto al punto 12.5: invece di includere un file di intestazioni
+> in ogni blocco, il valore di `Cache-Control` si decide con una `map` e le
+> intestazioni restano dichiarate una volta sola a livello di `server`.
+>
+> Alla lista delle variabili va aggiunta **`API_ORIGIN`**, di runtime sul
+> servizio `web`, che deve valere quanto `VITE_API_URL` (senza barra finale);
+> nel compose viene gia' derivata automaticamente.
 
 Nessuna di queste modifiche e' stata applicata: sono da valutare e applicare a
 mano.
@@ -1248,7 +1277,7 @@ Le porte corrette sono:
 
 | Servizio | Porta interna | Dove e' scritta |
 | --- | --- | --- |
-| `web` | **8080** | `EXPOSE 8080` nel Dockerfile, `listen 8080` in nginx.conf, `expose` nel compose |
+| `web` | **8080** | `EXPOSE 8080` nel Dockerfile, `listen 8080` nel template di nginx, `expose` nel compose |
 | `api` | **3000** | `EXPOSE 3000`, `PORT: 3000`, `expose` nel compose |
 | `db` | 5432 | solo `expose`, nessun dominio |
 

@@ -288,6 +288,12 @@ che la parola "run" si nasconde dentro "crunch".
 
 ## Accessibilita
 
+Lighthouse, misurato sulla build di produzione:
+
+| Prestazioni | Accessibilita | Buone pratiche | SEO |
+|:---:|:---:|:---:|:---:|
+| **100** | **100** | **100** | **100** |
+
 Obiettivo dichiarato: **WCAG 2.1 livello AA**, con i criteri rilevanti di WCAG 2.2.
 La verifica con axe-core gira in automatico su cinque schermate, in tema chiaro e
 scuro, a 412 e a 320 pixel di larghezza, e **fa fallire la build** se trova una
@@ -355,7 +361,7 @@ Comandi disponibili:
 | `npm run build:api` | Compila l'API |
 | `npm run typecheck` | Controlla i tipi su tutti i pacchetti |
 | `npm run test` | Test unitari (69 test) |
-| `npm run test:e2e` | Test end to end e verifica WCAG (46 test) |
+| `npm run test:e2e` | Test end to end, PWA offline e verifica WCAG (54 test) |
 | `npm run data:all` | Rigenera immagini, catalogo e regole sanitarie |
 | `npm run docker:up` | Avvia lo stack completo in Docker |
 
@@ -420,7 +426,7 @@ piu' comune con questo tipo di stack.
 
 ```bash
 npm run test        # 69 test unitari
-npm run test:e2e    # 46 test end to end, verifica WCAG inclusa
+npm run test:e2e    # 54 test end to end, offline e verifica WCAG inclusi
 ```
 
 Cosa coprono:
@@ -428,6 +434,7 @@ Cosa coprono:
 - **Motore** (47 test): formule del massimale e loro coerenza reciproca, tabella ripetizioni e percentuali, rilevamento dei record, e un blocco di invarianti sul generatore verificate su **360 combinazioni** di obiettivo, luogo, livello e giorni. Fra le invarianti: nessun esercizio ripetuto nella stessa seduta, mai attrezzatura non disponibile, mai stretching negli slot di forza, durata sempre entro il tempo dichiarato, volume sopra il minimo efficace sui grandi distretti, e nessun esercizio escluso per salute che rientra dalla finestra.
 - **API** (11 test): hash delle password, verifica a tempo costante, robustezza su hash malformati, e il limite sui calcoli in parallelo che impedisce a una raffica di accessi di esaurire la memoria.
 - **PWA** (11 test): il timer di recupero, con particolare attenzione al fatto che il tempo si legge dall'orologio e sopravvive a un ricaricamento della pagina.
+- **PWA** (4 test): il manifest e le sue icone, la registrazione del service worker, l'apertura dell'applicazione **con la rete staccata**, e la verifica che nessuna risposta dell'API finisca in Cache Storage.
 - **End to end** (46 test): il percorso completo dall'onboarding al riepilogo, il ripristino della sessione dopo un reload, la ricerca nel catalogo, l'assenza di scorrimento orizzontale su ogni schermata, e la verifica WCAG con axe su cinque schermate per due temi e due larghezze di schermo.
 
 I test hanno trovato difetti veri durante lo sviluppo, non solo confermato il
