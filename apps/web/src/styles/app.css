@@ -1437,3 +1437,40 @@
   .set-actions > a:last-child { margin-inline-start: auto; }
   .set-actions .btn { white-space: nowrap; }
 }
+
+@layer components {
+
+  /* --- Blocchi espandibili --------------------------------------------------
+     La regola di base impone un'altezza minima di 44px a summary per garantire
+     il bersaglio di tocco; senza display esplicito il triangolo del browser va
+     a capo e finisce sopra il testo. */
+
+  summary {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 2);
+  }
+
+  /* Con display:flex il browser non disegna piu' il suo triangolo: senza un
+     sostituto il blocco non sembrerebbe apribile. */
+  summary::-webkit-details-marker { display: none; }
+  summary::marker { content: ''; }
+
+  summary::after {
+    content: '';
+    flex: none;
+    margin-inline-start: auto;
+    inline-size: 9px;
+    block-size: 9px;
+    border-inline-end: 2px solid var(--color-text-tertiary);
+    border-block-end: 2px solid var(--color-text-tertiary);
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform var(--duration-2) var(--ease-standard);
+  }
+
+  details[open] > summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
+
+  summary > svg { flex: none; }
+
+  details[open] > summary { margin-block-end: calc(var(--spacing) * 1); }
+}

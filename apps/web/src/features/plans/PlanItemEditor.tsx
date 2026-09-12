@@ -100,7 +100,6 @@ export function PlanItemEditor({ exercise, item, goal, experience, onChange }: P
             value={first?.weightKg}
             onChange={(v) => patchSets({ weightKg: v })}
             step={2.5} min={0} max={500} decimals compact
-            placeholder="da definire"
           />
         )}
       </div>
