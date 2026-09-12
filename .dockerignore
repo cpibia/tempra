@@ -1,0 +1,15 @@
+node_modules
+**/node_modules
+**/dist
+**/.vite
+db-exercise
+docs
+data/source-batches
+.git
+.github
+**/test-results
+**/playwright-report
+**/e2e
+*.md
+.env
+.env.*

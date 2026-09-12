@@ -1,0 +1,29 @@
+{
+  "name": "tempra",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspace=@tempra/web",
+    "dev:api": "npm run dev --workspace=@tempra/api",
+    "build": "npm run build --workspace=@tempra/core && npm run build --workspace=@tempra/web",
+    "build:api": "npm run build --workspace=@tempra/api",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "data:images": "./tools/build-images.sh",
+    "data:catalog": "node tools/build-catalog.mjs",
+    "data:conditions": "node tools/build-conditions.mjs",
+    "data:all": "npm run data:images && npm run data:catalog && npm run data:conditions",
+    "test:e2e": "npm run test:e2e --workspace=@tempra/web",
+    "docker:up": "docker compose up --build -d",
+    "docker:down": "docker compose down"
+  }
+}

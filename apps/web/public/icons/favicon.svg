@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Tempra">
+  <rect width="64" height="64" rx="14" fill="#070A10"/>
+  <!-- Bilanciere stilizzato che forma una T: il segno del marchio. -->
+  <rect x="10" y="18" width="44" height="8" rx="4" fill="#F5691A"/>
+  <rect x="28" y="18" width="8" height="34" rx="4" fill="#F5691A"/>
+  <rect x="6" y="13" width="6" height="18" rx="3" fill="#FFA37C"/>
+  <rect x="52" y="13" width="6" height="18" rx="3" fill="#FFA37C"/>
+</svg>

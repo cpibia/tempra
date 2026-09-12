@@ -1,0 +1,1080 @@
+{
+ "Standing_Leg_Curl": {
+  "name": "Leg curl in piedi",
+  "aliases": ["standing leg curl", "leg curl mono"],
+  "instructions": [
+   "Regola la leva della macchina in base alla tua altezza e posizionati con il busto piegato in avanti di circa 30-45 gradi (un'angolazione favorisce il reclutamento dei femorali), con il rullo appoggiato sul retro della gamba destra (a pochi centimetri sotto il polpaccio) e la parte anteriore della gamba destra contro il pad della macchina.",
+   "Mantenendo il busto piegato in avanti, assicurati che la gamba sia completamente distesa e afferra le maniglie laterali della macchina. Tieni le punte dei piedi dritte. Questa è la posizione di partenza.",
+   "Espirando, fletti la gamba destra il più possibile senza sollevare la coscia dal pad. Una volta raggiunta la contrazione completa, mantieni la posizione per un secondo.",
+   "Inspirando, riporta la gamba nella posizione iniziale. Ripeti per il numero di ripetizioni consigliato.",
+   "Esegui lo stesso esercizio con la gamba sinistra."
+  ]
+ },
+ "Standing_Long_Jump": {
+  "name": "Salto in lungo da fermo",
+  "aliases": ["standing long jump", "salto in lungo senza rincorsa"],
+  "instructions": [
+   "Questo esercizio va eseguito preferibilmente su sabbia o altra superficie di atterraggio morbida. Assicurati di poter misurare la distanza. Mettiti in una posizione di mezzo squat con i piedi larghi quanto le spalle.",
+   "Utilizzando un ampio slancio delle braccia e un contromovimento delle gambe, salta in avanti il più lontano possibile.",
+   "Cerca di atterrare con i piedi ben davanti a te, allungando le gambe il più possibile.",
+   "Misura la distanza tra il punto di atterraggio e quello di partenza e tieni traccia dei risultati."
+  ]
+ },
+ "Standing_Low-Pulley_Deltoid_Raise": {
+  "name": "Alzata laterale ai cavi bassi in piedi",
+  "aliases": ["alzata al cavo basso", "deltoid raise ai cavi", "low pulley deltoid raise"],
+  "instructions": [
+   "Mettiti in piedi sul lato destro di un pulley basso. Con la mano sinistra, attraversa il corpo e afferra una singola maniglia collegata al pulley basso con presa prona (palmo verso il basso). Appoggia il braccio davanti a te. La mano destra deve afferrare la macchina per un migliore supporto ed equilibrio.",
+   "Assicurati di avere la schiena eretta e i piedi larghi quanto le spalle. Questa è la posizione di partenza.",
+   "Usando la mano sinistra, porta il braccio lontano dal corpo fino ad arrivare all'altezza della spalla mentre espiri.",
+   "Senti la contrazione in alto per un secondo e comincia ad abbassare lentamente la maniglia fino alla posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni consigliato.",
+   "Cambia braccio e ripeti l'esercizio."
+  ]
+ },
+ "Standing_Low-Pulley_One-Arm_Triceps_Extension": {
+  "name": "Estensione tricipiti ai cavi bassi monobraccio in piedi",
+  "aliases": ["french press al cavo basso monobraccio", "one arm triceps extension ai cavi", "estensione tricipiti cavo basso"],
+  "instructions": [
+   "Afferra una singola maniglia con il braccio sinistro accanto alla macchina a pulley basso. Girati dando le spalle alla macchina, tenendo la maniglia di lato al corpo con il braccio completamente esteso. Ora usa entrambe le mani per sollevare la maniglia direttamente sopra la testa con il palmo rivolto in avanti. Tieni il braccio completamente verticale (perpendicolare al pavimento) e appoggia la mano destra sul gomito sinistro per aiutarti a stabilizzarlo. Questa è la posizione di partenza.",
+   "Tenendo il braccio vicino alla testa (gomito in dentro) e perpendicolare al pavimento, abbassa il peso con un movimento semicircolare dietro la testa finché l'avambraccio non tocca il bicipite. Consiglio: il braccio deve restare fermo, solo l'avambraccio si muove. Inspira durante questa fase.",
+   "Torna alla posizione di partenza usando il tricipite per risollevare la maniglia. Espira durante questa fase.",
+   "Ripeti per il numero di ripetizioni consigliato.",
+   "Cambia braccio e ripeti l'esercizio."
+  ]
+ },
+ "Standing_Military_Press": {
+  "name": "Lento avanti in piedi",
+  "aliases": ["military press in piedi", "standing military press", "shoulder press bilanciere in piedi"],
+  "instructions": [
+   "Posiziona un bilanciere all'altezza del petto su uno squat rack. Una volta scelto il carico, afferra il bilanciere con presa prona (palmi in avanti), più larga della larghezza delle spalle.",
+   "Piega leggermente le ginocchia e appoggia il bilanciere sulle clavicole. Solleva il bilanciere tenendolo appoggiato al petto. Fai un passo indietro e posiziona i piedi larghi quanto le spalle.",
+   "Una volta impugnato il bilanciere con la presa corretta, sollevalo sopra la testa bloccando le braccia. Fermati all'altezza delle spalle, leggermente davanti alla testa. Questa è la posizione di partenza.",
+   "Abbassa lentamente il bilanciere fino alle clavicole mentre inspiri.",
+   "Risolleva il bilanciere fino alla posizione di partenza mentre espiri.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Standing_Olympic_Plate_Hand_Squeeze": {
+  "name": "Pinch grip con dischi in piedi",
+  "aliases": ["hand squeeze con disco", "olympic plate squeeze", "presa a pizzico con dischi"],
+  "instructions": [
+   "Per iniziare, stai in piedi con la schiena dritta tenendo un disco per il bordo a braccia distese in ciascuna mano, con presa neutra (palmi verso l'interno). I piedi devono essere larghi quanto le spalle. Questa è la posizione di partenza.",
+   "Abbassa i dischi finché le dita non sono quasi distese ma riescono ancora a reggere il peso. Inspira mentre abbassi i dischi.",
+   "Ora risolleva i dischi fino alla posizione di partenza mentre espiri, chiudendo le mani.",
+   "Ripeti per il numero di ripetizioni previsto dal tuo programma."
+  ]
+ },
+ "Standing_One-Arm_Cable_Curl": {
+  "name": "Curl monobraccio ai cavi in piedi",
+  "aliases": ["one arm cable curl", "curl al cavo con una mano", "curl bicipiti cavo basso"],
+  "instructions": [
+   "Comincia afferrando una singola maniglia vicino alla macchina a pulley basso. Assicurati di essere abbastanza lontano dalla macchina in modo che sia il braccio a sostenere il peso.",
+   "Assicurati che il braccio resti fermo, perpendicolare al pavimento, con il gomito in dentro e il palmo rivolto in avanti. Il braccio libero deve tenersi al fianco: questo ti aiuta a mantenere l'equilibrio.",
+   "Comincia a piegare lentamente il gomito sollevando la maniglia, tenendo il braccio fermo, finché l'avambraccio non tocca il bicipite, espirando. Consiglio: si deve muovere solo l'avambraccio.",
+   "Mantieni la contrazione strizzando il bicipite e poi riporta la maniglia nella posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni consigliato.",
+   "Cambia braccio durante l'esecuzione di questo esercizio."
+  ]
+ },
+ "Standing_One-Arm_Dumbbell_Curl_Over_Incline_Bench": {
+  "name": "Curl monobraccio con manubrio su panca inclinata in piedi",
+  "aliases": ["curl su panca inclinata monobraccio", "one arm dumbbell curl incline bench", "curl manubrio appoggiato su panca"],
+  "instructions": [
+   "Mettiti in piedi dietro una panca inclinata, come se dovessi fare da spotter a qualcuno. Tieni un manubrio in una mano e appoggialo sulla parte alta della panca inclinata con presa supina (palmo verso l'alto).",
+   "Posiziona la mano libera sull'angolo o sul lato della panca inclinata. Il petto deve premere contro la parte alta dell'inclinazione e i piedi devono essere ben piantati a terra con una base larga. Questa è la posizione di partenza.",
+   "Mantenendo il braccio fermo, fletti il gomito sollevando il manubrio contraendo il bicipite mentre espiri. Deve muoversi solo l'avambraccio. Continua il movimento finché il bicipite non è completamente contratto e il manubrio è all'altezza della spalla. Mantieni la contrazione per un secondo.",
+   "Riporta lentamente il manubrio alla posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni consigliato.",
+   "Cambia braccio durante l'esecuzione di questo esercizio."
+  ]
+ },
+ "Standing_One-Arm_Dumbbell_Triceps_Extension": {
+  "name": "Estensione tricipiti monobraccio con manubrio in piedi",
+  "aliases": ["french press manubrio monobraccio", "one arm dumbbell triceps extension", "estensione tricipiti sopra la testa manubrio"],
+  "instructions": [
+   "Per iniziare, mettiti in piedi con un manubrio in una mano. I piedi devono essere larghi quanto le spalle. Estendi completamente il braccio con il manubrio sopra la testa. Consiglio: il mignolo deve essere rivolto verso il soffitto e il palmo in avanti. Il manubrio deve trovarsi sopra la testa.",
+   "Questa è la posizione di partenza.",
+   "Tenendo il braccio vicino alla testa (gomito in dentro) e perpendicolare al pavimento, abbassa il peso con un movimento semicircolare dietro la testa finché l'avambraccio non tocca il bicipite. Consiglio: il braccio deve restare fermo, solo l'avambraccio si muove. Inspira durante questa fase.",
+   "Torna alla posizione di partenza usando il tricipite per risollevare il manubrio. Espira durante questa fase.",
+   "Ripeti per il numero di ripetizioni consigliato.",
+   "Cambia braccio e ripeti l'esercizio."
+  ]
+ },
+ "Standing_Overhead_Barbell_Triceps_Extension": {
+  "name": "Estensione tricipiti sopra la testa con bilanciere in piedi",
+  "aliases": ["french press bilanciere in piedi", "overhead triceps extension", "estensione tricipiti sopra la testa"],
+  "instructions": [
+   "Per iniziare, mettiti in piedi tenendo un bilanciere o un bilanciere EZ con presa prona (palmi in avanti), con le mani più vicine della larghezza delle spalle. I piedi devono essere larghi quanto le spalle.",
+   "Solleva il bilanciere sopra la testa finché le braccia non sono completamente distese. Tieni i gomiti in dentro. Questa è la posizione di partenza.",
+   "Tenendo le braccia vicine alla testa e i gomiti in dentro, perpendicolari al pavimento, abbassa il peso con un movimento semicircolare dietro la testa finché gli avambracci non toccano i bicipiti. Consiglio: le braccia devono restare ferme, solo gli avambracci si muovono. Inspira durante questa fase.",
+   "Torna alla posizione di partenza usando i tricipiti per risollevare il bilanciere. Espira durante questa fase.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Standing_Palm-In_One-Arm_Dumbbell_Press": {
+  "name": "Shoulder press monobraccio con manubrio presa neutra in piedi",
+  "aliases": ["one arm dumbbell press neutro", "military press manubrio monobraccio", "spinta spalle manubrio presa neutra"],
+  "instructions": [
+   "Comincia con un manubrio in una mano e il braccio completamente esteso lateralmente con presa neutra. Usa l'altro braccio per appoggiarti a una panca inclinata e mantenere l'equilibrio.",
+   "I piedi devono essere larghi quanto le spalle. Solleva lentamente il manubrio fino a creare un angolo di 90 gradi con il braccio. Nota: l'avambraccio deve essere perpendicolare al pavimento. Mantieni la presa neutra per tutto l'esercizio.",
+   "Solleva lentamente il manubrio finché il braccio non è completamente esteso. Questa è la posizione di partenza.",
+   "Inspirando, abbassa il peso finché il braccio non torna a un angolo di 90 gradi.",
+   "Senti la contrazione per un secondo e poi risolleva il peso verso la posizione di partenza mentre espiri. Ricordati di tenerti alla panca inclinata e mantenere i piedi ben posizionati per l'equilibrio durante l'esercizio.",
+   "Ripeti per il numero di ripetizioni consigliato.",
+   "Cambia braccio e ripeti l'esercizio."
+  ]
+ },
+ "Standing_Palms-In_Dumbbell_Press": {
+  "name": "Shoulder press con manubri presa neutra in piedi",
+  "aliases": ["palms-in dumbbell press", "military press manubri presa neutra", "spinta spalle manubri in piedi"],
+  "instructions": [
+   "Comincia con un manubrio in ciascuna mano e le braccia completamente estese lateralmente con presa neutra. I piedi devono essere larghi quanto le spalle. Solleva lentamente i manubri fino a creare un angolo di 90 gradi con le braccia. Nota: gli avambracci devono essere perpendicolari al pavimento. Questa è la posizione di partenza.",
+   "Mantieni la presa neutra per tutto l'esercizio. Solleva lentamente i manubri finché le braccia non sono completamente estese.",
+   "Inspirando, abbassa i pesi finché il braccio non torna a un angolo di 90 gradi.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Standing_Palms-Up_Barbell_Behind_The_Back_Wrist_Curl": {
+  "name": "Curl polsi dietro la schiena con bilanciere in piedi",
+  "aliases": ["wrist curl dietro la schiena", "curl polsi bilanciere", "polso bilanciere dietro glutei"],
+  "instructions": [
+   "Comincia stando in piedi con la schiena dritta, tenendo un bilanciere dietro i glutei a braccia distese con presa prona (i palmi rivolti indietro, lontano dai glutei) e le mani larghe quanto le spalle.",
+   "Guarda dritto davanti a te con i piedi larghi quanto le spalle. Questa è la posizione di partenza.",
+   "Espirando, solleva lentamente il bilanciere piegando il polso con un movimento semicircolare verso il soffitto. Nota: solo il polso deve muoversi in questo esercizio.",
+   "Mantieni la contrazione per un secondo e abbassa il bilanciere nella posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni consigliato.",
+   "Una volta terminato, abbassa il bilanciere fino allo squat rack o al pavimento piegando le ginocchia. Consiglio: è più facile prenderlo e riappoggiarlo su uno squat rack oppure farsi aiutare da un compagno."
+  ]
+ },
+ "Standing_Pelvic_Tilt": {
+  "name": "Basculamento del bacino in piedi",
+  "aliases": ["pelvic tilt in piedi", "stretching lombari in piedi", "basculamento pelvico"],
+  "instructions": [
+   "Parti con i piedi larghi quanto i fianchi.",
+   "Piega leggermente le ginocchia per tenerle morbide ed elastiche.",
+   "Puoi muovere il bacino avanti e indietro un paio di volte prima di mantenere il coccige in avanti in questo stretching."
+  ]
+ },
+ "Standing_Rope_Crunch": {
+  "name": "Crunch alla fune in piedi",
+  "aliases": ["standing rope crunch", "crunch ai cavi in piedi", "crunch con corda al cavo alto"],
+  "instructions": [
+   "Aggancia una corda a un cavo alto e seleziona un peso adeguato.",
+   "Mettiti in piedi con la schiena rivolta alla torre dei cavi. Prendi la corda con entrambe le mani sopra le spalle, tenendola contro la parte alta del petto. Questa è la posizione di partenza.",
+   "Esegui il movimento flettendo la colonna, portando il peso verso il basso il più possibile con un crunch.",
+   "Mantieni la contrazione di picco per un istante prima di tornare alla posizione di partenza."
+  ]
+ },
+ "Standing_Soleus_And_Achilles_Stretch": {
+  "name": "Stretching soleo e tendine d'Achille in piedi",
+  "aliases": ["stretching polpaccio in piedi", "stretching tendine d'achille", "allungamento soleo"],
+  "instructions": [
+   "Mettiti in piedi con i piedi larghi quanto i fianchi, un piede leggermente davanti all'altro.",
+   "Piega entrambe le ginocchia, tenendo il tallone posteriore a terra. Cambia lato."
+  ]
+ },
+ "Standing_Toe_Touches": {
+  "name": "Piegamento in avanti in piedi",
+  "aliases": ["toe touches in piedi", "stretching catena posteriore in piedi", "tocca punte piedi"],
+  "instructions": [
+   "Mettiti in piedi con un po' di spazio davanti e dietro di te.",
+   "Piegati in avanti dal bacino, tenendo le gambe distese, finché non riesci a rilassarti e a lasciare che la parte superiore del corpo penda verso il basso. Lascia che braccia e mani pendano naturalmente. Mantieni per 10-20 secondi."
+  ]
+ },
+ "Standing_Towel_Triceps_Extension": {
+  "name": "Estensione tricipiti con asciugamano in piedi",
+  "aliases": ["triceps extension asciugamano", "french press con asciugamano", "estensione tricipiti in coppia"],
+  "instructions": [
+   "Per iniziare, mettiti in piedi con entrambe le braccia completamente estese sopra la testa, tenendo un'estremità di un asciugamano con entrambe le mani. I gomiti devono essere in dentro e le braccia perpendicolari al pavimento con i palmi rivolti l'uno verso l'altro, mentre i piedi devono essere larghi quanto le spalle. Questa è la posizione di partenza.",
+   "Ora accordati con il tuo compagno perché afferri l'altra estremità dell'asciugamano per creare resistenza. Tenendo le braccia vicine alla testa (gomiti in dentro) e perpendicolari al pavimento, abbassa la resistenza con un movimento semicircolare dietro la testa finché gli avambracci non toccano i bicipiti. Consiglio: le braccia devono restare ferme, solo gli avambracci si muovono. Inspira durante questa fase.",
+   "Torna alla posizione di partenza usando i tricipiti per risollevare l'asciugamano. Espira durante questa fase.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Standing_Two-Arm_Overhead_Throw": {
+  "name": "Lancio sopra la testa a due mani in piedi",
+  "aliases": ["overhead throw con palla medica", "lancio palla medica in piedi", "two arm overhead throw"],
+  "instructions": [
+   "Mettiti in piedi con i piedi larghi quanto le spalle tenendo una palla medica con entrambe le mani. Per iniziare, porta la palla medica dietro la testa piegando leggermente le ginocchia e inclinandoti all'indietro.",
+   "Lancia la palla in avanti con forza, flettendo i fianchi e usando tutto il corpo per completare il movimento.",
+   "La palla medica può essere lanciata a un compagno o contro un muro, ricevendola quando rimbalza indietro."
+  ]
+ },
+ "Star_Jump": {
+  "name": "Star jump",
+  "aliases": ["salto a stella", "star jump esercizio"],
+  "instructions": [
+   "Comincia in una posizione rilassata con i piedi larghi quanto le spalle e le braccia vicine al corpo.",
+   "Per iniziare il movimento, scendi in mezzo squat ed esplodi verso l'alto il più in alto possibile. Estendi completamente il corpo, allargando gambe e braccia lontano dal busto.",
+   "Quando atterri, riporta gli arti verso il corpo e assorbi l'impatto con le gambe."
+  ]
+ },
+ "Step_Mill": {
+  "name": "Step mill",
+  "aliases": ["scala mobile fitness", "stepmill", "macchina scale infinite"],
+  "instructions": [
+   "Per iniziare, sali sullo step mill e seleziona l'opzione desiderata dal menu. Puoi scegliere un'impostazione manuale oppure selezionare un programma. Solitamente puoi inserire età e peso per stimare le calorie bruciate durante l'allenamento. Fai attenzione a non inciampare mentre sali i gradini. È consigliabile mantenere la presa sulle maniglie per evitare cadute.",
+   "Lo step mill offre praticità, benefici cardiovascolari e di solito un impatto minore rispetto alla corsa all'aperto, mantenendo un consumo calorico simile. Solitamente è molto più impegnativo rispetto ad altri attrezzi cardio. Una persona di 68 kg brucia in genere oltre 300 calorie in 30 minuti, contro circa 175 calorie camminando."
+  ]
+ },
+ "Step-up_with_Knee_Raise": {
+  "name": "Step-up con slancio ginocchio",
+  "aliases": ["step up con ginocchio alto", "step-up knee raise", "salita su rialzo con slancio ginocchio"],
+  "instructions": [
+   "Mettiti in piedi davanti a un box o una panca di altezza adeguata con i piedi uniti. Questa è la posizione di partenza.",
+   "Inizia il movimento salendo, appoggiando il piede sinistro sulla parte alta della panca. Estendi anca e ginocchio della gamba avanti per salire in piedi sul box. Mentre sei in piedi sul box con la gamba sinistra, fletti ginocchio e anca destri, portando il ginocchio più in alto possibile.",
+   "Inverti il movimento per scendere dal box, poi ripeti la sequenza con la gamba opposta."
+  ]
+ },
+ "Stiff_Leg_Barbell_Good_Morning": {
+  "name": "Good morning a gambe tese con bilanciere",
+  "aliases": ["good morning gambe tese", "stiff leg good morning", "good morning bilanciere"],
+  "instructions": [
+   "Questo esercizio va eseguito preferibilmente dentro uno squat rack per sicurezza. Per iniziare, imposta il bilanciere su un rack all'altezza adatta a te. Una volta scelta l'altezza corretta e caricato il bilanciere, mettiti sotto la sbarra e appoggia la parte posteriore delle spalle (leggermente sotto il collo) sul bilanciere.",
+   "Afferra il bilanciere con entrambe le braccia ai lati e solleva la sbarra dal rack spingendo con le gambe e contemporaneamente raddrizzando il busto.",
+   "Allontanati dal rack e posiziona le gambe con una base larga quanto le spalle. Tieni sempre la testa alta, guardare in basso ti farebbe perdere l'equilibrio, e mantieni la schiena dritta. Questa è la posizione di partenza.",
+   "Tenendo le gambe ferme, sposta il busto in avanti piegandoti sui fianchi mentre inspiri. Abbassa il busto finché non è parallelo al pavimento.",
+   "Comincia a risollevare il bilanciere mentre espiri, riportando il busto in posizione eretta fino alla posizione di partenza.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Stiff-Legged_Barbell_Deadlift": {
+  "name": "Stacco a gambe tese con bilanciere",
+  "aliases": ["stiff leg deadlift bilanciere", "stacco rumeno gambe tese", "stiff-legged deadlift"],
+  "instructions": [
+   "Afferra un bilanciere con presa prona (palmi verso il basso). Potrebbero servirti dei polsini se usi un carico importante.",
+   "Mettiti in piedi con il busto dritto e le gambe distanziate quanto le spalle o leggermente meno. Le ginocchia devono essere leggermente piegate. Questa è la posizione di partenza.",
+   "Tenendo le ginocchia ferme, abbassa il bilanciere sopra la punta dei piedi piegandoti sui fianchi mantenendo la schiena dritta. Continua a scendere come se dovessi raccogliere qualcosa da terra finché non senti un allungamento sui femorali. Inspira mentre esegui questo movimento.",
+   "Comincia a raddrizzare di nuovo il busto estendendo i fianchi finché non torni alla posizione di partenza. Espira mentre esegui questo movimento.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Stiff-Legged_Dumbbell_Deadlift": {
+  "name": "Stacco a gambe tese con manubri",
+  "aliases": ["stiff leg deadlift manubri", "stacco rumeno con manubri", "stiff-legged dumbbell deadlift"],
+  "instructions": [
+   "Afferra un paio di manubri tenendoli lungo i fianchi a braccia distese.",
+   "Mettiti in piedi con il busto dritto e le gambe distanziate quanto le spalle o leggermente meno. Le ginocchia devono essere leggermente piegate. Questa è la posizione di partenza.",
+   "Tenendo le ginocchia ferme, abbassa i manubri sopra la punta dei piedi piegandoti in avanti dal bacino, mantenendo la schiena dritta. Continua a scendere come se dovessi raccogliere qualcosa da terra finché non senti un allungamento sui femorali. Espira mentre esegui questo movimento.",
+   "Comincia a raddrizzare di nuovo il busto estendendo fianchi e bacino finché non torni alla posizione di partenza. Inspira mentre esegui questo movimento.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Stomach_Vacuum": {
+  "name": "Stomach vacuum",
+  "aliases": ["vacuum addominale", "stomach vacuum esercizio", "vuoto addominale"],
+  "instructions": [
+   "Per iniziare, mettiti in piedi con la schiena dritta e i piedi larghi quanto le spalle. Appoggia le mani sui fianchi. Questa è la posizione di partenza.",
+   "Ora inspira lentamente più aria possibile e comincia a espirare il più possibile portando lo stomaco in dentro il più possibile, mantenendo questa posizione. Cerca di immaginare l'ombelico che tocca la colonna vertebrale.",
+   "Una contrazione isometrica dura circa 20 secondi. Durante i 20 secondi di tenuta, cerca di respirare normalmente. Poi inspira e riporta lo stomaco alla posizione di partenza.",
+   "Una volta che hai fatto pratica con questo esercizio, prova a mantenerlo per più di 20 secondi. Consiglio: puoi arrivare gradualmente a 40-60 secondi.",
+   "Ripeti per il numero di serie consigliato."
+  ]
+ },
+ "Straight_Bar_Bench_Mid_Rows": {
+  "name": "Rematore su panca con bilanciere",
+  "aliases": ["bench mid row bilanciere", "rematore sulla panca", "straight bar bench mid rows"],
+  "instructions": [
+   "Appoggia un bilanciere caricato all'estremità di una panca. In piedi sulla panca dietro al bilanciere, prendi una presa media prona. Mettiti con i fianchi indietro e il petto in fuori, mantenendo la colonna neutra. Questa è la posizione di partenza.",
+   "Trascina il bilanciere verso il busto retraendo le scapole e flettendo i gomiti. Usa un movimento controllato senza scatti.",
+   "Dopo una breve pausa, riporta lentamente il bilanciere alla posizione di partenza, assicurandoti di scendere completamente."
+  ]
+ },
+ "Straight_Raises_on_Incline_Bench": {
+  "name": "Alzate frontali su panca inclinata",
+  "aliases": ["straight raises panca inclinata", "alzate frontali bilanciere inclinata", "front raise su panca prona"],
+  "instructions": [
+   "Appoggia un bilanciere a terra dietro la testa di una panca inclinata.",
+   "Sdraiati sulla panca a pancia in giù. Con presa prona, raccogli il bilanciere da terra tenendo le braccia distese. Lascia che il bilanciere penda verso il basso. Questa è la posizione di partenza.",
+   "Per iniziare, solleva il bilanciere davanti alla testa tenendo le braccia distese.",
+   "Torna alla posizione di partenza."
+  ]
+ },
+ "Straight-Arm_Dumbbell_Pullover": {
+  "name": "Pull over con manubrio a braccia tese",
+  "aliases": ["straight arm pullover", "pull over manubrio", "dumbbell pullover braccia dritte"],
+  "instructions": [
+   "Appoggia un manubrio in piedi su una panca piana.",
+   "Assicurandoti che il manubrio resti saldo sulla panca, sdraiati perpendicolarmente alla panca (busto attraverso di essa, come a formare una croce) con solo le spalle appoggiate sulla superficie. I fianchi devono restare sotto la panca e le gambe piegate con i piedi ben piantati a terra. Anche la testa resterà fuori dalla panca.",
+   "Afferra il manubrio con entrambe le mani e tienilo dritto sopra il petto a braccia distese. Entrambi i palmi devono premere contro la parte inferiore di uno dei lati del manubrio. Questa è la posizione di partenza.\nAttenzione: assicurati sempre che il manubrio usato per questo esercizio sia ben assemblato. Un manubrio con dischi non fissati bene può cadere a pezzi e colpirti in faccia.",
+   "Tenendo le braccia distese, abbassa lentamente il peso in un arco dietro la testa mentre inspiri, finché non senti un allungamento del petto.",
+   "A quel punto, riporta il manubrio alla posizione di partenza seguendo lo stesso arco con cui è stato abbassato ed espira mentre esegui questo movimento.",
+   "Mantieni il peso nella posizione iniziale per un secondo e ripeti il movimento per il numero di ripetizioni previsto."
+  ]
+ },
+ "Straight-Arm_Pulldown": {
+  "name": "Pulldown a braccia tese",
+  "aliases": ["straight arm pulldown", "lat machine braccia dritte", "pull down braccia tese ai cavi"],
+  "instructions": [
+   "Comincia afferrando la barra larga dal pulley alto di una lat machine con presa prona (palmi verso il basso) più larga delle spalle. Fai un paio di passi indietro.",
+   "Piega il busto in avanti dal bacino di circa 30 gradi con le braccia completamente distese davanti a te e una leggera flessione ai gomiti. Se le braccia non sono completamente distese devi fare un altro passo indietro finché non lo sono. Una volta che le braccia sono distese e il busto leggermente piegato in avanti, contrai il dorsale e sei pronto per iniziare.",
+   "Tenendo le braccia dritte, tira la barra verso il basso contraendo il dorsale finché le mani non sono accanto ai fianchi. Espira durante questa fase.",
+   "Tenendo le braccia dritte, torna alla posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Stride_Jump_Crossover": {
+  "name": "Salto incrociato laterale su box",
+  "aliases": ["stride jump crossover", "salto crossover box", "cambio d'appoggio saltato su rialzo"],
+  "instructions": [
+   "Mettiti a lato di un box con il piede interno appoggiato sopra, vicino al bordo.",
+   "Comincia oscillando le braccia verso l'alto mentre spingi con la gamba appoggiata sul box, saltando il più in alto possibile. Cerca di spingere il ginocchio opposto verso l'alto.",
+   "Atterra nella posizione opposta a quella di partenza, dall'altro lato del box. Il piede che inizialmente era sul box sarà ora a terra, mentre l'altro piede sarà sul box.",
+   "Ripeti il movimento, incrociando di nuovo verso l'altro lato."
+  ]
+ },
+ "Sumo_Deadlift": {
+  "name": "Stacco sumo",
+  "aliases": ["sumo deadlift", "stacco da terra sumo", "deadlift sumo"],
+  "instructions": [
+   "Comincia con il bilanciere caricato a terra. Avvicinati alla sbarra in modo che intersechi il centro dei piedi. I piedi devono essere molto larghi, vicino ai dischi. Piegati sui fianchi per afferrare il bilanciere. Le braccia devono essere direttamente sotto le spalle, dentro le gambe, e puoi usare una presa prona, mista o a uncino. Rilassa le spalle: questo di fatto allunga le braccia.",
+   "Fai un respiro, poi abbassa i fianchi, guardando avanti con la testa e il petto in fuori. Spingi contro il pavimento, allargando i piedi, con il peso sulla parte posteriore dei piedi. Estendi fianchi e ginocchia.",
+   "Quando il bilanciere supera le ginocchia, inclinati indietro e spingi i fianchi contro la sbarra, avvicinando le scapole.",
+   "Riporta il peso a terra piegandoti sui fianchi e controllando il peso durante la discesa."
+  ]
+ },
+ "Sumo_Deadlift_with_Bands": {
+  "name": "Stacco sumo con elastici",
+  "aliases": ["sumo deadlift bands", "stacco sumo con bande elastiche", "deadlift sumo elastici"],
+  "instructions": [
+   "Per fare lo stacco con elastici corti, avvolgili semplicemente sopra il bilanciere prima di iniziare e mettici sopra i piedi per prepararti. Assicurati che passino sotto la parte posteriore del piede, esattamente dove spingi contro il pavimento.",
+   "Comincia con il bilanciere caricato a terra. Avvicinati alla sbarra in modo che intersechi il centro dei piedi. I piedi devono essere molto larghi, vicino ai dischi. Piegati sui fianchi per afferrare il bilanciere. Le braccia devono essere direttamente sotto le spalle, dentro le gambe, e puoi usare una presa prona, mista o a uncino.",
+   "Fai un respiro, poi abbassa i fianchi, guardando avanti con la testa e il petto in fuori. Spingi contro il pavimento, allargando i piedi, con il peso sulla parte posteriore dei piedi. Estendi fianchi e ginocchia.",
+   "Quando il bilanciere supera le ginocchia, inclinati indietro e spingi i fianchi contro la sbarra, avvicinando le scapole.",
+   "Riporta il peso a terra piegandoti sui fianchi e controllando il peso durante la discesa."
+  ]
+ },
+ "Sumo_Deadlift_with_Chains": {
+  "name": "Stacco sumo con catene",
+  "aliases": ["sumo deadlift chains", "stacco sumo con catene di ferro", "deadlift sumo catene"],
+  "instructions": [
+   "Puoi agganciare le catene ai manicotti del bilanciere, oppure semplicemente farle passare al centro della sbarra in modo che il carico aumenti man mano che sollevi. Cerca di tenere le estremità delle catene lontane dai dischi per non colpirli quando abbassi il peso.",
+   "Comincia con il bilanciere caricato a terra. Avvicinati alla sbarra in modo che intersechi il centro dei piedi. I piedi devono essere molto larghi, vicino ai dischi. Piegati sui fianchi per afferrare il bilanciere. Le braccia devono essere direttamente sotto le spalle, dentro le gambe, e puoi usare una presa prona, mista o a uncino. Rilassa le spalle: questo di fatto allunga le braccia.",
+   "Fai un respiro, poi abbassa i fianchi, guardando avanti con la testa e il petto in fuori. Spingi contro il pavimento, allargando i piedi, con il peso sulla parte posteriore dei piedi. Estendi fianchi e ginocchia.",
+   "Quando il bilanciere supera le ginocchia, inclinati indietro e spingi i fianchi contro la sbarra, avvicinando le scapole.",
+   "Riporta il peso a terra piegandoti sui fianchi e controllando il peso durante la discesa."
+  ]
+ },
+ "Superman": {
+  "name": "Superman",
+  "aliases": ["superman esercizio", "estensione lombare a terra", "superman core"],
+  "instructions": [
+   "Per iniziare, sdraiati a pancia in giù sul pavimento o su un tappetino. Le braccia devono essere completamente distese davanti a te. Questa è la posizione di partenza.",
+   "Solleva contemporaneamente braccia, gambe e petto dal pavimento e mantieni questa contrazione per 2 secondi. Consiglio: contrai la zona lombare per ottenere il massimo da questo esercizio. Ricordati di espirare durante il movimento. Nota: quando mantieni la posizione contratta, dovresti sembrare Superman in volo.",
+   "Comincia ad abbassare lentamente braccia, gambe e petto verso la posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni previsto dal tuo programma."
+  ]
+ },
+ "Supine_Chest_Throw": {
+  "name": "Lancio da terra a due mani sul petto",
+  "aliases": ["supine chest throw", "lancio palla medica da sdraiato", "chest throw supino"],
+  "instructions": [
+   "Questo esercizio è ottimo per il passaggio dal petto quando non hai un compagno o un muro sufficientemente resistente. Sdraiati a terra sulla schiena con le ginocchia piegate.",
+   "Comincia con la palla sul petto, tenuta con entrambe le mani da sotto.",
+   "Esplodi verso l'alto, estendendo i gomiti per lanciare la palla il più in alto possibile direttamente sopra di te.",
+   "Riprendi la palla con entrambe le mani mentre scende."
+  ]
+ },
+ "Supine_One-Arm_Overhead_Throw": {
+  "name": "Lancio sopra la testa monobraccio da terra",
+  "aliases": ["supine one arm overhead throw", "lancio palla medica supino monobraccio", "overhead throw da sdraiato"],
+  "instructions": [
+   "Sdraiati a terra sulla schiena con le ginocchia piegate. Tieni la palla con una mano, estendendo completamente il braccio dietro la testa. Questa è la posizione di partenza.",
+   "Inizia il movimento dalla spalla, lanciando la palla dritta in avanti mentre ti siedi, cercando di raggiungere la massima distanza.",
+   "La palla può essere lanciata a un compagno o fatta rimbalzare contro un muro."
+  ]
+ },
+ "Supine_Two-Arm_Overhead_Throw": {
+  "name": "Lancio sopra la testa a due mani da terra",
+  "aliases": ["supine two arm overhead throw", "lancio palla medica supino a due mani", "overhead throw a due mani da sdraiato"],
+  "instructions": [
+   "Sdraiati a terra sulla schiena con le ginocchia piegate.",
+   "Tieni la palla con entrambe le mani, estendendo completamente le braccia dietro la testa. Questa è la posizione di partenza.",
+   "Inizia il movimento dalla spalla, lanciando la palla dritta in avanti mentre ti siedi, cercando di raggiungere la massima distanza.",
+   "La palla può essere lanciata a un compagno o fatta rimbalzare contro un muro."
+  ]
+ },
+ "Suspended_Fallout": {
+  "name": "Fallout in sospensione con TRX",
+  "aliases": ["suspended fallout", "trx fallout", "fallout con cinghie di sospensione"],
+  "instructions": [
+   "Regola le cinghie in modo che le maniglie siano a un'altezza adeguata, sotto il livello del bacino.",
+   "Comincia in piedi afferrando le maniglie. Inclinati sulle cinghie, arrivando in una posizione di piegamento inclinato. Questa è la posizione di partenza.",
+   "Tenendo le braccia dritte, inclinati ulteriormente nelle cinghie di sospensione, avvicinando il corpo al pavimento e lasciando che le spalle si estendano, sollevando le braccia sopra la testa.",
+   "Mantieni la colonna neutra e il resto del corpo dritto, lasciando che solo le spalle si muovano.",
+   "Fai una pausa nella contrazione di picco, poi torna alla posizione di partenza."
+  ]
+ },
+ "Suspended_Push-Up": {
+  "name": "Piegamenti in sospensione con TRX",
+  "aliases": ["suspended push-up", "trx push up", "piegamenti con cinghie di sospensione"],
+  "instructions": [
+   "Fissa saldamente le cinghie di sospensione alla parte alta di un rack o di un altro appiglio.",
+   "Inclinandoti nelle cinghie, prendi una maniglia in ciascuna mano e mettiti in posizione di plank da piegamento. Devi essere il più possibile parallelo al pavimento, con le braccia completamente distese, mantenendo una buona postura.",
+   "Mantenendo il busto dritto e rigido, scendi lentamente flettendo i gomiti.",
+   "Continua finché i gomiti non superano i 90 gradi, fai una pausa prima di estendere per tornare alla posizione di partenza."
+  ]
+ },
+ "Suspended_Reverse_Crunch": {
+  "name": "Reverse crunch in sospensione con TRX",
+  "aliases": ["suspended reverse crunch", "trx reverse crunch", "crunch inverso con cinghie di sospensione"],
+  "instructions": [
+   "Fissa un set di cinghie di sospensione con le maniglie sospese a circa 30 cm da terra. Mettiti in posizione di plank da piegamento dando le spalle al rack.",
+   "Infila i piedi nelle maniglie. Mantieni una postura dritta, senza lasciare che i fianchi cedano verso il basso. Questa è la posizione di partenza.",
+   "Inizia il movimento flettendo ginocchia e fianchi, portando le ginocchia verso il busto. Mentre lo fai, inclina il bacino in avanti, lasciando che la colonna si flettta.",
+   "Al termine del movimento controllato, torna alla posizione di partenza."
+  ]
+ },
+ "Suspended_Row": {
+  "name": "Rematore in sospensione con TRX",
+  "aliases": ["suspended row", "trx row", "rematore con cinghie di sospensione"],
+  "instructions": [
+   "Sospendi le cinghie all'incirca all'altezza del petto. Prendi una maniglia in ciascuna mano e inclinati all'indietro. Tieni il corpo eretto e testa e petto in alto. Le braccia devono essere completamente distese. Questa è la posizione di partenza.",
+   "Comincia flettendo il gomito per iniziare il movimento. Protrai le scapole mentre lo fai.",
+   "Al termine del movimento fai una pausa, poi torna alla posizione di partenza."
+  ]
+ },
+ "Suspended_Split_Squat": {
+  "name": "Affondo bulgaro in sospensione con TRX",
+  "aliases": ["suspended split squat", "trx split squat", "affondo bulgaro con cinghie di sospensione"],
+  "instructions": [
+   "Sospendi le cinghie in modo che le maniglie siano a 45-75 cm dal pavimento.",
+   "Dando le spalle all'attrezzatura, metti il piede posteriore nella maniglia dietro di te. Tieni la testa rivolta in avanti e il petto in alto, con il ginocchio leggermente piegato. Questa è la posizione di partenza.",
+   "Scendi flettendo ginocchio e fianchi, abbassandoti verso il pavimento. Mantieni il peso sul tallone del piede appoggiato e conserva la postura per tutto l'esercizio.",
+   "In fondo al movimento, inverti il movimento estendendo fianco e ginocchio per tornare alla posizione di partenza."
+  ]
+ },
+ "Svend_Press": {
+  "name": "Svend press",
+  "aliases": ["svend press dischi", "spinta petto con dischi", "plate press isometrico"],
+  "instructions": [
+   "Comincia in posizione eretta.",
+   "Premi due dischi leggeri tra le mani. Tieni i dischi uniti vicino al petto per creare una contrazione isometrica nei muscoli pettorali. Le dita devono essere rivolte in avanti. Questa è la posizione di partenza.",
+   "Stringi i dischi tra i palmi ed estendi le braccia direttamente davanti a te con un movimento controllato.",
+   "Fai una pausa in alto, poi torna lentamente alla posizione di partenza."
+  ]
+ },
+ "T-Bar_Row_with_Handle": {
+  "name": "T-bar row con maniglia",
+  "aliases": ["t bar row", "rematore t-bar con maniglia", "vogatore con manico a v su t-bar"],
+  "instructions": [
+   "Posiziona un bilanciere in un landmine o in un angolo per evitare che si sposti. Carica il peso adeguato su un'estremità.",
+   "Mettiti sopra il bilanciere e posiziona una maniglia a doppia D attorno alla sbarra vicino al manicotto. Usando fianchi e gambe, sollevati in posizione eretta.",
+   "Assumi una base larga con i fianchi indietro e il petto in fuori. Le braccia devono essere distese. Questa è la posizione di partenza.",
+   "Tira il peso verso la parte alta dell'addome retraendo le scapole e flettendo i gomiti. Non fare scatti né barare durante il movimento.",
+   "Dopo una breve pausa, torna alla posizione di partenza."
+  ]
+ },
+ "Tate_Press": {
+  "name": "Tate press",
+  "aliases": ["tate press manubri", "spinta tricipiti tate press", "elbows out extension"],
+  "instructions": [
+   "Sdraiati su una panca piana con un manubrio in ciascuna mano appoggiato sulle cosce. I palmi delle mani saranno rivolti l'uno verso l'altro.",
+   "Usando le cosce per aiutarti a sollevare i manubri, portali su un braccio alla volta in modo da tenerli davanti a te all'altezza delle spalle. Nota: quando tieni i manubri davanti a te, assicurati che le braccia siano più larghe delle spalle, con presa prona (palmi in avanti). Lascia che i gomiti puntino verso l'esterno. Questa è la posizione di partenza.",
+   "Tenendo le braccia ferme, muovi lentamente i manubri verso l'interno e verso il basso con un movimento semicircolare finché non toccano la parte alta del petto, inspirando. Mantieni il pieno controllo dei manubri in ogni momento e non muovere le braccia né appoggiare i manubri sul petto.",
+   "Mentre espiri, risolleva i manubri usando i tricipiti con lo stesso movimento semicircolare ma al contrario. Cerca di tenere i manubri vicini mentre salgono. Blocca le braccia nella posizione contratta, mantieni per un secondo e poi ricomincia a scendere lentamente. Consiglio: la discesa dovrebbe durare almeno il doppio della salita.",
+   "Ripeti il movimento per il numero di ripetizioni previsto dal tuo programma di allenamento."
+  ]
+ },
+ "The_Straddle": {
+  "name": "Stretching a gambe divaricate da seduto",
+  "aliases": ["straddle stretch", "the straddle", "allungamento a v da seduto"],
+  "instructions": [
+   "Comincia da seduto, con il busto eretto. Distendi le gambe davanti a te a forma di V.",
+   "Con le mani a terra, piegati in avanti il più possibile. Mantieni per 10-20 secondi."
+  ]
+ },
+ "Thigh_Abductor": {
+  "name": "Abductor machine",
+  "aliases": ["thigh abductor", "macchina abduttori", "abduttori alla macchina"],
+  "instructions": [
+   "Per iniziare, siediti sulla macchina abduttori e seleziona un peso con cui ti senti a tuo agio. Una volta posizionate correttamente le gambe, afferra le maniglie su ciascun lato. Tutta la parte superiore del corpo (dal bacino in su) deve restare ferma. Questa è la posizione di partenza.",
+   "Spingi lentamente contro la macchina con le gambe per allontanarle tra loro mentre espiri.",
+   "Senti la contrazione per un secondo e comincia a riportare le gambe alla posizione di partenza mentre inspiri. Nota: ricordati di tenere ferma la parte superiore del corpo per evitare infortuni.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Thigh_Adductor": {
+  "name": "Adductor machine",
+  "aliases": ["thigh adductor", "macchina adduttori", "adduttori alla macchina"],
+  "instructions": [
+   "Per iniziare, siediti sulla macchina adduttori e seleziona un peso con cui ti senti a tuo agio. Una volta posizionate correttamente le gambe sui pad della macchina, afferra le maniglie su ciascun lato. Tutta la parte superiore del corpo (dal bacino in su) deve restare ferma. Questa è la posizione di partenza.",
+   "Spingi lentamente contro la macchina con le gambe per avvicinarle tra loro mentre espiri.",
+   "Senti la contrazione per un secondo e comincia a riportare le gambe alla posizione di partenza mentre inspiri. Nota: ricordati di tenere ferma la parte superiore del corpo ed evitare movimenti bruschi per prevenire infortuni.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Tire_Flip": {
+  "name": "Tire flip",
+  "aliases": ["ribaltamento gomma", "tire flip esercizio", "sollevamento e ribaltamento pneumatico"],
+  "instructions": [
+   "Comincia afferrando la parte bassa del pneumatico sul battistrada e posiziona i piedi leggermente indietro. Il petto deve spingere contro il pneumatico.",
+   "Per sollevare il pneumatico, estendi fianchi, ginocchia e caviglie, spingendo contro il pneumatico e verso l'alto.",
+   "Quando il pneumatico raggiunge un'inclinazione di 45 gradi, fai un passo avanti e spingi un ginocchio contro il pneumatico. Mentre lo fai, sposta la presa sulla parte superiore del pneumatico e spingilo in avanti con tutta la forza possibile per completare il ribaltamento. Ripeti se necessario."
+  ]
+ },
+ "Toe_Touchers": {
+  "name": "Toe touchers",
+  "aliases": ["tocca punte da sdraiato", "toe touchers addominali", "crunch verticale tocca piedi"],
+  "instructions": [
+   "Per iniziare, sdraiati a terra o su un tappetino con la schiena premuta contro il pavimento. Le braccia devono essere distese lungo i fianchi con i palmi rivolti verso il basso.",
+   "Le gambe devono toccarsi tra loro. Solleva lentamente le gambe in aria finché non sono quasi perpendicolari al pavimento, con una leggera flessione alle ginocchia. I piedi devono essere paralleli al pavimento.",
+   "Sposta le braccia in modo che siano completamente distese a un angolo di 45 gradi dal pavimento. Questa è la posizione di partenza.",
+   "Tenendo la parte bassa della schiena premuta contro il pavimento, solleva lentamente il busto e usa le mani per cercare di toccarti le punte dei piedi. Ricordati di espirare durante questa fase dell'esercizio.",
+   "Comincia ad abbassare lentamente busto e braccia verso la posizione di partenza mentre inspiri. Ricordati di tenere le braccia distese puntate verso le punte dei piedi.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Torso_Rotation": {
+  "name": "Rotazione del busto con fitball",
+  "aliases": ["torso rotation", "rotazione busto con palla medica", "russian twist con fitball"],
+  "instructions": [
+   "Stai in piedi tenendo una fitball con entrambe le mani. Estendi le braccia in modo che la palla sia dritta davanti a te. Questa è la posizione di partenza.",
+   "Ruota il busto da un lato, tenendo lo sguardo sulla palla mentre ti muovi. Ora ruota di nuovo verso la direzione opposta. Ripeti per 10-20 ripetizioni."
+  ]
+ },
+ "Trail_Running_Walking": {
+  "name": "Corsa/camminata su sentiero",
+  "aliases": ["trail running", "trail walking", "corsa in montagna"],
+  "instructions": [
+   "Correre o camminare su sentieri fa aumentare quasi subito il battito cardiaco e la circolazione. Assicurati di avere delle buone scarpe. Mentre usi i muscoli di polpacci e glutei per spingerti su per una salita, ginocchia, articolazioni e caviglie assorbono la maggior parte dell'impatto in discesa. Fai passi più corti quando scendi, tieni le ginocchia piegate per ridurre l'impatto e rallenta per evitare di cadere.",
+   "Una persona di 68 kg può bruciare oltre 200 calorie in 30 minuti camminando in salita, contro 175 su una superficie piana. Correndo sul sentiero, una persona di 68 kg può bruciare ben oltre 500 calorie in 30 minuti."
+  ]
+ },
+ "Trap_Bar_Deadlift": {
+  "name": "Stacco con trap bar",
+  "aliases": ["trap bar deadlift", "stacco con hex bar", "deadlift trap bar"],
+  "instructions": [
+   "Per questo esercizio, carica una trap bar, chiamata anche hex bar, con un peso adeguato appoggiata a terra. Mettiti al centro dell'attrezzo e afferra entrambe le maniglie.",
+   "Abbassa i fianchi, guarda avanti con la testa e tieni il petto in alto.",
+   "Inizia il movimento spingendo con i talloni ed estendendo fianchi e ginocchia. Evita sempre di inarcare la schiena.",
+   "Al termine del movimento, riporta il peso a terra sotto controllo."
+  ]
+ },
+ "Tricep_Dumbbell_Kickback": {
+  "name": "Kickback tricipiti con manubrio",
+  "aliases": ["tricep kickback", "estensione tricipiti indietro con manubrio", "kickback manubrio"],
+  "instructions": [
+   "Comincia con un manubrio in ciascuna mano e i palmi rivolti verso il busto. Tieni la schiena dritta con una leggera flessione alle ginocchia e piegati in avanti dal bacino. Il busto deve essere quasi parallelo al pavimento. Assicurati di tenere la testa alta. Le braccia devono restare vicine al busto e parallele al pavimento. Gli avambracci devono essere rivolti verso il pavimento mentre tieni i pesi. Deve formarsi un angolo di 90 gradi tra avambraccio e braccio. Questa è la posizione di partenza.",
+   "Ora, tenendo le braccia ferme, espira e usa i tricipiti per sollevare i pesi finché il braccio non è completamente esteso. Concentrati sul muovere l'avambraccio.",
+   "Dopo una breve pausa nella contrazione massima, inspira e abbassa lentamente i manubri verso la posizione di partenza.",
+   "Ripeti il movimento per il numero di ripetizioni previsto."
+  ]
+ },
+ "Tricep_Side_Stretch": {
+  "name": "Stretching tricipiti laterale",
+  "aliases": ["tricep side stretch", "allungamento tricipiti", "stretching braccio dietro la testa"],
+  "instructions": [
+   "Porta il braccio destro attraverso il corpo e sopra la spalla sinistra, tenendo il gomito con la mano sinistra, finché non senti un allungamento nel tricipite. Poi ripeti con l'altro braccio."
+  ]
+ },
+ "Triceps_Overhead_Extension_with_Rope": {
+  "name": "Estensione tricipiti sopra la testa con corda ai cavi",
+  "aliases": ["overhead extension corda", "french press corda al cavo", "estensione tricipiti sopra la testa cavo"],
+  "instructions": [
+   "Aggancia una corda a un pulley basso. Dopo aver scelto un peso adeguato, afferra la corda con entrambe le mani e dai le spalle al cavo.",
+   "Posiziona le mani dietro la testa con i gomiti puntati dritti verso l'alto. I gomiti devono partire flessi, e puoi allargare la base d'appoggio e inclinarti leggermente lontano dalla macchina per una maggiore stabilità. Questa è la posizione di partenza.",
+   "Per eseguire il movimento, estendi il gomito tenendo il braccio in posizione, sollevando le mani sopra la testa.",
+   "Contrai i tricipiti in cima al movimento e abbassa lentamente il peso verso la posizione di partenza."
+  ]
+ },
+ "Triceps_Pushdown": {
+  "name": "Push down ai cavi",
+  "aliases": ["triceps pushdown", "pushdown tricipiti con barra", "spinta tricipiti al cavo alto"],
+  "instructions": [
+   "Aggancia una barra dritta o angolata a un pulley alto e afferrala con presa prona (palmi verso il basso) larga quanto le spalle.",
+   "In piedi con il busto dritto e una leggerissima inclinazione in avanti, tieni le braccia vicine al corpo e perpendicolari al pavimento. Gli avambracci devono essere rivolti verso il pulley mentre reggono la barra. Questa è la posizione di partenza.",
+   "Usando i tricipiti, spingi la barra verso il basso finché non tocca la parte anteriore delle cosce e le braccia sono completamente distese, perpendicolari al pavimento. Le braccia devono restare sempre ferme accanto al busto, deve muoversi solo l'avambraccio. Espira mentre esegui questo movimento.",
+   "Dopo un secondo di pausa nella posizione contratta, riporta lentamente la barra verso il punto di partenza. Inspira mentre esegui questa fase.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Triceps_Pushdown_-_Rope_Attachment": {
+  "name": "Push down ai cavi con corda",
+  "aliases": ["triceps pushdown corda", "pushdown corda", "spinta tricipiti corda al cavo"],
+  "instructions": [
+   "Aggancia una corda a un pulley alto e afferrala con presa neutra (palmi rivolti l'uno verso l'altro).",
+   "In piedi con il busto dritto e una leggerissima inclinazione in avanti, tieni le braccia vicine al corpo e perpendicolari al pavimento. Gli avambracci devono essere rivolti verso il pulley mentre reggono la corda con i palmi l'uno verso l'altro. Questa è la posizione di partenza.",
+   "Usando i tricipiti, spingi la corda verso il basso portando ciascun lato verso il fianco delle cosce. Alla fine del movimento le braccia sono completamente distese e perpendicolari al pavimento. Le braccia devono restare sempre ferme accanto al busto, deve muoversi solo l'avambraccio. Espira mentre esegui questo movimento.",
+   "Dopo una pausa di un secondo nella posizione contratta, riporta lentamente la corda verso il punto di partenza. Inspira mentre esegui questa fase.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Triceps_Pushdown_-_V-Bar_Attachment": {
+  "name": "Push down ai cavi con V-bar",
+  "aliases": ["triceps pushdown v-bar", "pushdown v bar", "spinta tricipiti barra a v al cavo"],
+  "instructions": [
+   "Aggancia una V-bar a un pulley alto e afferrala con presa prona (palmi verso il basso) larga quanto le spalle.",
+   "In piedi con il busto dritto e una leggerissima inclinazione in avanti, tieni le braccia vicine al corpo e perpendicolari al pavimento. Gli avambracci devono essere rivolti verso il pulley mentre reggono la barra. I pollici devono essere più in alto dei mignoli. Questa è la posizione di partenza.",
+   "Usando i tricipiti, spingi la barra verso il basso finché non tocca la parte anteriore delle cosce e le braccia sono completamente distese, perpendicolari al pavimento. Le braccia devono restare sempre ferme accanto al busto, deve muoversi solo l'avambraccio. Espira mentre esegui questo movimento.",
+   "Dopo un secondo di pausa nella posizione contratta, riporta lentamente la V-bar verso il punto di partenza. Inspira mentre esegui questa fase.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Triceps_Stretch": {
+  "name": "Stretching tricipiti",
+  "aliases": ["triceps stretch", "allungamento tricipiti dietro la testa", "stretching braccio sopra testa"],
+  "instructions": [
+   "Porta la mano dietro la testa, afferra il gomito e tira dolcemente. Mantieni per 10-20 secondi, poi cambia lato."
+  ]
+ },
+ "Tuck_Crunch": {
+  "name": "Tuck crunch",
+  "aliases": ["crunch con gambe raccolte", "tuck crunch addominali", "crunch ginocchia incrociate"],
+  "instructions": [
+   "Per iniziare, sdraiati a terra o su un tappetino con la schiena premuta contro il pavimento. Le braccia devono essere distese lungo i fianchi con i palmi rivolti verso il basso.",
+   "Le gambe devono essere incrociate avvolgendo una caviglia attorno all'altra. Solleva lentamente le gambe in aria finché le cosce non sono perpendicolari al pavimento, con una leggera flessione alle ginocchia. Nota: ginocchia e punte dei piedi devono restare parallele al pavimento, a differenza delle cosce.",
+   "Solleva le braccia da terra e incrociale in modo che riposino sul petto. Questa è la posizione di partenza.",
+   "Tenendo la parte bassa della schiena premuta contro il pavimento, solleva lentamente il busto. Ricordati di espirare durante questa fase dell'esercizio.",
+   "Comincia ad abbassare lentamente il busto verso la posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Two-Arm_Dumbbell_Preacher_Curl": {
+  "name": "Curl al panca scott a due mani con manubri",
+  "aliases": ["preacher curl manubri", "curl scott due braccia", "two arm dumbbell preacher curl"],
+  "instructions": [
+   "Afferra un manubrio con ciascun braccio e appoggia le braccia sulla panca scott o sulla panca inclinata. Il manubrio deve essere tenuto all'altezza delle spalle. Questa è la posizione di partenza.",
+   "Mentre inspiri, abbassa lentamente i manubri finché il braccio non è esteso e il bicipite completamente allungato.",
+   "Mentre espiri, usa i bicipiti per risollevare i pesi finché il bicipite non è completamente contratto e i manubri sono all'altezza delle spalle.",
+   "Contrai forte il bicipite per un secondo nella posizione contratta e ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Two-Arm_Kettlebell_Clean": {
+  "name": "Clean con kettlebell a due mani",
+  "aliases": ["kettlebell clean due mani", "girata kettlebell", "two arm kettlebell clean"],
+  "instructions": [
+   "Posiziona due kettlebell tra i piedi. Per assumere la posizione di partenza, spingi i glutei indietro e guarda dritto davanti a te.",
+   "Solleva i kettlebell verso le spalle estendendo gambe e fianchi mentre porti i kettlebell verso le spalle. Ruota i polsi mentre lo fai.",
+   "Abbassa i kettlebell alla posizione di partenza e ripeti."
+  ]
+ },
+ "Two-Arm_Kettlebell_Jerk": {
+  "name": "Jerk con kettlebell a due mani",
+  "aliases": ["kettlebell jerk due mani", "slancio kettlebell", "two arm kettlebell jerk"],
+  "instructions": [
+   "Porta due kettlebell alle spalle con un clean, estendendo gambe e fianchi mentre fai oscillare i kettlebell verso le spalle. Ruota i polsi mentre lo fai, in modo che i palmi siano rivolti in avanti. Scendi in mezzo squat di pochi centimetri e inverti rapidamente il movimento spingendo entrambi i kettlebell sopra la testa. Subito dopo la spinta iniziale, scendi di nuovo in mezzo squat per posizionarti sotto i kettlebell. Una volta che i kettlebell sono bloccati sopra la testa, torna in posizione eretta per completare l'esercizio."
+  ]
+ },
+ "Two-Arm_Kettlebell_Military_Press": {
+  "name": "Military press con kettlebell a due mani",
+  "aliases": ["kettlebell military press", "lento avanti kettlebell", "two arm kettlebell military press"],
+  "instructions": [
+   "Porta due kettlebell alle spalle con un clean, estendendo gambe e fianchi mentre fai oscillare i kettlebell verso le spalle. Ruota i polsi mentre lo fai, in modo che i palmi siano rivolti in avanti.",
+   "Spingi i kettlebell verso l'alto e verso l'esterno. Quando i kettlebell superano la testa, inclinati verso i pesi in modo che i kettlebell si posizionino dietro la testa. Assicurati di contrarre dorsali, glutei e addome per maggiore stabilità."
+  ]
+ },
+ "Two-Arm_Kettlebell_Row": {
+  "name": "Rematore con kettlebell a due mani",
+  "aliases": ["kettlebell row due mani", "rematore kettlebell", "two arm kettlebell row"],
+  "instructions": [
+   "Posiziona due kettlebell davanti ai piedi. Piega leggermente le ginocchia e spingi i glutei indietro il più possibile mentre ti pieghi in avanti per assumere la posizione di partenza.",
+   "Afferra entrambi i kettlebell e tirali verso lo stomaco, retraendo le scapole e flettendo i gomiti. Tieni la schiena dritta. Abbassa e ripeti."
+  ]
+ },
+ "Underhand_Cable_Pulldowns": {
+  "name": "Pulldown ai cavi presa inversa",
+  "aliases": ["underhand pulldown", "lat machine presa supina", "pulldown supino ai cavi"],
+  "instructions": [
+   "Siediti su una lat machine con la barra larga agganciata al pulley alto. Regola il pad per le ginocchia della macchina in base alla tua altezza. Questi pad impediscono al corpo di sollevarsi a causa della resistenza applicata alla barra.",
+   "Afferra la barra con i palmi rivolti verso il busto (presa supina). Assicurati che le mani siano più vicine della larghezza delle spalle.",
+   "Con entrambe le braccia estese davanti a te reggendo la barra alla larghezza di presa scelta, porta il busto indietro di circa 30 gradi creando una curvatura nella zona lombare e spingendo il petto in fuori. Questa è la posizione di partenza.",
+   "Espirando, tira la barra verso il basso finché non tocca la parte alta del petto, portando spalle e braccia verso il basso e indietro. Consiglio: concentrati sul contrarre i muscoli della schiena una volta raggiunta la contrazione completa e tieni i gomiti vicini al corpo. La parte alta del busto deve restare ferma mentre porti la barra verso di te: devono muoversi solo le braccia. Gli avambracci non devono fare altro lavoro che tenere la barra.",
+   "Dopo un secondo nella posizione contratta, inspirando, riporta lentamente la barra alla posizione di partenza con le braccia completamente distese e i dorsali completamente allungati.",
+   "Ripeti questo movimento per il numero di ripetizioni previsto."
+  ]
+ },
+ "Upper_Back_Stretch": {
+  "name": "Stretching alto della schiena",
+  "aliases": ["upper back stretch", "allungamento dorsali alti", "stretching spalle e schiena"],
+  "instructions": [
+   "Intreccia le dita con i pollici rivolti verso il basso, arrotonda le spalle mentre allunghi le braccia in avanti."
+  ]
+ },
+ "Upper_Back-Leg_Grab": {
+  "name": "Piegamento seduto con presa alle gambe",
+  "aliases": ["upper back leg grab", "stretching schiena e femorali da seduto", "abbraccio cosce da seduto"],
+  "instructions": [
+   "Da seduto, piegati in avanti per abbracciare le cosce da sotto con entrambe le braccia.",
+   "Tieni le ginocchia unite e le gambe distese mentre porti il petto verso le ginocchia. Puoi anche allungare la parte centrale della schiena tirando la schiena lontano dalle ginocchia mentre le abbracci."
+  ]
+ },
+ "Upright_Barbell_Row": {
+  "name": "Rematore verticale con bilanciere",
+  "aliases": ["upright row bilanciere", "tirata al mento bilanciere", "alzata verticale bilanciere"],
+  "instructions": [
+   "Afferra un bilanciere con presa prona leggermente più stretta della larghezza delle spalle. La barra deve appoggiare sulla parte alta delle cosce con le braccia distese e una leggera flessione ai gomiti. Anche la schiena deve essere dritta. Questa è la posizione di partenza.",
+   "Ora espira e usa i lati delle spalle per sollevare la barra, alzando i gomiti verso l'alto e verso i lati. Tieni la barra vicina al corpo mentre la sollevi. Continua a sollevarla finché non sfiora il mento. Consiglio: il movimento deve essere guidato dai gomiti, che devono restare sempre più alti degli avambracci. Ricordati di tenere il busto fermo e fai una pausa di un secondo in alto.",
+   "Abbassa lentamente la barra verso la posizione di partenza. Inspira mentre esegui questa fase del movimento.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Upright_Cable_Row": {
+  "name": "Rematore verticale ai cavi",
+  "aliases": ["upright cable row", "tirata al mento al cavo", "alzata verticale al cavo basso"],
+  "instructions": [
+   "Afferra una barra dritta agganciata a un pulley basso con presa prona (palmi verso le cosce) leggermente più stretta della larghezza delle spalle. La barra deve appoggiare sulla parte alta delle cosce. Le braccia devono essere distese con una leggera flessione ai gomiti e la schiena dritta. Questa è la posizione di partenza.",
+   "Usa i lati delle spalle per sollevare la barra del cavo mentre espiri. La barra deve restare vicina al corpo mentre la sollevi. Continua a sollevarla finché non sfiora il mento. Consiglio: il movimento deve essere guidato dai gomiti. Mentre sollevi la barra, i gomiti devono restare sempre più alti degli avambracci. Tieni anche il busto fermo e fai una pausa di un secondo in alto.",
+   "Abbassa lentamente la barra verso la posizione di partenza. Inspira mentre esegui questa fase del movimento.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Upright_Row_-_With_Bands": {
+  "name": "Rematore verticale con elastici",
+  "aliases": ["upright row bands", "tirata al mento con elastico", "alzata verticale con banda elastica"],
+  "instructions": [
+   "Per iniziare, mettiti in piedi su un elastico in modo che la tensione parta a braccio disteso. Afferra le maniglie con presa prona (palmi verso le cosce) leggermente più stretta della larghezza delle spalle. Le maniglie devono appoggiare sulla parte alta delle cosce. Le braccia devono essere distese con una leggera flessione ai gomiti e la schiena dritta. Questa è la posizione di partenza.",
+   "Usa i lati delle spalle per sollevare le maniglie mentre espiri. Le maniglie devono restare vicine al corpo mentre le sollevi. Continua a sollevarle finché non sfiorano il mento. Consiglio: il movimento deve essere guidato dai gomiti. Mentre sollevi le maniglie, i gomiti devono restare sempre più alti degli avambracci. Tieni anche il busto fermo e fai una pausa di un secondo in alto.",
+   "Abbassa lentamente le maniglie verso la posizione di partenza. Inspira mentre esegui questa fase del movimento.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Upward_Stretch": {
+  "name": "Stretching verso l'alto",
+  "aliases": ["upward stretch", "allungamento braccia verso l'alto", "stretching spalle sopra la testa"],
+  "instructions": [
+   "Estendi entrambe le mani dritte sopra la testa, con i palmi a contatto.",
+   "Spingi lentamente le mani verso l'alto e indietro, tenendo la schiena dritta."
+  ]
+ },
+ "V-Bar_Pulldown": {
+  "name": "Pulldown con V-bar",
+  "aliases": ["v-bar pulldown", "lat machine presa a v", "pull down manico a v"],
+  "instructions": [
+   "Siediti su una lat machine con una V-bar agganciata al pulley alto.",
+   "Regola il pad per le ginocchia della macchina in base alla tua altezza. Questi pad impediscono al corpo di sollevarsi a causa della resistenza applicata alla barra.",
+   "Afferra la V-bar con i palmi rivolti l'uno verso l'altro (presa neutra). Spingi il petto in fuori e inclinati leggermente all'indietro (circa 30 gradi) per coinvolgere meglio i dorsali. Questa è la posizione di partenza.",
+   "Usando i dorsali, tira la barra verso il basso mentre stringi le scapole. Continua finché il petto non sfiora quasi la V-bar. Espira mentre esegui questo movimento. Consiglio: tieni il busto fermo per tutto il movimento.",
+   "Dopo una pausa di un secondo nella posizione contratta, riporta lentamente la barra alla posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni previsto."
+  ]
+ },
+ "V-Bar_Pullup": {
+  "name": "Trazioni con V-bar",
+  "aliases": ["v-bar pullup", "trazioni alla sbarra con manico a v", "pull up presa neutra a v"],
+  "instructions": [
+   "Comincia posizionando il centro della V-bar al centro della sbarra per trazioni (nel caso la tua postazione non abbia maniglie a presa neutra). Le maniglie della V-bar saranno rivolte verso il basso in modo da poterti appendere alla sbarra usandole.",
+   "Una volta posizionata saldamente la V-bar, afferrala da entrambi i lati e appenditi. Spingi il petto in fuori e inclinati leggermente indietro per coinvolgere meglio i dorsali. Questa è la posizione di partenza.",
+   "Usando i dorsali, tira il busto verso l'alto inclinando leggermente la testa indietro in modo da non urtarla con la sbarra. Continua finché il petto non sfiora quasi la V-bar. Espira mentre esegui questo movimento.",
+   "Dopo una pausa di un secondo nella posizione contratta, abbassa lentamente il corpo verso la posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni previsto."
+  ]
+ },
+ "Vertical_Swing": {
+  "name": "Swing verticale con manubrio",
+  "aliases": ["vertical swing manubrio", "kettlebell swing con manubrio", "swing verticale esplosivo"],
+  "instructions": [
+   "Lascia pendere il manubrio a braccia distese tra le gambe, tenendolo con entrambe le mani. Tieni la schiena dritta e la testa alta.",
+   "Fai oscillare il manubrio tra le gambe, flettendo i fianchi e piegando leggermente le ginocchia.",
+   "Inverti il movimento con forza estendendo fianchi, ginocchia e caviglie per spingerti verso l'alto, facendo oscillare il manubrio sopra la testa.",
+   "Quando atterri, assorbi l'impatto con le gambe e riporta il manubrio verso il busto prima della ripetizione successiva."
+  ]
+ },
+ "Walking_Treadmill": {
+  "name": "Camminata sul tapis roulant",
+  "aliases": ["walking treadmill", "camminata tapis roulant", "tapis roulant camminata"],
+  "instructions": [
+   "Per iniziare, sali sul tapis roulant e seleziona l'opzione desiderata dal menu. La maggior parte dei tapis roulant ha un'impostazione manuale, oppure puoi selezionare un programma. Solitamente puoi inserire età e peso per stimare le calorie bruciate durante l'allenamento. L'inclinazione può essere regolata per cambiare l'intensità dell'allenamento.",
+   "Il tapis roulant offre praticità, benefici cardiovascolari e di solito un impatto minore rispetto a camminare all'aperto. Camminando, dovresti muoverti a un ritmo da moderato a veloce, non rilassato. Essendo un'attività a intensità più bassa, camminare non brucia tante calorie quanto altre attività, ma offre comunque grandi benefici. Una persona di 68 kg brucia circa 175 calorie camminando a 6,5 km/h per 30 minuti, contro 450 calorie correndo al doppio della velocità. Mantieni una postura corretta mentre cammini e tieniti alle maniglie solo quando necessario, ad esempio quando scendi o controlli il battito cardiaco."
+  ]
+ },
+ "Weighted_Ball_Hyperextension": {
+  "name": "Hyperextension con disco su fitball",
+  "aliases": ["weighted ball hyperextension", "iperestensioni lombari con fitball e peso", "hyperextension zavorrata su palla"],
+  "instructions": [
+   "Per iniziare, sdraiati su una fitball con il busto appoggiato sulla palla e parallelo al pavimento. Le punte dei piedi devono premere contro il pavimento per aiutarti a mantenere l'equilibrio. Tieni un disco sotto il mento o dietro il collo. Questa è la posizione di partenza.",
+   "Solleva lentamente il busto piegandoti dal bacino e dalla zona lombare. Ricordati di espirare durante questo movimento.",
+   "Mantieni la contrazione della zona lombare per un secondo e riabbassa il busto verso la posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni previsto dal tuo programma."
+  ]
+ },
+ "Weighted_Ball_Side_Bend": {
+  "name": "Piegamento laterale zavorrato su fitball",
+  "aliases": ["weighted ball side bend", "side bend con disco su fitball", "piegamento laterale con peso su palla"],
+  "instructions": [
+   "Per iniziare, sdraiati su una fitball con il lato sinistro del busto (fianco, bacino e spalla) appoggiato contro la palla.",
+   "I piedi devono restare a terra con le gambe incrociate e appese dalla palla. Tieni un disco con la mano destra direttamente sul lato destro della testa. Consiglio: assicurati che il lato liscio del disco sia appoggiato contro la testa.",
+   "Metti il braccio sinistro attraverso il busto in modo che il palmo sia sugli obliqui. Deve formarsi un angolo retto tra l'avambraccio sinistro e il braccio. Questa è la posizione di partenza.",
+   "Solleva il lato del busto flettendo lateralmente dal bacino mentre espiri.",
+   "Mantieni la contrazione per un secondo e riabbassati lentamente verso la posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni consigliato.",
+   "Cambia lato e ripeti l'esercizio."
+  ]
+ },
+ "Weighted_Bench_Dip": {
+  "name": "Dip su panca zavorrati",
+  "aliases": ["weighted bench dip", "dip tra panche con peso", "bench dip zavorrato"],
+  "instructions": [
+   "Per questo esercizio ti serve una panca dietro la schiena e un'altra davanti a te. Con le panche perpendicolari al corpo, tieniti al bordo di una panca con le mani vicine al corpo, separate quanto la larghezza delle spalle. Le braccia devono essere completamente distese.",
+   "Le gambe saranno distese in avanti sopra l'altra panca. Le gambe devono essere parallele al pavimento mentre il busto è perpendicolare al pavimento. Fatti appoggiare il manubrio in grembo da un compagno. Nota: questo esercizio va eseguito preferibilmente in coppia, poiché appoggiare il peso in grembo da soli può risultare difficile e causare infortuni. Questa è la posizione di partenza.",
+   "Abbassa lentamente il corpo mentre inspiri flettendo i gomiti finché non scendi abbastanza da creare un angolo leggermente inferiore a 90 gradi tra braccio e avambraccio. Consiglio: tieni i gomiti il più vicino possibile per tutto il movimento. Gli avambracci devono sempre puntare verso il basso.",
+   "Usando i tricipiti per risollevare il busto, riportati alla posizione di partenza mentre espiri.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Weighted_Crunches": {
+  "name": "Crunch zavorrati",
+  "aliases": ["weighted crunches", "crunch con peso", "crunch con palla medica"],
+  "instructions": [
+   "Sdraiati sulla schiena con i piedi appoggiati a terra o su una panca, con le ginocchia piegate a 90 gradi.",
+   "Tieni un peso contro il petto, oppure puoi tenerlo esteso sopra il busto. Questa è la posizione di partenza.",
+   "Ora, espira e comincia lentamente ad arrotolare le spalle sollevandole dal pavimento. Le spalle devono staccarsi dal pavimento di circa 10 cm mentre la parte bassa della schiena resta a terra.",
+   "In cima al movimento, contrai gli addominali e mantieni una breve pausa.",
+   "Poi inspira e riabbassati lentamente verso la posizione di partenza."
+  ]
+ },
+ "Weighted_Jump_Squat": {
+  "name": "Squat con salto zavorrato",
+  "aliases": ["weighted jump squat", "jump squat con bilanciere", "squat saltato zavorrato"],
+  "instructions": [
+   "Posiziona un bilanciere leggermente caricato sulla parte alta delle spalle. Puoi anche usare un giubbotto zavorrato, un sacco di sabbia o un altro tipo di resistenza per questo esercizio.",
+   "Il peso deve essere abbastanza leggero da non rallentarti in modo significativo. I piedi devono essere leggermente più larghi delle spalle con testa e petto in alto. Questa è la posizione di partenza.",
+   "Usando un contromovimento, scendi parzialmente in squat e inverti subito la direzione per esplodere da terra, estendendo fianchi, ginocchia e caviglie. Mantieni una buona postura per tutto il salto.",
+   "Mentre atterri, assorbi l'impatto con le gambe."
+  ]
+ },
+ "Weighted_Pull_Ups": {
+  "name": "Trazioni zavorrate",
+  "aliases": ["weighted pull ups", "trazioni alla sbarra con peso", "pull up zavorrate"],
+  "instructions": [
+   "Aggancia un peso a una cintura da dip e assicurala attorno alla vita. Afferra la sbarra per trazioni con i palmi rivolti in avanti. Per una presa media, le mani devono essere larghe quanto le spalle. Entrambe le braccia devono essere distese davanti a te, reggendo la sbarra con la presa scelta.",
+   "Porta il busto indietro di circa 30 gradi creando una curvatura nella zona lombare e spingendo il petto in fuori. Questa è la posizione di partenza.",
+   "Ora espira e tira il busto verso l'alto finché la testa non supera le mani. Concentrati sullo stringere le scapole indietro e verso il basso mentre raggiungi la posizione contratta in alto.",
+   "Dopo una breve pausa nella posizione contratta in alto, inspira e riabbassa lentamente il busto verso la posizione di partenza con le braccia distese e i dorsali completamente allungati."
+  ]
+ },
+ "Weighted_Sissy_Squat": {
+  "name": "Sissy squat zavorrato",
+  "aliases": ["weighted sissy squat", "sissy squat con peso", "squat sissy zavorrato"],
+  "instructions": [
+   "In piedi con i piedi larghi quanto le spalle e le punte sollevate, usa una mano per tenerti alla struttura di uno squat rack e l'altro braccio per tenere un disco sul petto. Questa è la posizione di partenza.",
+   "Mentre usi un braccio per sostenerti, piega le ginocchia e abbassa lentamente il busto verso il pavimento portando bacino e ginocchia in avanti. Inspira mentre scendi e fermati quando la parte superiore e inferiore della gamba formano quasi un angolo di 90 gradi. Mantieni la posizione di allungamento per un secondo.",
+   "Dopo il secondo di pausa, usa i muscoli delle cosce per riportare il busto verso la posizione di partenza. Espira mentre risali.",
+   "Ripeti per il numero di volte consigliato."
+  ]
+ },
+ "Weighted_Sit-Ups_-_With_Bands": {
+  "name": "Sit-up zavorrati con elastici",
+  "aliases": ["weighted sit-ups bands", "sit up con bande elastiche", "sit up zavorrato al decline"],
+  "instructions": [
+   "Comincia agganciando le bande alla base di una panca declinata. Posiziona le maniglie verso l'interno della panca declinata in modo da poterle raggiungere entrambe da sdraiato.",
+   "Posiziona le gambe attraverso la panca declinata finché non sono ben fissate. Ora afferra gli elastici con entrambe le mani. Usa una presa prona (palmi in avanti) per afferrare le maniglie. Posizionale vicino alla clavicola e ruota il polso in presa neutra (palmi rivolti verso il busto). Nota: le braccia devono restare ferme per tutto l'esercizio. Questa è la posizione di partenza.",
+   "Solleva il busto verso l'alto finché non è perpendicolare al pavimento mentre espiri. Mantieni la contrazione per un secondo e riabbassa il busto verso la posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Weighted_Squat": {
+  "name": "Squat zavorrato su rialzi",
+  "aliases": ["weighted squat", "squat con cintura zavorrata", "squat su panche con peso"],
+  "instructions": [
+   "Comincia posizionando due panche piane larghe quanto le spalle. Sali sopra di esse e avvolgi la cintura zavorrata attorno alla vita con il peso che ti fa sentire a tuo agio. Assicurati che le punte dei piedi siano rivolte verso l'esterno.",
+   "Una volta in piedi con il peso che pende tra le gambe, posiziona le braccia completamente distese ai lati del corpo. Questa è la posizione di partenza.",
+   "Comincia piegando le ginocchia mantenendo una postura dritta con la testa alta. Continua a scendere finché l'angolo tra coscia e polpaccio non diventa leggermente inferiore a 90 gradi (il punto in cui le cosce sono sotto il parallelo al pavimento). Inspira mentre esegui questa parte del movimento. Consiglio: se esegui l'esercizio correttamente, la parte anteriore delle ginocchia dovrebbe formare una linea immaginaria dritta con le punte dei piedi, perpendicolare al davanti. Se le ginocchia superano quella linea immaginaria (se vanno oltre le punte dei piedi) stai mettendo uno stress eccessivo sul ginocchio e l'esercizio è stato eseguito in modo scorretto.",
+   "Comincia a risalire spingendo il pavimento della panca piana principalmente con l'avampiede mentre raddrizzi di nuovo le gambe tornando alla posizione di partenza. Espira mentre esegui questa parte dell'esercizio.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Wide_Stance_Barbell_Squat": {
+  "name": "Squat con bilanciere presa larga",
+  "aliases": ["wide stance squat", "squat gambe larghe bilanciere", "squat larga base bilanciere"],
+  "instructions": [
+   "Questo esercizio va eseguito preferibilmente dentro uno squat rack per sicurezza. Per iniziare, imposta il bilanciere su un rack all'altezza adatta a te. Una volta scelta l'altezza corretta e caricato il bilanciere, mettiti sotto la sbarra e appoggia la parte posteriore delle spalle (leggermente sotto il collo) sul bilanciere.",
+   "Afferra il bilanciere con entrambe le braccia ai lati e solleva la sbarra dal rack spingendo con le gambe e contemporaneamente raddrizzando il busto.",
+   "Allontanati dal rack e posiziona le gambe con una base più larga delle spalle e le punte leggermente rivolte verso l'esterno. Tieni sempre la testa alta, guardare in basso ti farebbe perdere l'equilibrio, e mantieni la schiena dritta. Questa è la posizione di partenza.",
+   "Comincia ad abbassare lentamente il bilanciere piegando le ginocchia mantenendo una postura dritta con la testa alta. Continua a scendere finché l'angolo tra coscia e polpaccio non diventa leggermente inferiore a 90 gradi (il punto in cui le cosce sono sotto il parallelo al pavimento). Inspira mentre esegui questa parte del movimento. Consiglio: se esegui l'esercizio correttamente, la parte anteriore delle ginocchia dovrebbe formare una linea immaginaria dritta con le punte dei piedi, perpendicolare al davanti. Se le ginocchia superano quella linea immaginaria (se vanno oltre le punte dei piedi) stai mettendo uno stress eccessivo sul ginocchio e l'esercizio è stato eseguito in modo scorretto.",
+   "Comincia a risalire mentre espiri spingendo il pavimento con il tallone mentre raddrizzi di nuovo le gambe tornando alla posizione di partenza.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Wide_Stance_Stiff_Legs": {
+  "name": "Stacco gambe tese base larga",
+  "aliases": ["wide stance stiff legs", "stacco gambe tese larga base", "stiff legs base larga"],
+  "instructions": [
+   "Comincia con un bilanciere caricato a terra. Assumi una base larga, poi piegati sui fianchi per afferrare il bilanciere. I fianchi devono essere il più possibile indietro e le gambe quasi tese. Tieni la schiena dritta e testa e petto in alto. Questa è la posizione di partenza.",
+   "Inizia il movimento impegnando i fianchi, spingendoli in avanti mentre lasci pendere le braccia dritte. Continua finché non sei in piedi eretto, poi riporta lentamente il peso alla posizione di partenza. Per le ripetizioni successive, il peso non deve necessariamente toccare il pavimento."
+  ]
+ },
+ "Wide-Grip_Barbell_Bench_Press": {
+  "name": "Panca piana con bilanciere presa larga",
+  "aliases": ["wide grip bench press", "panca presa larga bilanciere", "bench press presa larga"],
+  "instructions": [
+   "Sdraiati su una panca piana con i piedi ben piantati a terra. Con una presa larga e prona (palmi in avanti) di circa 8 cm oltre la larghezza delle spalle per ogni mano, solleva il bilanciere dal rack e tienilo dritto sopra di te con le braccia bloccate. Il bilanciere deve essere perpendicolare al busto e al pavimento. Questa è la posizione di partenza.",
+   "Inspirando, scendi lentamente finché non senti il bilanciere sfiorare la parte centrale del petto.",
+   "Dopo una pausa di un secondo, riporta il bilanciere alla posizione di partenza mentre espiri, spingendo con i muscoli del petto. Blocca le braccia e contrai il petto nella posizione contratta, mantieni per un secondo e poi ricomincia a scendere lentamente. Consiglio: la discesa dovrebbe durare almeno il doppio della salita.",
+   "Ripeti il movimento per il numero di ripetizioni previsto."
+  ]
+ },
+ "Wide-Grip_Decline_Barbell_Bench_Press": {
+  "name": "Panca declinata con bilanciere presa larga",
+  "aliases": ["wide grip decline bench press", "panca declinata presa larga", "decline bench press presa larga"],
+  "instructions": [
+   "Sdraiati su una panca declinata con i piedi bloccati saldamente nella parte anteriore della panca. Con una presa larga e prona (palmi in avanti) di circa 8 cm oltre la larghezza delle spalle per ogni mano, solleva il bilanciere dal rack e tienilo dritto sopra di te con le braccia bloccate. Il bilanciere deve essere perpendicolare al busto e al pavimento. Questa è la posizione di partenza.",
+   "Inspirando, scendi lentamente finché non senti il bilanciere sfiorare la parte bassa del petto.",
+   "Dopo una pausa di un secondo, riporta il bilanciere alla posizione di partenza mentre espiri, spingendo con i muscoli del petto. Blocca le braccia e contrai il petto nella posizione contratta, mantieni per un secondo e poi ricomincia a scendere lentamente. Consiglio: la discesa dovrebbe durare almeno il doppio della salita.",
+   "Ripeti il movimento per il numero di ripetizioni previsto."
+  ]
+ },
+ "Wide-Grip_Decline_Barbell_Pullover": {
+  "name": "Pull over declinato con bilanciere presa larga",
+  "aliases": ["wide grip decline pullover", "pull over al decline bilanciere", "decline barbell pullover"],
+  "instructions": [
+   "Sdraiati su una panca declinata con entrambe le gambe bloccate saldamente in posizione. Raggiungi il bilanciere dietro la testa con presa prona (palmi verso l'esterno). Assicurati di afferrare il bilanciere più largo della larghezza delle spalle per questo esercizio. Solleva lentamente il bilanciere da terra usando le braccia.",
+   "Una volta posizionato correttamente, le braccia devono essere completamente distese e perpendicolari al pavimento. Questa è la posizione di partenza.",
+   "Comincia muovendo il bilanciere di nuovo verso il basso con un movimento semicircolare, come se dovessi appoggiarlo a terra, ma fermati quando le braccia sono parallele al pavimento. Consiglio: tieni le braccia sempre completamente distese. Il movimento deve avvenire solo all'articolazione della spalla. Inspira mentre esegui questa parte del movimento.",
+   "Ora risolleva il bilanciere mentre espiri finché non torni alla posizione di partenza. Ricordati di mantenere il pieno controllo del bilanciere in ogni momento.",
+   "Ripeti il movimento per il numero di ripetizioni previsto dal tuo programma di allenamento.",
+   "Quando hai terminato la serie, abbassa lentamente il bilanciere finché non è all'altezza della testa e rilascialo."
+  ]
+ },
+ "Wide-Grip_Lat_Pulldown": {
+  "name": "Lat machine presa larga",
+  "aliases": ["wide grip lat pulldown", "pulldown presa larga", "lat machine larga"],
+  "instructions": [
+   "Siediti su una lat machine con una barra larga agganciata al pulley alto. Assicurati di regolare il pad per le ginocchia della macchina in base alla tua altezza. Questi pad impediscono al corpo di sollevarsi a causa della resistenza applicata alla barra.",
+   "Afferra la barra con i palmi rivolti in avanti usando la presa indicata. Nota sulle prese: per una presa larga, le mani devono essere distanziate più della larghezza delle spalle. Per una presa media, le mani devono essere distanziate quanto la larghezza delle spalle, e per una presa stretta, a una distanza inferiore alla larghezza delle spalle.",
+   "Con entrambe le braccia estese davanti a te reggendo la barra alla larghezza di presa scelta, porta il busto indietro di circa 30 gradi creando una curvatura nella zona lombare e spingendo il petto in fuori. Questa è la posizione di partenza.",
+   "Espirando, porta la barra verso il basso finché non tocca la parte alta del petto, portando spalle e braccia verso il basso e indietro. Consiglio: concentrati sul contrarre i muscoli della schiena una volta raggiunta la contrazione completa. La parte alta del busto deve restare ferma e devono muoversi solo le braccia. Gli avambracci non devono fare altro lavoro che tenere la barra: quindi non cercare di tirare la barra verso il basso usando gli avambracci.",
+   "Dopo un secondo nella posizione contratta stringendo le scapole insieme, risolleva lentamente la barra verso la posizione di partenza con le braccia completamente distese e i dorsali completamente allungati. Inspira durante questa fase del movimento.",
+   "Ripeti questo movimento per il numero di ripetizioni previsto."
+  ]
+ },
+ "Wide-Grip_Pulldown_Behind_The_Neck": {
+  "name": "Lat machine dietro la nuca presa larga",
+  "aliases": ["pulldown dietro la nuca", "wide grip pulldown behind the neck", "lat machine nuca presa larga"],
+  "instructions": [
+   "Siediti su una lat machine con una barra larga agganciata al pulley alto. Assicurati di regolare il pad per le ginocchia della macchina in base alla tua altezza. Questi pad impediscono al corpo di sollevarsi a causa della resistenza applicata alla barra.",
+   "Afferra la barra con i palmi rivolti in avanti usando la presa indicata. Nota sulle prese: per una presa larga, le mani devono essere distanziate più della larghezza delle spalle. Per una presa media, le mani devono essere distanziate quanto la larghezza delle spalle, e per una presa stretta, a una distanza inferiore alla larghezza delle spalle.",
+   "Con entrambe le braccia estese davanti a te reggendo la barra alla larghezza di presa scelta, porta busto e testa in avanti. Immagina una linea che va dal centro della barra fino alla nuca. Questa è la posizione di partenza.",
+   "Espirando, porta la barra verso il basso finché non tocca la nuca, portando spalle e braccia verso il basso e indietro. Consiglio: concentrati sul contrarre i muscoli della schiena una volta raggiunta la contrazione completa. La parte alta del busto deve restare ferma e devono muoversi solo le braccia. Gli avambracci non devono fare altro lavoro che tenere la barra: quindi non cercare di tirare la barra verso il basso usando gli avambracci.",
+   "Dopo un secondo nella posizione contratta stringendo le scapole insieme, risolleva lentamente la barra verso la posizione di partenza con le braccia completamente distese e i dorsali completamente allungati. Inspira durante questa fase del movimento.",
+   "Ripeti questo movimento per il numero di ripetizioni previsto."
+  ]
+ },
+ "Wide-Grip_Rear_Pull-Up": {
+  "name": "Trazioni dietro la nuca presa larga",
+  "aliases": ["wide grip rear pull up", "trazioni dietro il collo presa larga", "rear pull up"],
+  "instructions": [
+   "Afferra la sbarra per trazioni con i palmi rivolti in avanti usando una presa larga.",
+   "Con entrambe le braccia estese davanti a te reggendo la barra, porta busto e testa in avanti in modo che ci sia una linea immaginaria dalla sbarra fino alla nuca. Questa è la posizione di partenza.",
+   "Tira il busto verso l'alto finché la sbarra non è vicina alla nuca. Per farlo, porta spalle e braccia verso il basso e indietro inclinando leggermente la testa in avanti. Espira mentre esegui questa parte del movimento. Consiglio: concentrati sul contrarre i muscoli della schiena una volta raggiunta la contrazione completa. La parte alta del busto deve restare ferma mentre si muove nello spazio: devono muoversi solo le braccia. Gli avambracci non devono fare altro lavoro che tenere la barra.",
+   "Dopo un secondo nella posizione contratta, comincia a inspirare e abbassa lentamente il busto verso la posizione di partenza con le braccia completamente distese e i dorsali completamente allungati.",
+   "Ripeti questo movimento per il numero di ripetizioni previsto."
+  ]
+ },
+ "Wide-Grip_Standing_Barbell_Curl": {
+  "name": "Curl in piedi con bilanciere presa larga",
+  "aliases": ["wide grip barbell curl", "curl bilanciere presa larga", "curl in piedi presa larga"],
+  "instructions": [
+   "Mettiti in piedi con il busto eretto tenendo un bilanciere con presa larga alle estremità. I palmi delle mani devono essere rivolti in avanti. I gomiti devono restare vicini al busto. Questa è la posizione di partenza.",
+   "Tenendo le braccia ferme, piega i gomiti sollevando il peso in avanti contraendo i bicipiti mentre espiri. Consiglio: deve muoversi solo l'avambraccio.",
+   "Continua il movimento finché i bicipiti non sono completamente contratti e il bilanciere è all'altezza delle spalle. Mantieni la contrazione per un secondo e stringi forte i bicipiti.",
+   "Riporta lentamente il bilanciere alla posizione di partenza mentre inspiri.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Wind_Sprints": {
+  "name": "Sollevamento ginocchia alternato alla sbarra",
+  "aliases": ["wind sprints", "knee raise alternato sospeso", "corsa sospesa alla sbarra"],
+  "instructions": [
+   "Appenditi alla sbarra per trazioni con presa prona. Braccia e gambe devono essere distese. Questa è la posizione di partenza.",
+   "Comincia sollevando velocemente un ginocchio il più in alto possibile. Non far dondolare il corpo o le gambe.",
+   "Inverti subito il movimento riportando quella gamba alla posizione di partenza. Contemporaneamente solleva il ginocchio opposto il più in alto possibile.",
+   "Continua ad alternare le gambe finché non completi la serie."
+  ]
+ },
+ "Windmills": {
+  "name": "Windmills",
+  "aliases": ["mulinello a terra", "windmill esercizio addominali", "gamba incrociata a terra"],
+  "instructions": [
+   "Sdraiati sulla schiena con le braccia distese lateralmente e le gambe dritte. Questa è la posizione di partenza.",
+   "Solleva una gamba e falla incrociare rapidamente sopra il corpo, cercando di toccare terra vicino alla mano opposta.",
+   "Torna alla posizione di partenza e ripeti con la gamba opposta. Continua ad alternare per 10-20 ripetizioni."
+  ]
+ },
+ "Worlds_Greatest_Stretch": {
+  "name": "World's greatest stretch",
+  "aliases": ["worlds greatest stretch", "stretching completo a tre fasi", "mobilità anca affondo con rotazione"],
+  "instructions": [
+   "Questo è uno stretching in tre parti. Comincia con un affondo in avanti, con il piede anteriore piatto a terra e appoggiato sulle punte del piede posteriore. Con le ginocchia piegate, scendi in squat finché il ginocchio non sfiora quasi il pavimento. Tieni il busto eretto e mantieni questa posizione per 10-20 secondi.",
+   "Ora appoggia a terra il braccio dallo stesso lato della gamba anteriore, con il gomito accanto al piede. L'altra mano deve essere appoggiata a terra, parallela alla gamba avanti, per aiutarti a sostenerti durante questa fase dello stretching.",
+   "Dopo 10-20 secondi, appoggia le mani ai due lati del piede anteriore. Solleva le punte del piede anteriore da terra e distendi la gamba. Potrebbe servirti riposizionare la gamba posteriore per riuscirci. Mantieni per 10-20 secondi, poi ripeti l'intera sequenza dall'altro lato."
+  ]
+ },
+ "Wrist_Circles": {
+  "name": "Circonduzioni dei polsi",
+  "aliases": ["wrist circles", "rotazione polsi in piedi", "circonduzione polso"],
+  "instructions": [
+   "Comincia stando in piedi con la schiena dritta e i piedi larghi quanto le spalle. Solleva le braccia lateralmente finché non sono completamente distese e parallele al pavimento, a un'altezza allineata con le spalle. Consiglio: busto e braccia devono formare la lettera \"T\". I palmi devono essere rivolti verso il basso. Questa è la posizione di partenza.",
+   "Tenendo fermo tutto il corpo tranne i polsi, comincia a ruotare entrambi i polsi in avanti con un movimento circolare. Consiglio: immagina di disegnare dei cerchi usando le mani come un pennello. Respira normalmente durante l'esercizio.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Wrist_Roller": {
+  "name": "Wrist roller",
+  "aliases": ["arrotolatore da polso", "wrist roller esercizio", "rullo per avambracci"],
+  "instructions": [
+   "Per iniziare, mettiti in piedi con la schiena dritta afferrando un wrist roller con presa prona (palmi verso il basso). I piedi devono essere larghi quanto le spalle.",
+   "Solleva lentamente entrambe le braccia finché non sono completamente distese e parallele al pavimento davanti a te. Nota: assicurati che la corda non sia già avvolta attorno al rullo. Tutto il corpo deve restare fermo tranne gli avambracci. Questa è la posizione di partenza.",
+   "Ruota un polso alla volta con un movimento verso l'alto per portare il peso verso la barra, avvolgendo la corda attorno al rullo.",
+   "Una volta che il peso ha raggiunto la barra, comincia lentamente ad abbassarlo ruotando il polso in un movimento verso il basso finché il peso non torna alla posizione di partenza.",
+   "Ripeti per il numero di ripetizioni previsto dal tuo programma."
+  ]
+ },
+ "Wrist_Rotations_with_Straight_Bar": {
+  "name": "Rotazioni del polso con bilanciere dritto",
+  "aliases": ["wrist rotations straight bar", "rotazione polso bilanciere", "torsione polso con barra"],
+  "instructions": [
+   "Tieni un bilanciere con entrambe le mani e i palmi rivolti verso il basso, mani larghe quanto le spalle. Questa è la posizione di partenza.",
+   "Alternando ciascuna mano, esegui il movimento estendendo il polso come se stessi arrotolando un giornale. Continua ad alternare finché non arrivi al cedimento.",
+   "Inverti il movimento flettendo il polso, arrotolando nella direzione opposta. Continua il movimento alternato finché non arrivi al cedimento."
+  ]
+ },
+ "Yoke_Walk": {
+  "name": "Yoke walk",
+  "aliases": ["camminata con yoke", "yoke walk esercizio", "trasporto giogo caricato"],
+  "instructions": [
+   "Lo yoke si esegue solitamente con un apposito attrezzo, ma a volte si usano frigoriferi o altri oggetti pesanti.",
+   "Comincia caricando l'attrezzo sulla parte posteriore delle spalle. Con la testa rivolta in avanti e la schiena inarcata, solleva lo yoke spingendo con i talloni.",
+   "Comincia a camminare il più velocemente possibile con passi brevi e rapidi. Puoi tenerti ai montanti laterali dello yoke per aiutarti a stabilizzarlo e mantenerlo in posizione. Continua per la distanza prevista il più velocemente possibile, di solito 23-30 metri."
+  ]
+ },
+ "Zercher_Squats": {
+  "name": "Zercher squat",
+  "aliases": ["zercher squat bilanciere", "squat zercher", "squat con bilanciere sugli avambracci"],
+  "instructions": [
+   "Questo esercizio va eseguito preferibilmente dentro uno squat rack per sicurezza. Per iniziare, imposta il bilanciere su un rack all'altezza adatta a te. L'altezza corretta deve essere in un punto tra il bacino e il petto. Una volta scelta l'altezza corretta e caricato il bilanciere, intreccia le mani e appoggia il bilanciere sopra le braccia, tra avambraccio e braccio.",
+   "Solleva il bilanciere in modo che riposi sopra gli avambracci. Se lo tieni correttamente, dovrebbe sembrare che tu abbia le braccia incrociate con una sbarra che le attraversa.",
+   "Allontanati dal rack e posiziona le gambe con una base media larga quanto le spalle e le punte leggermente rivolte verso l'esterno. Tieni sempre la testa alta, guardare in basso ti farebbe perdere l'equilibrio, e mantieni la schiena dritta. Questa è la posizione di partenza. (Nota: qui useremo la base media descritta sopra, che punta a uno sviluppo generale; puoi comunque scegliere una qualsiasi delle tre basi discusse nella sezione sulle posizioni dei piedi).",
+   "Comincia ad abbassare il bilanciere piegando le ginocchia mantenendo una postura dritta con la testa alta. Continua a scendere finché l'angolo tra coscia e polpaccio non diventa leggermente inferiore a 90 gradi (il punto in cui le cosce sono sotto il parallelo al pavimento). Inspira mentre esegui questa parte del movimento. Consiglio: se esegui l'esercizio correttamente, la parte anteriore delle ginocchia dovrebbe formare una linea immaginaria dritta con le punte dei piedi, perpendicolare al davanti. Se le ginocchia superano quella linea immaginaria (se vanno oltre le punte dei piedi) stai mettendo uno stress eccessivo sul ginocchio e l'esercizio è stato eseguito in modo scorretto.",
+   "Comincia a risalire mentre espiri spingendo il pavimento principalmente con l'avampiede mentre raddrizzi di nuovo le gambe tornando alla posizione di partenza.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Zottman_Curl": {
+  "name": "Zottman curl",
+  "aliases": ["zottman curl manubri", "curl con rotazione del polso", "curl zottman"],
+  "instructions": [
+   "Mettiti in piedi con il busto eretto e un manubrio in ciascuna mano tenuto a braccia distese. I gomiti devono restare vicini al busto.",
+   "Assicurati che i palmi delle mani siano rivolti l'uno verso l'altro. Questa è la posizione di partenza.",
+   "Tenendo il braccio fermo, piega i gomiti sollevando i pesi e contraendo i bicipiti mentre espiri. Deve muoversi solo l'avambraccio. Il polso deve ruotare in modo da assumere una presa supina (palmi verso l'alto). Continua il movimento finché i bicipiti non sono completamente contratti e i manubri sono all'altezza delle spalle.",
+   "Mantieni la contrazione per un secondo mentre stringi i bicipiti.",
+   "Ora, ancora nella posizione contratta, ruota il polso finché non assumi una presa prona (palmi verso il basso) con il pollice più in alto del mignolo.",
+   "Comincia ad abbassare lentamente i manubri usando la presa prona.",
+   "Mentre i manubri si avvicinano alle cosce, comincia a ruotare il polso per tornare a una presa neutra (palmi verso il busto).",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ },
+ "Zottman_Preacher_Curl": {
+  "name": "Zottman curl al panca scott",
+  "aliases": ["zottman preacher curl", "curl scott con rotazione del polso", "preacher curl zottman"],
+  "instructions": [
+   "Afferra un manubrio con ciascuna mano e appoggia le braccia sulla panca scott o sulla panca inclinata. I manubri devono essere tenuti all'altezza delle spalle con i gomiti flessi. Tieni i manubri con i palmi rivolti verso il basso. Questa è la posizione di partenza.",
+   "Mentre inspiri, abbassa lentamente i manubri tenendo i palmi verso il basso finché il braccio non è esteso e i bicipiti completamente allungati.",
+   "Ora ruota i polsi una volta arrivato in fondo al movimento, in modo che i palmi delle mani siano rivolti verso l'alto.",
+   "Mentre espiri, usa i bicipiti per risollevare i pesi finché non sono completamente contratti e i manubri sono all'altezza delle spalle. Ricordati che per garantire la piena contrazione devi portare il mignolo più in alto del pollice.",
+   "Contrai forte i bicipiti per un secondo nella posizione contratta e ruota i polsi in modo che i palmi tornino verso il basso.",
+   "Ripeti per il numero di ripetizioni consigliato."
+  ]
+ }
+}

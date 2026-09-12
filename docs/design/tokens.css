@@ -1,0 +1,576 @@
+/* =============================================================================
+   TEMPRA - Design tokens
+   PWA fitness, mobile-first, WCAG 2.1 AA (+ criteri 2.2 AA).
+   Tema scuro = default. Tema chiaro = override esplicito o preferenza di sistema.
+
+   Implementazione: Tailwind CSS v4 (@theme) + CSS custom properties.
+   Il cambio tema usa la funzione CSS light-dark(), che risolve in base a
+   color-scheme. Supporto: Chrome 123+, Safari 17.5+, Firefox 120+.
+   Ordine degli argomenti: light-dark(<valore chiaro>, <valore scuro>).
+
+   Sorgente colore: OKLCH, poi conversione a sRGB con riduzione di croma per
+   rientrare in gamut. Tutti i rapporti di contrasto citati in
+   01-design-system.md sono calcolati su questi esatti valori esadecimali.
+   ============================================================================= */
+
+@import "tailwindcss";
+
+@theme {
+  /* ===========================================================================
+     1. PRIMITIVE - scale colore
+     Non usare direttamente nei componenti: usare i token semantici (sezione 2).
+     =========================================================================== */
+
+  /* --- Neutrali "Acciaio" (hue OKLCH 258, croma 0 -> 0.015) - 20 step ------- */
+  --color-neutral-0:    #FFFFFF;
+  --color-neutral-25:   #F9FAFB;
+  --color-neutral-50:   #F4F5F7;
+  --color-neutral-100:  #EBEDF0;
+  --color-neutral-200:  #DBDEE2;
+  --color-neutral-300:  #C7CBCF;
+  --color-neutral-400:  #ACB0B5;
+  --color-neutral-500:  #90949A;
+  --color-neutral-550:  #83878D;
+  --color-neutral-600:  #767B81;
+  --color-neutral-650:  #6A6E75;
+  --color-neutral-700:  #5E6269;
+  --color-neutral-750:  #51565C;
+  --color-neutral-800:  #454950;
+  --color-neutral-850:  #34383F;
+  --color-neutral-900:  #23272E;
+  --color-neutral-950:  #151920;
+  --color-neutral-975:  #0D1118;
+  --color-neutral-1000: #070A10;
+  --color-neutral-1100: #03060A;
+
+  /* --- Brand "Brace" / ember (hue 44) -------------------------------------- */
+  --color-ember-50:   #FFF0EA;
+  --color-ember-100:  #FFE1D4;
+  --color-ember-200:  #FFCAB4;
+  --color-ember-300:  #FFA983;
+  --color-ember-400:  #FF864E;
+  --color-ember-500:  #F5691A;
+  --color-ember-600:  #D85600;
+  --color-ember-700:  #B54700;
+  --color-ember-800:  #903700;
+  --color-ember-900:  #6C2700;
+  --color-ember-950:  #4C1900;
+  --color-ember-1000: #350F00;
+
+  /* --- Cobalto (hue 236) - recupero, info, focus ---------------------------- */
+  --color-cobalt-50:   #E8F6FF;
+  --color-cobalt-100:  #D0EDFF;
+  --color-cobalt-200:  #ADDFFF;
+  --color-cobalt-300:  #81CBF7;
+  --color-cobalt-400:  #55B8EF;
+  --color-cobalt-500:  #2BA5E1;
+  --color-cobalt-600:  #008FC9;
+  --color-cobalt-700:  #0078A9;
+  --color-cobalt-800:  #005E85;
+  --color-cobalt-900:  #004564;
+  --color-cobalt-950:  #002F46;
+  --color-cobalt-1000: #002031;
+
+  /* --- Verde (hue 152) - successo, serie completata ------------------------- */
+  --color-green-50:   #E7F9EB;
+  --color-green-100:  #D0F2D8;
+  --color-green-200:  #AFE8BD;
+  --color-green-300:  #83D79B;
+  --color-green-400:  #57C77C;
+  --color-green-500:  #2CB664;
+  --color-green-600:  #009F50;
+  --color-green-700:  #008542;
+  --color-green-800:  #006933;
+  --color-green-900:  #004E24;
+  --color-green-950:  #003617;
+  --color-green-1000: #00250D;
+
+  /* --- Ambra (hue 68) - avviso --------------------------------------------- */
+  --color-amber-50:   #FFF1E2;
+  --color-amber-100:  #FEE3C6;
+  --color-amber-200:  #FBCE9F;
+  --color-amber-300:  #F2B36C;
+  --color-amber-400:  #E79935;
+  --color-amber-500:  #D58500;
+  --color-amber-600:  #B97200;
+  --color-amber-700:  #9B5F00;
+  --color-amber-800:  #7A4A00;
+  --color-amber-900:  #5B3600;
+  --color-amber-950:  #402400;
+  --color-amber-1000: #2C1700;
+
+  /* --- Rosso (hue 24) - errore, distruttivo -------------------------------- */
+  --color-red-50:   #FFEFEE;
+  --color-red-100:  #FFDFDC;
+  --color-red-200:  #FFC8C3;
+  --color-red-300:  #FFA59F;
+  --color-red-400:  #FF817C;
+  --color-red-500:  #FF5758;
+  --color-red-600:  #E44044;
+  --color-red-700:  #C32F35;
+  --color-red-800:  #9C2026;
+  --color-red-900:  #75171B;
+  --color-red-950:  #520E11;
+  --color-red-1000: #3A0709;
+
+  /* --- Oro (hue 95) - record personale -------------------------------------- */
+  --color-gold-50:   #F8F4E2;
+  --color-gold-100:  #F1E8C7;
+  --color-gold-200:  #E7D89F;
+  --color-gold-300:  #D7C06C;
+  --color-gold-400:  #C7AB35;
+  --color-gold-500:  #B59800;
+  --color-gold-600:  #9D8300;
+  --color-gold-700:  #836D00;
+  --color-gold-800:  #675500;
+  --color-gold-900:  #4C3F00;
+  --color-gold-950:  #352B00;
+  --color-gold-1000: #241C00;
+
+  /* ===========================================================================
+     2. SEMANTICI - questi sono i token da usare nei componenti
+     =========================================================================== */
+
+  /* --- Sfondi e superfici --------------------------------------------------- */
+  --color-bg-canvas:   light-dark(#F4F5F7, #070A10);
+  --color-bg-surface:  light-dark(#FFFFFF, #0D1118);
+  --color-bg-raised:   light-dark(#FFFFFF, #151920);
+  --color-bg-overlay:  light-dark(#FFFFFF, #23272E);
+  --color-bg-inset:    light-dark(#EBEDF0, #03060A);
+  --color-bg-scrim:    light-dark(rgb(21 25 32 / 0.48), rgb(3 6 10 / 0.72));
+
+  /* Overlay di stato: si stendono SOPRA la superficie, non la sostituiscono */
+  --color-state-hover:    light-dark(rgb(21 25 32 / 0.05), rgb(255 255 255 / 0.06));
+  --color-state-pressed:  light-dark(rgb(21 25 32 / 0.10), rgb(255 255 255 / 0.11));
+  --color-state-selected: light-dark(#FFEEE7, #351B10);
+
+  /* --- Testo ---------------------------------------------------------------- */
+  --color-text-primary:   light-dark(#151920, #F4F5F7);
+  --color-text-secondary: light-dark(#51565C, #ACB0B5);
+  --color-text-tertiary:  light-dark(#5E6269, #90949A);
+  --color-text-disabled:  light-dark(#ACB0B5, #5E6269);
+  --color-text-inverse:   light-dark(#FFFFFF, #070A10);
+  --color-text-on-brand:  #03060A;
+  --color-text-on-danger: #FFFFFF;
+  --color-text-link:      light-dark(#0078A9, #55B8EF);
+
+  /* --- Bordi ---------------------------------------------------------------- */
+  --color-border-subtle:  light-dark(#EBEDF0, #23272E);  /* solo decorativo   */
+  --color-border-default: light-dark(#DBDEE2, #34383F);  /* separatori        */
+  --color-border-strong:  #767B81;                       /* controlli, >= 3:1 */
+  --color-border-focus:   light-dark(#0078A9, #D0EDFF);
+
+  /* --- Brand ---------------------------------------------------------------- */
+  --color-brand-text:         light-dark(#B54700, #FF864E);
+  --color-brand-solid:        light-dark(#D85600, #F5691A);
+  --color-brand-solid-hover:  light-dark(#B54700, #FF864E);
+  --color-brand-solid-active: light-dark(#903700, #D85600);
+  --color-brand-surface:      light-dark(#FFEEE7, #351B10);
+  --color-brand-border:       light-dark(#FBCCB8, #5E321F);
+
+  /* --- Semantici: successo -------------------------------------------------- */
+  --color-success-text:     light-dark(#008542, #57C77C);
+  --color-success-strong:   light-dark(#006933, #57C77C);
+  --color-success-solid:    light-dark(#009F50, #2CB664);
+  --color-success-on-solid: #03060A;
+  --color-success-surface:  light-dark(#E5F8E9, #102918);
+  --color-success-border:   light-dark(#BBE4C4, #1F4A2D);
+
+  /* --- Semantici: avviso ---------------------------------------------------- */
+  --color-warning-text:     light-dark(#9B5F00, #E79935);
+  --color-warning-strong:   light-dark(#7A4A00, #E79935);
+  --color-warning-solid:    light-dark(#B97200, #D58500);
+  --color-warning-on-solid: #03060A;
+  --color-warning-surface:  light-dark(#FFEFDE, #311E08);
+  --color-warning-border:   light-dark(#F3D1AE, #583810);
+
+  /* --- Semantici: errore ---------------------------------------------------- */
+  --color-danger-text:     light-dark(#C32F35, #FF817C);
+  --color-danger-strong:   light-dark(#9C2026, #FF817C);
+  --color-danger-solid:    #C32F35;
+  --color-danger-on-solid: #FFFFFF;
+  --color-danger-surface:  light-dark(#FFEDEB, #361A18);
+  --color-danger-border:   light-dark(#FDC9C4, #60302D);
+
+  /* --- Semantici: info ------------------------------------------------------ */
+  --color-info-text:     light-dark(#0078A9, #55B8EF);
+  --color-info-strong:   light-dark(#005E85, #55B8EF);
+  --color-info-solid:    light-dark(#0078A9, #2BA5E1);
+  --color-info-on-solid: light-dark(#FFFFFF, #03060A);
+  --color-info-surface:  light-dark(#E4F5FF, #092635);
+  --color-info-border:   light-dark(#B2DEFA, #114560);
+
+  /* ===========================================================================
+     3. FUNZIONALI DI DOMINIO
+     Regola non negoziabile: nessuno di questi colori e' l'unico veicolo
+     di informazione. Ognuno e' sempre accompagnato da icona, forma o testo.
+     =========================================================================== */
+
+  /* --- Serie completata (verde + spunta + barratura del target) ------------- */
+  --color-set-done-text:    light-dark(#006933, #57C77C);
+  --color-set-done-icon:    light-dark(#009F50, #57C77C);
+  --color-set-done-surface: light-dark(#E5F8E9, #102918);
+  --color-set-done-border:  light-dark(#BBE4C4, #1F4A2D);
+
+  /* --- Record personale (oro + icona fulmine + etichetta "PR") -------------- */
+  --color-pr-text:     light-dark(#836D00, #D7C06C);
+  --color-pr-strong:   light-dark(#675500, #D7C06C);
+  --color-pr-solid:    light-dark(#B59800, #C7AB35);
+  --color-pr-on-solid: #03060A;
+  --color-pr-surface:  light-dark(#F7F2DD, #2A2206);
+  --color-pr-border:   light-dark(#E4D8AB, #4B3F0A);
+
+  /* --- Recupero in corso (cobalto = freddo; il lavoro e' caldo) ------------- */
+  --color-rest-text:      light-dark(#0078A9, #55B8EF);
+  --color-rest-ring:      light-dark(#0078A9, #55B8EF);
+  --color-rest-track:     light-dark(#DBDEE2, #34383F);
+  --color-rest-surface:   light-dark(#E4F5FF, #092635);
+  --color-rest-urgent:    light-dark(#9B5F00, #E79935); /* ultimi 10 secondi  */
+  --color-rest-overtime:  light-dark(#C32F35, #FF817C); /* recupero superato  */
+
+  /* --- Serie di riscaldamento ---------------------------------------------- */
+  /* Deliberatamente NON colorata: il riscaldamento va de-enfatizzato, e ogni
+     tinta calda entrerebbe in conflitto con avviso/errore/brand.
+     Segnale: bordo sinistro tratteggiato + etichetta testuale "Ris.". */
+  --color-warmup-text:   light-dark(#5E6269, #90949A);
+  --color-warmup-border: #767B81;
+
+  /* --- Heatmap muscolare ---------------------------------------------------- */
+  /* Scala sequenziale a 5 livelli di VOLUME settimanale sul gruppo muscolare.
+     0 = non allenato, 4 = molto allenato.
+     I livelli 1-3 in tema chiaro non raggiungono 3:1 sul fondo: rientrano
+     nell'eccezione 1.4.11 (presentazione essenziale del dato). Mitigazione
+     obbligatoria: contorno --color-muscle-stroke su ogni regione, etichetta
+     testuale, legenda numerica e tabella dati equivalente. */
+  --color-muscle-0: light-dark(#DBDEE2, #2B2E33);
+  --color-muscle-1: light-dark(#F2C4B0, #964C2A);
+  --color-muscle-2: light-dark(#F3A07D, #C75D29);
+  --color-muscle-3: light-dark(#F0773E, #F6712F);
+  --color-muscle-4: light-dark(#D85600, #FFA37C);
+  --color-muscle-stroke: #767B81;
+  /* Ruolo nell'esercizio: primario = pieno; secondario = tratteggio 45 gradi
+     su fondo --color-muscle-1 (mai solo differenza di tinta). */
+  --color-muscle-primary:   light-dark(#D85600, #FFA37C);
+  --color-muscle-secondary: light-dark(#F3A07D, #C75D29);
+
+  /* --- Grafici -------------------------------------------------------------- */
+  /* Serie categoriche ottimizzate per deuteranopia e protanopia.
+     Distanza minima simulata (Oklab) 0.126 in scuro, 0.094 in chiaro,
+     contro 0.080 della palette Okabe-Ito di riferimento.
+     In tema chiaro il giallo e' sostituito dal rosso-vino: sul bianco il
+     giallo non raggiunge mai 3:1. */
+  --color-chart-1: light-dark(#D55A14, #FF864E);
+  --color-chart-2: light-dark(#007BAD, #C9EAFF);
+  --color-chart-3: light-dark(#6A3798, #F8DD78);
+  --color-chart-4: light-dark(#009793, #9664C9);
+  --color-chart-5: light-dark(#005729, #44C4C0);
+  --color-chart-6: light-dark(#A62857, #007B3D);
+  --color-chart-grid:       light-dark(#EBEDF0, #23272E);
+  --color-chart-axis:       light-dark(#5E6269, #90949A);
+  --color-chart-marker-pr:  light-dark(#B59800, #C7AB35);
+  --color-chart-band:       light-dark(rgb(21 25 32 / 0.04), rgb(255 255 255 / 0.05));
+
+  /* ===========================================================================
+     4. TIPOGRAFIA
+     =========================================================================== */
+  --font-sans: "Inter var", "Inter", -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Slot di sostituzione: un domani il brand puo' montare un display face qui
+     senza toccare un solo componente. */
+  --font-display: var(--font-sans);
+  /* Cifre: stessa famiglia, ma sempre tabulari e con varianti disambiguanti. */
+  --font-num: var(--font-sans);
+
+  --font-feature-text: "cv05" 1, "cv08" 1, "ss02" 1, "calt" 1;
+  --font-feature-num:  "tnum" 1, "lnum" 1, "zero" 1, "ss02" 1, "calt" 0;
+
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+  --font-weight-heavy:    800;
+
+  /* --- Scala di testo ------------------------------------------------------- */
+  --text-label-xs: 0.75rem;                    /* 12px */
+  --text-label-xs--line-height: 1.3333;
+  --text-label-xs--letter-spacing: 0.04em;
+  --text-label-xs--font-weight: 700;
+
+  --text-label-sm: 0.8125rem;                  /* 13px */
+  --text-label-sm--line-height: 1.3846;
+  --text-label-sm--letter-spacing: 0.01em;
+  --text-label-sm--font-weight: 600;
+
+  --text-body-sm: 0.9375rem;                   /* 15px */
+  --text-body-sm--line-height: 1.4667;
+  --text-body-sm--letter-spacing: 0em;
+  --text-body-sm--font-weight: 400;
+
+  --text-body-md: 1.0625rem;                   /* 17px - default */
+  --text-body-md--line-height: 1.5294;
+  --text-body-md--letter-spacing: 0em;
+  --text-body-md--font-weight: 400;
+
+  --text-body-lg: 1.1875rem;                   /* 19px */
+  --text-body-lg--line-height: 1.4737;
+  --text-body-lg--letter-spacing: -0.003em;
+  --text-body-lg--font-weight: 400;
+
+  --text-title-sm: 1.0625rem;                  /* 17px */
+  --text-title-sm--line-height: 1.2941;
+  --text-title-sm--letter-spacing: -0.006em;
+  --text-title-sm--font-weight: 600;
+
+  --text-title-md: 1.25rem;                    /* 20px */
+  --text-title-md--line-height: 1.3;
+  --text-title-md--letter-spacing: -0.011em;
+  --text-title-md--font-weight: 600;
+
+  --text-title-lg: 1.5rem;                     /* 24px */
+  --text-title-lg--line-height: 1.25;
+  --text-title-lg--letter-spacing: -0.015em;
+  --text-title-lg--font-weight: 600;
+
+  --text-heading-sm: 1.75rem;                  /* 28px */
+  --text-heading-sm--line-height: 1.2143;
+  --text-heading-sm--letter-spacing: -0.018em;
+  --text-heading-sm--font-weight: 700;
+
+  --text-heading-md: 2.125rem;                 /* 34px */
+  --text-heading-md--line-height: 1.1765;
+  --text-heading-md--letter-spacing: -0.021em;
+  --text-heading-md--font-weight: 700;
+
+  --text-heading-lg: 2.5rem;                   /* 40px */
+  --text-heading-lg--line-height: 1.1;
+  --text-heading-lg--letter-spacing: -0.024em;
+  --text-heading-lg--font-weight: 700;
+
+  /* --- Scala numerica display (sempre con --font-feature-num) --------------- */
+  --text-num-sm: 1.0625rem;                    /* 17px - reps inline */
+  --text-num-sm--line-height: 1.1765;
+  --text-num-sm--letter-spacing: 0em;
+  --text-num-sm--font-weight: 600;
+
+  --text-num-md: 1.375rem;                     /* 22px - peso nella riga serie */
+  --text-num-md--line-height: 1.0909;
+  --text-num-md--letter-spacing: -0.01em;
+  --text-num-md--font-weight: 600;
+
+  --text-num-lg: 2rem;                         /* 32px - stat card */
+  --text-num-lg--line-height: 1.0625;
+  --text-num-lg--letter-spacing: -0.018em;
+  --text-num-lg--font-weight: 700;
+
+  --text-num-xl: 3rem;                         /* 48px - 1RM, volume totale */
+  --text-num-xl--line-height: 1;
+  --text-num-xl--letter-spacing: -0.024em;
+  --text-num-xl--font-weight: 700;
+
+  --text-num-2xl: 4rem;                        /* 64px - timer compatto */
+  --text-num-2xl--line-height: 0.9688;
+  --text-num-2xl--letter-spacing: -0.03em;
+  --text-num-2xl--font-weight: 700;
+
+  --text-num-timer: 6rem;                      /* 96px - timer di recupero */
+  --text-num-timer--line-height: 0.9167;
+  --text-num-timer--letter-spacing: -0.035em;
+  --text-num-timer--font-weight: 700;
+
+  --text-num-hero: 7.5rem;                     /* 120px - countdown 3..2..1 */
+  --text-num-hero--line-height: 0.9;
+  --text-num-hero--letter-spacing: -0.04em;
+  --text-num-hero--font-weight: 800;
+
+  /* ===========================================================================
+     5. SPAZIATURA, RAGGI, OMBRE, BORDI
+     =========================================================================== */
+  --spacing: 0.25rem;           /* base Tailwind v4: p-1 = 4px, p-4 = 16px */
+
+  --radius-none: 0px;
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --radius-2xl:  28px;
+  --radius-full: 9999px;
+
+  --border-width-hairline: 1px;
+  --border-width-default:  1px;
+  --border-width-strong:   2px;
+  --border-width-focus:    2px;
+
+  --shadow-xs: 0 1px 2px light-dark(rgb(21 25 32 / 0.06), rgb(0 0 0 / 0.50));
+  --shadow-sm: 0 2px 4px -1px light-dark(rgb(21 25 32 / 0.07), rgb(0 0 0 / 0.55)),
+               0 1px 2px -1px light-dark(rgb(21 25 32 / 0.05), rgb(0 0 0 / 0.45));
+  --shadow-md: 0 8px 20px -6px light-dark(rgb(21 25 32 / 0.12), rgb(0 0 0 / 0.65)),
+               0 2px 6px -2px  light-dark(rgb(21 25 32 / 0.07), rgb(0 0 0 / 0.50));
+  --shadow-lg: 0 20px 40px -12px light-dark(rgb(21 25 32 / 0.18), rgb(0 0 0 / 0.75)),
+               0 4px 10px -4px   light-dark(rgb(21 25 32 / 0.08), rgb(0 0 0 / 0.55));
+  --shadow-xl: 0 32px 64px -20px light-dark(rgb(21 25 32 / 0.24), rgb(0 0 0 / 0.85)),
+               0 8px 16px -8px   light-dark(rgb(21 25 32 / 0.10), rgb(0 0 0 / 0.60));
+  /* In tema scuro l'ombra da sola non separa: serve la linea di luce in alto. */
+  --shadow-edge: inset 0 1px 0 light-dark(rgb(255 255 255 / 0), rgb(255 255 255 / 0.05));
+  --shadow-glow-pr: 0 0 0 1px light-dark(#E4D8AB, #4B3F0A),
+                    0 6px 24px -6px light-dark(rgb(181 152 0 / 0.35), rgb(199 171 53 / 0.30));
+
+  /* ===========================================================================
+     6. MOTION
+     =========================================================================== */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out:      cubic-bezier(0, 0, 0, 1);
+  --ease-in:       cubic-bezier(0.3, 0, 1, 1);
+  --ease-in-out:   cubic-bezier(0.5, 0, 0.1, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-instant: 0ms;
+  --duration-1: 90ms;    /* pressioni, cambio colore                 */
+  --duration-2: 140ms;   /* hover, focus, checkbox                   */
+  --duration-3: 200ms;   /* comparse locali, chip, tooltip           */
+  --duration-4: 280ms;   /* bottom sheet, transizioni di pagina      */
+  --duration-5: 400ms;   /* modali, riordino lista                   */
+  --duration-6: 640ms;   /* celebrazione PR, fine allenamento        */
+
+  /* ===========================================================================
+     7. LAYOUT
+     =========================================================================== */
+  --layout-gutter:        16px;
+  --layout-content-max:   520px;
+  --layout-header-h:      56px;
+  --layout-tabbar-h:      56px;
+  --layout-restbar-h:     72px;   /* barra timer sticky durante l'allenamento */
+  --layout-fab-size:      56px;
+  --layout-sheet-radius:  var(--radius-2xl);
+
+  --size-touch-min:     44px;   /* minimo assoluto (2.5.8 AA)   */
+  --size-touch-cozy:    48px;   /* default dei controlli        */
+  --size-touch-primary: 56px;   /* azioni primarie in allenamento */
+  --size-icon-sm: 18px;
+  --size-icon-md: 22px;
+  --size-icon-lg: 26px;
+  --size-icon-xl: 32px;
+
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-tabbar: 20;
+  --z-fab: 30;
+  --z-restbar: 40;
+  --z-scrim: 50;
+  --z-sheet: 60;
+  --z-modal: 70;
+  --z-toast: 80;
+  --z-tooltip: 90;
+}
+
+/* =============================================================================
+   8. BASE
+   ============================================================================= */
+@layer base {
+
+  /* Il tema scuro e' il default del prodotto: senza attributo, si sta al buio. */
+  :root {
+    color-scheme: dark;
+
+    --layout-safe-top:    env(safe-area-inset-top, 0px);
+    --layout-safe-bottom: env(safe-area-inset-bottom, 0px);
+    --layout-safe-left:   env(safe-area-inset-left, 0px);
+    --layout-safe-right:  env(safe-area-inset-right, 0px);
+
+    /* Altezze calcolate, usate da padding e scroll-padding */
+    --layout-header-total: calc(var(--layout-header-h) + var(--layout-safe-top));
+    --layout-tabbar-total: calc(var(--layout-tabbar-h) + var(--layout-safe-bottom));
+  }
+
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"]  { color-scheme: dark; }
+  /* "auto" segue il sistema; senza attributo resta scuro. */
+  :root[data-theme="auto"]  { color-scheme: light dark; }
+
+  @media (min-width: 430px) {
+    :root { --layout-gutter: 20px; }
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-bottom: calc(var(--layout-tabbar-total) + var(--spacing) * 4);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-bg-canvas);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-md);
+    line-height: var(--text-body-md--line-height);
+    font-weight: var(--font-weight-regular);
+    font-feature-settings: var(--font-feature-text);
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Impedisce il pull-to-refresh accidentale con il pollice in allenamento */
+    overscroll-behavior-y: contain;
+  }
+
+  /* Ogni numero dell'app usa questa classe: cifre tabulari, niente legature. */
+  .num, [data-num] {
+    font-family: var(--font-num);
+    font-feature-settings: var(--font-feature-num);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+
+  /* Focus: anello a 2px con 2px di stacco nel colore della superficie, cosi'
+     il rapporto 3:1 si misura sempre contro lo sfondo e mai contro il
+     riempimento del bottone. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: var(--border-width-focus) solid var(--color-border-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Target minimo garantito anche quando il contenuto e' piu' piccolo. */
+  :where(button, a[role="button"], [role="checkbox"], [role="radio"], summary) {
+    min-block-size: var(--size-touch-min);
+    min-inline-size: var(--size-touch-min);
+  }
+
+  ::selection {
+    background-color: var(--color-brand-surface);
+    color: var(--color-text-primary);
+  }
+
+  /* ---------------------------------------------------------------------------
+     Motion ridotto: si tolgono spostamenti e durate, si tengono i cambi di
+     colore e opacita' (che portano informazione di stato).
+     --------------------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --duration-1: 1ms; --duration-2: 1ms; --duration-3: 1ms;
+      --duration-4: 1ms; --duration-5: 1ms; --duration-6: 1ms;
+      --ease-spring: linear;
+    }
+    *, *::before, *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      scroll-behavior: auto !important;
+    }
+    /* L'animazione a 2 frame della scheda esercizio resta ferma sul primo
+       fotogramma; la riproduzione diventa un controllo esplicito. */
+    [data-exercise-loop] { animation-play-state: paused !important; }
+  }
+
+  /* Contrasto aumentato: si irrobustiscono bordi e testo secondario. */
+  @media (prefers-contrast: more) {
+    :root {
+      --color-border-default: #767B81;
+      --color-text-secondary: light-dark(#151920, #F4F5F7);
+      --color-text-tertiary:  light-dark(#151920, #ACB0B5);
+      --border-width-default: 2px;
+    }
+  }
+}

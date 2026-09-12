@@ -1,0 +1,22 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+*.local
+.DS_Store
+coverage/
+.vite/
+.turbo/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Dataset sorgente: clonato a parte, non versionato qui
+db-exercise/
+
+# Artefatti intermedi della pipeline dati
+data/source-batches/
+
+# Screenshot di lavoro dei test
+apps/web/test-results/
