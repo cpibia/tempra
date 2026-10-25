@@ -14,8 +14,8 @@ Ultima verifica: 25 ottobre 2026.
 | Applicazione | `tempra`, uuid `kkhjrm3pd5wllnodthtzutvv` |
 | Sorgente | Public Repository, `https://github.com/cpibia/tempra`, branch `main` |
 | Build pack | `dockercompose`, `docker_compose_location` = `/docker-compose.coolify.yml` |
-| Commit deployato | `60b43e7ece0a0b281e06a9b8b074914cf827f5c2` |
-| Ultimo deployment | `vtkzwex3kqw2zpwhue5gmbbf`, 25 ottobre 2026, `finished` in circa 70 secondi |
+| Commit deployato | `bd6dfb560e8ab98be97b8b978a2e469910aacd35` |
+| Ultimo deployment | `eknebq08d9qa5utdshrxjrvd`, 25 ottobre 2026, `finished` in circa 60 secondi |
 
 Nessuna deploy key: il repository e' pubblico, quindi e' stata usata la sorgente
 *Public Repository* (`POST /applications/public`). Piu' semplice e senza la
@@ -25,9 +25,9 @@ limitazione di GitHub che rifiuta la stessa chiave su due repository.
 
 | Oggetto | Nome reale |
 | --- | --- |
-| Container web | `web-kkhjrm3pd5wllnodthtzutvv-20261025T065448` |
-| Container api | `api-kkhjrm3pd5wllnodthtzutvv-20261025T065447` |
-| Container db | `db-kkhjrm3pd5wllnodthtzutvv-20261025T065447` |
+| Container web | `web-kkhjrm3pd5wllnodthtzutvv-20261025T074859` |
+| Container api | `api-kkhjrm3pd5wllnodthtzutvv-20261025T074859` |
+| Container db | `db-kkhjrm3pd5wllnodthtzutvv-20261025T074859` |
 | Volume Postgres | `kkhjrm3pd5wllnodthtzutvv_db-data` |
 | Rete Docker | `kkhjrm3pd5wllnodthtzutvv` (bridge) |
 
@@ -70,6 +70,27 @@ l'esadecimale evita del tutto il problema dei caratteri `/`, `+` e `$`.
 
 `API_ORIGIN` non e' stata creata a mano: il compose la deriva da `VITE_API_URL` e
 il container `web` la riceve correttamente a runtime (verificato con `printenv`).
+
+## Verifica del 25 ottobre 2026 (commit `bd6dfb5`)
+
+Rilascio della sola PWA: layout adattivo per tablet e desktop e correzioni
+responsive sul telefono. Nessuna migrazione nuova, API invariata. Deployment
+`eknebq08d9qa5utdshrxjrvd`, `finished` in circa 60 secondi.
+
+```
+https://tempra.nereidi.app/                       200, <title>Tempra</title>
+https://tempra.nereidi.app/esercizi               200 (fallback SPA)
+https://api.tempra.nereidi.app/health             200, {"status":"ok","database":true}
+/sw.js                                            200, cache-control: no-cache, must-revalidate,
+                                                  service-worker-allowed: /
+```
+
+Build nuova confermata: la classe `tabbar__brand` compare in
+`/assets/index-Tnpm2AUe.css` e in `/assets/index-FbNWAqKj.js`; la data di build
+nel chunk di ingresso e' `2026-10-25T07:49:25.633Z`, nello stesso chunk c'e'
+`https://api.tempra.nereidi.app`. Log di avvio dell'API identico al rilascio
+precedente (migrazioni applicate, nessuna nuova). Container tutti `healthy`,
+nessuna porta pubblicata sull'host.
 
 ## Verifica del 25 ottobre 2026 (commit `60b43e7`)
 
