@@ -31,6 +31,9 @@ export function startServiceWorker(): void {
     immediate: true,
     onRegisteredSW(_url, swRegistration) {
       registration = swRegistration;
+      // A ogni apertura o ricaricamento si chiede subito al server se c'e' una
+      // versione nuova, senza aspettare il controllo periodico del browser.
+      void swRegistration?.update().catch(() => undefined);
     },
     async onNeedRefresh() {
       if (await getActiveSession()) {
