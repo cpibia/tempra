@@ -53,11 +53,9 @@ test('cattura le schermate', async ({ page }) => {
   // Allenamento in corso
   await page.getByRole('button', { name: /Allenati con questo giorno/ }).click();
   await page.waitForTimeout(900);
-  const inputs = page.locator('.set-row__input');
-  await inputs.nth(0).fill('60');
-  await inputs.nth(1).fill('8');
-  await page.getByRole('checkbox').first().check();
-  await page.waitForTimeout(700);
+  await page.getByRole('button', { name: 'Inizia', exact: true }).click();
+  await page.getByRole('button', { name: 'Avvia serie 1' }).click();
+  await page.waitForTimeout(2200);
   await page.screenshot({ path: `${OUT}/05-allenamento.png` });
 
   // Catalogo

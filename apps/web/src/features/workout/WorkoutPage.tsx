@@ -1,9 +1,13 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Plus, Minus, Trash2, Timer, Flag, X, ChevronRight } from 'lucide-react';
 import {
-  createId, formatDuration, getExercise, recommendedRest,
+  ChevronLeft, ChevronRight, Flag, ListOrdered, Minus, Play, Plus, Square, Timer, Trash2, X, Check, Info,
+} from 'lucide-react';
+import {
+  afterSetCompleted, createId, currentSetIndex, formatDuration, formatReps, getExercise,
+  isLinkedWithNext, linkWithNext, nextEntryWithWork, normalizeSupersets, recommendedRest,
+  setPhase, supersetPositions, unlinkFromNext,
   type Exercise, type LoggedSet, type Session, type SessionEntry,
 } from '@tempra/core';
 import { getSettings, getProfile } from '../../db/db';
@@ -15,219 +19,306 @@ import { requestWakeLock, releaseWakeLock } from '../../lib/wake-lock';
 import { Button, IconButton } from '../../components/ui/Button';
 import { ConfirmDialog } from '../../components/ui/Sheet';
 import { ExerciseImage } from '../../components/ExerciseImage';
+import { SupersetTag } from '../../components/SupersetLink';
 import { ExercisePicker } from '../catalog/ExercisePicker';
-import { SetRow } from './SetRow';
 import { RestTimerBar } from './RestTimerBar';
+import { SetStopwatch } from './SetStopwatch';
+import { SetLogPanel, type SetValues } from './SetLogPanel';
+import { WorkoutPreview } from './WorkoutPreview';
+import { ExerciseListSheet } from './ExerciseListSheet';
 
+const ADVANCE_DELAY_SEC = 5;
+
+type PreviousSets = Record<string, { weightKg?: number; reps?: number; timeSec?: number }[]>;
+
+const secondsSince = (iso: string): number =>
+  Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 1000));
+
+/**
+ * Allenamento guidato: un esercizio alla volta, una serie alla volta.
+ *
+ * Avvia serie -> cronometro -> Fine -> parte il recupero e intanto si
+ * registrano ripetizioni e carico -> di nuovo Avvia. Finito l'esercizio si
+ * passa al successivo dopo un breve conto alla rovescia, sempre annullabile.
+ * Le frecce e l'elenco permettono di cambiare ordine in qualsiasi momento.
+ *
+ * Ogni passaggio scrive subito su IndexedDB e lo stato della serie vive nei
+ * dati (inizio e durata), non nel componente: un ricaricamento o un telefono
+ * che sospende la pagina riprendono esattamente dallo stesso punto.
+ */
 export default function WorkoutPage() {
   const navigate = useNavigate();
   const announce = useAnnounce();
   const startRest = useRestTimer((s) => s.start);
+  const stopRest = useRestTimer((s) => s.stop);
 
   const stored = useLiveQuery(() => getActiveSession(), [], undefined);
   const settings = useLiveQuery(() => getSettings(), [], undefined);
   const profile = useLiveQuery(() => getProfile(), [], undefined);
 
   const [session, setSession] = useState<Session | null>(null);
-  const [previous, setPrevious] = useState<Record<string, { weightKg?: number; reps?: number; timeSec?: number }[]>>({});
+  const [previous, setPrevious] = useState<PreviousSets>({});
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [listOpen, setListOpen] = useState(false);
   const [confirmFinish, setConfirmFinish] = useState(false);
   const [confirmDiscard, setConfirmDiscard] = useState(false);
+  const [editingSetId, setEditingSetId] = useState<string | null>(null);
+  const [advance, setAdvance] = useState<{ index: number; endsAt: number } | null>(null);
+  const [advanceLeft, setAdvanceLeft] = useState(ADVANCE_DELAY_SEC);
   const [elapsed, setElapsed] = useState(0);
   const hydrated = useRef(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
-  // La sessione viene copiata in memoria una sola volta: da li' in poi la
-  // fonte di verita' e' lo stato locale, che viene riversato su IndexedDB a
-  // ogni modifica. Cosi' la digitazione resta fluida e non si perde nulla.
   useEffect(() => {
     if (stored && !hydrated.current) {
       hydrated.current = true;
       setSession(stored);
     }
-    if (stored === undefined && hydrated.current) {
-      setSession(null);
-    }
+    if (stored === undefined && hydrated.current) setSession(null);
   }, [stored]);
 
   useEffect(() => {
     if (!session) return;
     const load = async () => {
-      const map: Record<string, { weightKg?: number; reps?: number; timeSec?: number }[]> = {};
+      const map: PreviousSets = {};
       for (const entry of session.entries) {
         if (map[entry.exerciseId]) continue;
         const performance = await getLastPerformance(entry.exerciseId);
         if (performance) {
-          map[entry.exerciseId] = performance.sets.map((s) => ({
-            weightKg: s.weightKg, reps: s.reps, timeSec: s.timeSec,
-          }));
+          map[entry.exerciseId] = performance.sets.map((s) => ({ weightKg: s.weightKg, reps: s.reps, timeSec: s.timeSec }));
         }
       }
       setPrevious(map);
     };
     void load();
-    // Si ricalcola solo quando cambia l'insieme degli esercizi, non a ogni tasto.
+    // Si ricalcola solo quando cambia l'insieme degli esercizi, non a ogni tocco.
   }, [session?.entries.map((e) => e.exerciseId).join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const begun = Boolean(session && (session.begunAt || session.entries.some((e) => e.sets.some((s) => s.completed))));
+  const clockStart = session?.begunAt ?? session?.startedAt;
+
   useEffect(() => {
-    if (!session) return;
-    const compute = () => setElapsed(
-      Math.max(0, Math.round((Date.now() - new Date(session.startedAt).getTime()) / 1000)),
-    );
+    if (!clockStart || !begun) return;
+    const compute = () => setElapsed(secondsSince(clockStart));
     compute();
     const id = window.setInterval(compute, 1000);
     return () => window.clearInterval(id);
-  }, [session?.startedAt]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [clockStart, begun]);
 
   useEffect(() => {
-    if (!session || !settings?.keepAwake) return;
+    if (!session || !begun || !settings?.keepAwake) return;
     void requestWakeLock();
     return () => { void releaseWakeLock(); };
-  }, [session?.id, settings?.keepAwake]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [session?.id, begun, settings?.keepAwake]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /** Ogni modifica scrive subito su IndexedDB: nessun pulsante "salva", nessun dato perso. */
-  const persist = useCallback((next: Session) => {
-    setSession(next);
-    void saveSession(next);
-  }, []);
-
-  const updateSet = useCallback((entryId: string, setId: string, patch: Partial<LoggedSet>) => {
+  const mutate = useCallback((change: (current: Session) => Session) => {
     setSession((current) => {
       if (!current) return current;
-      const next: Session = {
-        ...current,
-        entries: current.entries.map((entry) => entry.id !== entryId ? entry : {
-          ...entry,
-          sets: entry.sets.map((set) => (set.id === setId ? { ...set, ...patch } : set)),
-        }),
-      };
+      const next = change(current);
       void saveSession(next);
       return next;
     });
   }, []);
 
-  const toggleComplete = useCallback((entry: SessionEntry, set: LoggedSet, exercise: Exercise) => {
-    const willComplete = !set.completed;
+  const patchSet = useCallback((entryId: string, setId: string, patch: Partial<LoggedSet>) => {
+    mutate((current) => ({
+      ...current,
+      entries: current.entries.map((entry) => entry.id !== entryId ? entry : {
+        ...entry,
+        sets: entry.sets.map((set) => (set.id === setId ? { ...set, ...patch } : set)),
+      }),
+    }));
+  }, [mutate]);
 
-    // Completare una serie senza valori non registra niente: si usa il target.
-    const patch: Partial<LoggedSet> = {
-      completed: willComplete,
-      completedAt: willComplete ? new Date().toISOString() : undefined,
+  const entries = session?.entries ?? [];
+  const storedIndex = entries.findIndex((e) => e.id === session?.currentEntryId);
+  const currentIndex = storedIndex >= 0
+    ? storedIndex
+    : Math.max(0, entries.findIndex((e) => e.sets.some((s) => !s.completed)));
+  const entry = entries[currentIndex];
+  const exercise = entry ? getExercise(entry.exerciseId) : undefined;
+
+  const goTo = useCallback((index: number, reason?: string) => {
+    setAdvance(null);
+    setEditingSetId(null);
+    mutate((current) => {
+      const target = current.entries[index];
+      return target ? { ...current, currentEntryId: target.id } : current;
+    });
+    const target = session?.entries[index];
+    const name = target ? getExercise(target.exerciseId)?.name : undefined;
+    if (name) announce(reason ? `${reason} ${name}.` : name);
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0 });
+      headingRef.current?.focus({ preventScroll: true });
+    });
+  }, [mutate, session?.entries, announce]);
+
+  // Conto alla rovescia verso l'esercizio successivo: si annulla con un tocco
+  // e si disattiva dalle impostazioni, perche' un limite di tempo imposto non
+  // e' accettabile per chi ha bisogno di piu' calma (WCAG 2.2.1).
+  useEffect(() => {
+    if (!advance) return;
+    const tick = () => {
+      const left = Math.max(0, Math.ceil((advance.endsAt - Date.now()) / 1000));
+      setAdvanceLeft(left);
+      if (left === 0) goTo(advance.index, 'Prossimo esercizio:');
     };
-    if (willComplete && set.reps === undefined && set.targetReps !== undefined) {
-      patch.reps = Array.isArray(set.targetReps) ? set.targetReps[1] : set.targetReps;
-    }
-    if (willComplete && set.timeSec === undefined && set.targetTimeSec !== undefined) {
-      patch.timeSec = set.targetTimeSec;
-    }
-    updateSet(entry.id, set.id, patch);
+    tick();
+    const id = window.setInterval(tick, 250);
+    return () => window.clearInterval(id);
+  }, [advance, goTo]);
 
-    if (!willComplete) return;
+  const restFor = (set: LoggedSet, ex: Exercise): number => set.restSec || recommendedRest({
+    exercise: ex,
+    goal: profile?.goal ?? 'muscle',
+    experience: profile?.experience ?? 'beginner',
+    reps: set.reps,
+  });
 
+  /** Fine della serie: il recupero parte subito, poi si registrano i valori. */
+  const finishSet = (target: SessionEntry, set: LoggedSet, ex: Exercise, timed: boolean) => {
+    const durationSec = timed && set.startedAt ? secondsSince(set.startedAt) : 0;
+    patchSet(target.id, set.id, { durationSec });
+
+    const hypothetical = entries.map((e) => e.id !== target.id ? e : {
+      ...e, sets: e.sets.map((s) => (s.id === set.id ? { ...s, completed: true } : s)),
+    });
+    const outcome = afterSetCompleted(hypothetical, currentIndex);
+    const position = supersetPositions(entries)[currentIndex];
+
+    if (outcome.kind !== 'superset-next' && outcome.kind !== 'workout-done' && settings?.restTimerAutoStart !== false) {
+      const seconds = restFor(set, ex);
+      startRest(seconds, position ? `Superset ${position.letter}` : ex.name);
+      announce(`Serie finita. Recupero di ${formatDuration(seconds)} avviato. Inserisci ripetizioni e carico.`);
+    } else {
+      announce('Serie finita. Inserisci ripetizioni e carico.');
+    }
+  };
+
+  const saveSet = (target: SessionEntry, set: LoggedSet, values: SetValues) => {
+    const editing = set.completed;
+    patchSet(target.id, set.id, {
+      ...values,
+      completed: true,
+      completedAt: set.completedAt ?? new Date().toISOString(),
+      durationSec: set.durationSec || undefined,
+    });
+    setEditingSetId(null);
+    if (editing) {
+      announce('Serie corretta.');
+      return;
+    }
     if (settings?.restTimerSound !== false) playSetCompleted();
     if (settings?.restTimerVibration !== false) vibrate(30);
 
-    const restSec = set.restSec || recommendedRest({
-      exercise,
-      goal: profile?.goal ?? 'muscle',
-      experience: profile?.experience ?? 'beginner',
-      reps: patch.reps ?? set.reps,
+    const updated = entries.map((e) => e.id !== target.id ? e : {
+      ...e, sets: e.sets.map((s) => (s.id === set.id ? { ...s, completed: true } : s)),
     });
+    const outcome = afterSetCompleted(updated, currentIndex);
 
-    if (settings?.restTimerAutoStart !== false) {
-      startRest(restSec, exercise.name);
-      announce(`Serie registrata. Recupero di ${formatDuration(restSec)} avviato.`);
-    } else {
-      announce('Serie registrata.');
+    switch (outcome.kind) {
+      case 'superset-next':
+        goTo(outcome.entryIndex, 'Serie salvata. Superset, ora senza pausa:');
+        break;
+      case 'rest':
+        if (outcome.entryIndex !== currentIndex) goTo(outcome.entryIndex, 'Serie salvata. Fine giro, durante il recupero si torna a');
+        else announce('Serie salvata.');
+        break;
+      case 'exercise-done': {
+        const next = updated[outcome.nextEntryIndex];
+        const name = next ? getExercise(next.exerciseId)?.name : '';
+        if (settings?.autoAdvance !== false) {
+          setAdvance({ index: outcome.nextEntryIndex, endsAt: Date.now() + ADVANCE_DELAY_SEC * 1000 });
+          announce(`Esercizio completato. Fra ${ADVANCE_DELAY_SEC} secondi: ${name}.`);
+        } else {
+          setAdvance(null);
+          announce(`Esercizio completato. Il prossimo e ${name}.`);
+        }
+        break;
+      }
+      case 'workout-done':
+        stopRest();
+        announce('Hai completato tutte le serie. Premi Fine per vedere com e andata.', 'assertive');
+        break;
     }
-  }, [updateSet, settings, profile, startRest, announce]);
+  };
 
-  const addSet = useCallback((entry: SessionEntry) => {
-    const last = entry.sets[entry.sets.length - 1];
+  const addSet = (target: SessionEntry) => {
+    const last = target.sets[target.sets.length - 1];
     const fresh: LoggedSet = {
       id: createId('set'),
       kind: 'working',
       targetReps: last?.targetReps,
       targetTimeSec: last?.targetTimeSec,
+      targetWeightKg: last?.targetWeightKg,
       weightKg: last?.weightKg,
-      timeSec: last?.targetTimeSec,
       restSec: last?.restSec ?? 90,
       completed: false,
     };
-    setSession((current) => {
-      if (!current) return current;
-      const next: Session = {
-        ...current,
-        entries: current.entries.map((e) => (e.id === entry.id ? { ...e, sets: [...e.sets, fresh] } : e)),
-      };
-      void saveSession(next);
-      return next;
-    });
+    mutate((current) => ({
+      ...current,
+      entries: current.entries.map((e) => (e.id === target.id ? { ...e, sets: [...e.sets, fresh] } : e)),
+    }));
+    setAdvance(null);
     announce('Serie aggiunta.');
-  }, [announce]);
+  };
 
-  const removeSet = useCallback((entryId: string, setId: string) => {
-    setSession((current) => {
-      if (!current) return current;
-      const next: Session = {
-        ...current,
-        entries: current.entries.map((e) => (
-          e.id === entryId ? { ...e, sets: e.sets.filter((s) => s.id !== setId) } : e
-        )),
-      };
-      void saveSession(next);
-      return next;
-    });
-    announce('Serie rimossa.');
-  }, [announce]);
+  const removeLastSet = (target: SessionEntry) => {
+    const last = target.sets[target.sets.length - 1];
+    if (!last || last.completed || target.sets.length < 2) return;
+    mutate((current) => ({
+      ...current,
+      entries: current.entries.map((e) => (e.id === target.id ? { ...e, sets: e.sets.slice(0, -1) } : e)),
+    }));
+    announce('Serie tolta.');
+  };
 
-  const addExercise = useCallback((exercise: Exercise) => {
+  const addExercise = (picked: Exercise) => {
     if (!session) return;
     const restSec = recommendedRest({
-      exercise,
-      goal: profile?.goal ?? 'muscle',
-      experience: profile?.experience ?? 'beginner',
-      reps: 10,
+      exercise: picked, goal: profile?.goal ?? 'muscle', experience: profile?.experience ?? 'beginner', reps: 10,
     });
-    const entry: SessionEntry = {
+    const timed = picked.loadType === 'time';
+    const added: SessionEntry = {
       id: createId('entry'),
-      exerciseId: exercise.id,
+      exerciseId: picked.id,
       order: session.entries.length,
       technique: 'straight',
       sets: Array.from({ length: 3 }, () => ({
         id: createId('set'),
         kind: 'working' as const,
-        targetReps: exercise.loadType === 'time' ? undefined : ([8, 12] as [number, number]),
-        targetTimeSec: exercise.loadType === 'time' ? 40 : undefined,
-        timeSec: exercise.loadType === 'time' ? 40 : undefined,
+        targetReps: timed ? undefined : ([8, 12] as [number, number]),
+        targetTimeSec: timed ? 40 : undefined,
         restSec,
         completed: false,
       })),
     };
-    persist({ ...session, entries: [...session.entries, entry] });
+    mutate((current) => ({ ...current, entries: [...current.entries, added], currentEntryId: added.id }));
     setPickerOpen(false);
-    announce(`${exercise.name} aggiunto all'allenamento.`);
-  }, [session, profile, persist, announce]);
+    setListOpen(false);
+    announce(`${picked.name} aggiunto all allenamento.`);
+  };
 
-  const removeEntry = useCallback((entryId: string) => {
-    if (!session) return;
-    persist({ ...session, entries: session.entries.filter((e) => e.id !== entryId) });
+  const removeEntry = (target: SessionEntry) => {
+    mutate((current) => {
+      const remaining = normalizeSupersets(current.entries.filter((e) => e.id !== target.id));
+      const index = current.entries.findIndex((e) => e.id === target.id);
+      const fallback = remaining[Math.min(index, remaining.length - 1)];
+      return { ...current, entries: remaining, currentEntryId: fallback?.id };
+    });
     announce('Esercizio rimosso.');
-  }, [session, persist, announce]);
+  };
 
-  const totals = useMemo(() => {
-    if (!session) return { done: 0, total: 0, volume: 0 };
-    let done = 0; let total = 0; let volume = 0;
-    for (const entry of session.entries) {
-      for (const set of entry.sets) {
-        total += 1;
-        if (set.completed) {
-          done += 1;
-          if (set.weightKg && set.reps) volume += set.weightKg * set.reps;
-        }
-      }
-    }
-    return { done, total, volume: Math.round(volume) };
-  }, [session]);
+  const toggleSuperset = (index: number) => {
+    const linked = isLinkedWithNext(entries, index);
+    mutate((current) => ({
+      ...current,
+      entries: linked ? unlinkFromNext(current.entries, index) : linkWithNext(current.entries, index),
+    }));
+    announce(linked ? 'Esercizi separati.' : 'Esercizi in superset: si alternano senza pausa.');
+  };
 
   if (stored === undefined && !session) {
     return (
@@ -240,125 +331,57 @@ export default function WorkoutPage() {
 
   if (!session) return <p className="muted">Caricamento...</p>;
 
-  return (
-    <>
-      <header className="app-header">
-        <IconButton label="Chiudi senza terminare" onClick={() => navigate('/')}>
-          <X size={22} aria-hidden="true" />
-        </IconButton>
-        <div style={{ flex: 1, minInlineSize: 0 }}>
-          <h1 className="app-header__title" style={{ fontSize: 'var(--text-title-sm)' }}>{session.name}</h1>
-          <p className="tiny muted num" style={{ margin: 0 }}>
-            <Timer size={12} aria-hidden="true" style={{ verticalAlign: '-2px' }} /> {formatDuration(elapsed)}
-            {' - '}{totals.done}/{totals.total} serie
-            {totals.volume > 0 && <> {' - '}{totals.volume.toLocaleString('it-IT')} kg</>}
-          </p>
-        </div>
+  const totalSets = entries.reduce((sum, e) => sum + e.sets.length, 0);
+  const doneSets = entries.reduce((sum, e) => sum + e.sets.filter((s) => s.completed).length, 0);
+  const allDone = totalSets > 0 && doneSets === totalSets;
+
+  const header = (
+    <header className="app-header">
+      <IconButton label="Chiudi senza terminare" onClick={() => navigate('/')}>
+        <X size={22} aria-hidden="true" />
+      </IconButton>
+      <div style={{ flex: 1, minInlineSize: 0 }}>
+        <h1 className="app-header__title" style={{ fontSize: 'var(--text-title-sm)' }}>{session.name}</h1>
+        <p className="tiny muted num" style={{ margin: 0 }}>
+          {begun
+            ? <><Timer size={12} aria-hidden="true" style={{ verticalAlign: '-2px' }} /> {formatDuration(elapsed)} - {doneSets}/{totalSets} serie</>
+            : 'Anteprima'}
+        </p>
+      </div>
+      {begun && (
         <Button size="sm" variant="success" onClick={() => setConfirmFinish(true)}>
           <Flag size={16} aria-hidden="true" /> Fine
         </Button>
-      </header>
+      )}
+    </header>
+  );
 
-      <div className="workout" style={{ paddingBlockEnd: 'calc(var(--layout-restbar-h) + var(--spacing) * 10)' }}>
-        {session.entries.length === 0 && (
-          <div className="empty-state">
-            <p>Allenamento vuoto. Aggiungi il primo esercizio per iniziare.</p>
-          </div>
-        )}
-
-        {session.entries.map((entry) => {
-          const exercise = getExercise(entry.exerciseId);
-          if (!exercise) return null;
-          const previousSets = previous[entry.exerciseId];
-          const doneCount = entry.sets.filter((s) => s.completed).length;
-
-          return (
-            <section key={entry.id} className="card workout-exercise" aria-labelledby={`ex-${entry.id}`}>
-              <div className="workout-exercise__head">
-                <ExerciseImage exercise={exercise} size="thumb" className="exercise-thumb" />
-                <div style={{ flex: 1, minInlineSize: 0 }}>
-                  <h2 id={`ex-${entry.id}`} className="section-title">{exercise.name}</h2>
-                  <p className="tiny muted" style={{ margin: 0 }}>
-                    {doneCount} di {entry.sets.length} serie completate
-                  </p>
-                </div>
-                <IconButton label={`Rimuovi ${exercise.name} dall'allenamento`} onClick={() => removeEntry(entry.id)}>
-                  <Trash2 size={18} aria-hidden="true" />
-                </IconButton>
-              </div>
-
-              <ul className="set-list">
-                {entry.sets.map((set, index) => (
-                  <SetRow
-                    key={set.id}
-                    exercise={exercise}
-                    set={set}
-                    index={index}
-                    units={settings?.units ?? 'kg'}
-                    previous={previousSets?.[index]}
-                    onChange={(patch) => updateSet(entry.id, set.id, patch)}
-                    onToggleComplete={() => toggleComplete(entry, set, exercise)}
-                  />
-                ))}
-              </ul>
-
-              <div className="set-actions">
-                <Button size="sm" variant="ghost" onClick={() => addSet(entry)}>
-                  <Plus size={16} aria-hidden="true" /> Serie
-                </Button>
-                {entry.sets.length > 1 && (
-                  <IconButton
-                    label={`Togli l'ultima serie di ${exercise.name}`}
-                    onClick={() => removeSet(entry.id, entry.sets[entry.sets.length - 1]!.id)}
-                  >
-                    <Minus size={18} aria-hidden="true" />
-                  </IconButton>
-                )}
-                <a className="btn btn--sm btn--ghost" href={`/esercizi/${exercise.slug}`}>
-                  Come si fa <ChevronRight size={16} aria-hidden="true" />
-                </a>
-              </div>
-            </section>
-          );
-        })}
-
-        <Button block variant="secondary" onClick={() => setPickerOpen(true)}>
-          <Plus size={18} aria-hidden="true" /> Aggiungi esercizio
-        </Button>
-
-        <Button
-          block variant="ghost" onClick={() => setConfirmDiscard(true)}
-          style={{ marginBlockStart: 'calc(var(--spacing) * 4)', color: 'var(--color-danger-text)' }}
-        >
-          Annulla questo allenamento
-        </Button>
-      </div>
-
-      <RestTimerBar />
-
+  const dialogs = (
+    <>
       <ExercisePicker
         open={pickerOpen}
         onClose={() => setPickerOpen(false)}
         onPick={addExercise}
-        alreadyAdded={session.entries.map((e) => e.exerciseId)}
+        alreadyAdded={entries.map((e) => e.exerciseId)}
       />
-
       <ConfirmDialog
         open={confirmFinish}
         title="Chiudere l allenamento?"
-        message={totals.done === 0
+        message={doneSets === 0
           ? 'Non hai completato nessuna serie: verra salvato come allenamento vuoto.'
-          : `Salviamo ${totals.done} serie completate. Le serie non spuntate non vengono registrate.`}
+          : allDone
+            ? `Ottimo lavoro: ${doneSets} serie completate.`
+            : `Salviamo ${doneSets} serie completate. Le altre non vengono registrate.`}
         confirmLabel="Termina"
         onCancel={() => setConfirmFinish(false)}
         onConfirm={async () => {
           setConfirmFinish(false);
+          stopRest();
           const { session: finished } = await completeSession(session);
           void releaseWakeLock();
           navigate(`/allenamento/${finished.id}/riepilogo`, { replace: true });
         }}
       />
-
       <ConfirmDialog
         open={confirmDiscard}
         title="Annullare l allenamento?"
@@ -368,11 +391,278 @@ export default function WorkoutPage() {
         onCancel={() => setConfirmDiscard(false)}
         onConfirm={async () => {
           setConfirmDiscard(false);
+          stopRest();
           await discardSession(session.id);
           void releaseWakeLock();
           navigate('/', { replace: true });
         }}
       />
+    </>
+  );
+
+  if (!begun) {
+    return (
+      <>
+        {header}
+        <WorkoutPreview
+          session={session}
+          onDiscard={() => setConfirmDiscard(true)}
+          onBegin={() => {
+            const now = new Date().toISOString();
+            const first = entries.find((e) => e.sets.some((s) => !s.completed));
+            mutate((current) => ({ ...current, begunAt: now, startedAt: now, currentEntryId: first?.id }));
+            announce('Allenamento iniziato.');
+            requestAnimationFrame(() => headingRef.current?.focus());
+          }}
+        />
+        {dialogs}
+      </>
+    );
+  }
+
+  if (!entry || !exercise) {
+    return (
+      <>
+        {header}
+        <div className="workout">
+          <div className="empty-state">
+            <p>Allenamento vuoto. Aggiungi il primo esercizio per iniziare.</p>
+          </div>
+          <Button block variant="secondary" onClick={() => setPickerOpen(true)}>
+            <Plus size={18} aria-hidden="true" /> Aggiungi esercizio
+          </Button>
+        </div>
+        {dialogs}
+      </>
+    );
+  }
+
+  const position = supersetPositions(entries)[currentIndex] ?? null;
+  const setIndex = currentSetIndex(entry);
+  const set = setIndex >= 0 ? entry.sets[setIndex] : undefined;
+  const phase = set ? setPhase(set) : 'done';
+  const editingSet = editingSetId ? entry.sets.find((s) => s.id === editingSetId) : undefined;
+  const isTimed = exercise.loadType === 'time' || Boolean(set?.targetTimeSec);
+  const timeSets = settings?.timeSets !== false;
+  const weightStep = settings?.weightStepKg ?? 2.5;
+  const prior = set ? previous[entry.exerciseId]?.[setIndex] : undefined;
+  const nextWithWork = nextEntryWithWork(entries, currentIndex);
+  const nextExercise = nextWithWork >= 0 ? getExercise(entries[nextWithWork]!.exerciseId) : undefined;
+
+  const targetLabel = set
+    ? isTimed ? `${set.targetTimeSec ?? 0} secondi` : `${formatReps(set.targetReps)} ripetizioni`
+    : '';
+  const weightLabel = set?.weightKg ? `${String(set.weightKg).replace('.', ',')} kg` : null;
+
+  return (
+    <>
+      {header}
+
+      <div className="workout guided" style={{ paddingBlockEnd: 'calc(var(--layout-restbar-h) + var(--spacing) * 10)' }}>
+        <nav className="guided-nav" aria-label="Esercizi">
+          <IconButton
+            label="Esercizio precedente" disabled={currentIndex === 0}
+            onClick={() => goTo(currentIndex - 1)}
+          >
+            <ChevronLeft size={24} aria-hidden="true" />
+          </IconButton>
+          <button type="button" className="guided-nav__list" onClick={() => setListOpen(true)}>
+            <ListOrdered size={16} aria-hidden="true" />
+            <span className="num">Esercizio {currentIndex + 1} di {entries.length}</span>
+          </button>
+          <IconButton
+            label="Esercizio successivo" disabled={currentIndex === entries.length - 1}
+            onClick={() => goTo(currentIndex + 1)}
+          >
+            <ChevronRight size={24} aria-hidden="true" />
+          </IconButton>
+        </nav>
+
+        <section
+          key={entry.id}
+          className="card guided-stage"
+          data-superset={position ? '' : undefined}
+          data-focus={editingSet || phase === 'running' || phase === 'logging' ? '' : undefined}
+          aria-labelledby="guided-title"
+        >
+          {position && <SupersetTag position={position} />}
+          <div className="guided-stage__media">
+            <ExerciseImage key={exercise.id} exercise={exercise} animated size="full" className="guided-stage__image" />
+          </div>
+          <h2 id="guided-title" ref={headingRef} tabIndex={-1} className="page-title guided-stage__title">
+            {exercise.name}
+          </h2>
+          {entry.notes && (
+            <p className="callout callout--info guided-stage__note">
+              <Info size={18} aria-hidden="true" /> <span>{entry.notes}</span>
+            </p>
+          )}
+
+          <ol className="set-dots" aria-label="Serie dell esercizio">
+            {entry.sets.map((s, i) => (
+              <li key={s.id}>
+                <button
+                  type="button"
+                  className="set-dot"
+                  data-state={s.completed ? 'done' : i === setIndex ? 'current' : 'todo'}
+                  disabled={!s.completed}
+                  onClick={() => { setAdvance(null); setEditingSetId(s.id); }}
+                  aria-label={s.completed
+                    ? `Serie ${i + 1}: ${s.timeSec && isTimed ? `${s.timeSec} secondi` : `${s.reps ?? 0} ripetizioni`}${s.weightKg ? ` con ${s.weightKg} kg` : ''}. Tocca per correggere`
+                    : `Serie ${i + 1}${i === setIndex ? ', la prossima' : ''}`}
+                >
+                  {s.completed
+                    ? <span className="num">{isTimed ? `${s.timeSec ?? 0}s` : `${s.weightKg ? `${s.weightKg}x` : ''}${s.reps ?? 0}`}</span>
+                    : <span className="num">{i + 1}</span>}
+                </button>
+              </li>
+            ))}
+          </ol>
+
+          {editingSet ? (
+            <SetLogPanel
+              key={editingSet.id}
+              exercise={exercise}
+              set={editingSet}
+              setNumber={entry.sets.indexOf(editingSet) + 1}
+              weightStep={weightStep}
+              editing
+              onCancel={() => setEditingSetId(null)}
+              onSave={(values) => saveSet(entry, editingSet, values)}
+            />
+          ) : set ? (
+            <>
+              <div className="guided-target">
+                <p className="label-caps" style={{ margin: 0 }}>Serie {setIndex + 1} di {entry.sets.length}</p>
+                <p className="guided-target__value num">
+                  {targetLabel}{weightLabel && <> <span aria-hidden="true">-</span> {weightLabel}</>}
+                </p>
+                {prior && (
+                  <p className="tiny muted num" style={{ margin: 0 }}>
+                    L ultima volta {prior.timeSec && isTimed ? `${prior.timeSec} s` : `${prior.weightKg ? `${prior.weightKg} kg x ` : ''}${prior.reps ?? '-'}`}
+                  </p>
+                )}
+              </div>
+
+              {phase === 'pending' && (
+                <div className="stack" style={{ gap: 'calc(var(--spacing) * 2)' }}>
+                  {timeSets ? (
+                    <>
+                      <Button block size="lg" onClick={() => {
+                        stopRest();
+                        setAdvance(null);
+                        patchSet(entry.id, set.id, { startedAt: new Date().toISOString() });
+                        announce(`Serie ${setIndex + 1} avviata.`);
+                      }}>
+                        <Play size={20} aria-hidden="true" /> Avvia serie {setIndex + 1}
+                      </Button>
+                      <Button block variant="ghost" onClick={() => finishSet(entry, set, exercise, false)}>
+                        Registra senza cronometro
+                      </Button>
+                    </>
+                  ) : (
+                    <Button block size="lg" onClick={() => finishSet(entry, set, exercise, false)}>
+                      <Check size={20} aria-hidden="true" /> Serie {setIndex + 1} fatta
+                    </Button>
+                  )}
+                </div>
+              )}
+
+              {phase === 'running' && set.startedAt && (
+                <div className="stack" style={{ gap: 'calc(var(--spacing) * 3)' }}>
+                  <SetStopwatch
+                    startedAt={set.startedAt}
+                    targetSec={isTimed ? set.targetTimeSec : undefined}
+                    sound={settings?.restTimerSound !== false}
+                    vibration={settings?.restTimerVibration !== false}
+                  />
+                  <Button block size="lg" variant="success" onClick={() => finishSet(entry, set, exercise, true)}>
+                    <Square size={18} aria-hidden="true" /> Fine serie
+                  </Button>
+                  <Button block variant="ghost" onClick={() => {
+                    patchSet(entry.id, set.id, { startedAt: undefined });
+                    announce('Serie annullata.');
+                  }}>
+                    Annulla la serie
+                  </Button>
+                </div>
+              )}
+
+              {phase === 'logging' && (
+                <SetLogPanel
+                  key={set.id}
+                  exercise={exercise}
+                  set={set}
+                  setNumber={setIndex + 1}
+                  weightStep={weightStep}
+                  onSave={(values) => saveSet(entry, set, values)}
+                />
+              )}
+            </>
+          ) : (
+            <div className="guided-done" role="status">
+              <p className="section-title guided-done__title">
+                <Check size={18} aria-hidden="true" /> Esercizio completato
+              </p>
+              {advance && nextExercise ? (
+                <>
+                  <p className="guided-done__countdown">
+                    Prossimo: <strong>{nextExercise.name}</strong>
+                    <span className="num" aria-hidden="true"> fra {advanceLeft}</span>
+                  </p>
+                  <div className="guided-done__track" aria-hidden="true">
+                    <span style={{ animationDuration: `${ADVANCE_DELAY_SEC}s` }} />
+                  </div>
+                  <div className="grid-2">
+                    <Button variant="ghost" onClick={() => { setAdvance(null); announce('Passaggio automatico annullato.'); }}>
+                      Resta qui
+                    </Button>
+                    <Button onClick={() => goTo(advance.index)}>Vai ora</Button>
+                  </div>
+                </>
+              ) : nextExercise ? (
+                <Button block size="lg" onClick={() => goTo(nextWithWork)}>
+                  Prossimo: {nextExercise.name} <ChevronRight size={18} aria-hidden="true" />
+                </Button>
+              ) : (
+                <Button block size="lg" variant="success" onClick={() => setConfirmFinish(true)}>
+                  <Flag size={18} aria-hidden="true" /> Termina e guarda le statistiche
+                </Button>
+              )}
+            </div>
+          )}
+        </section>
+
+        <div className="set-actions" style={{ flexWrap: 'wrap' }}>
+          <Button size="sm" variant="ghost" onClick={() => addSet(entry)}>
+            <Plus size={16} aria-hidden="true" /> Serie
+          </Button>
+          {entry.sets.length > 1 && !entry.sets[entry.sets.length - 1]!.completed && (
+            <IconButton label={`Togli l ultima serie di ${exercise.name}`} onClick={() => removeLastSet(entry)}>
+              <Minus size={18} aria-hidden="true" />
+            </IconButton>
+          )}
+          <IconButton label={`Rimuovi ${exercise.name} dall allenamento`} onClick={() => removeEntry(entry)}>
+            <Trash2 size={18} aria-hidden="true" />
+          </IconButton>
+          <a className="btn btn--sm btn--ghost" href={`/esercizi/${exercise.slug}`}>
+            Come si fa <ChevronRight size={16} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+
+      <RestTimerBar />
+
+      <ExerciseListSheet
+        open={listOpen}
+        session={session}
+        currentIndex={currentIndex}
+        onClose={() => setListOpen(false)}
+        onSelect={(index) => { setListOpen(false); goTo(index); }}
+        onToggleSuperset={toggleSuperset}
+        onAddExercise={() => setPickerOpen(true)}
+      />
+      {dialogs}
     </>
   );
 }

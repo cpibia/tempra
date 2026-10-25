@@ -163,8 +163,10 @@
   /* --- Brand ---------------------------------------------------------------- */
   --color-brand-text:         light-dark(#B54700, #FF864E);
   --color-brand-solid:        light-dark(#D85600, #F5691A);
-  --color-brand-solid-hover:  light-dark(#B54700, #FF864E);
-  --color-brand-solid-active: light-dark(#903700, #D85600);
+  /* Il testo sul pieno e' scuro in entrambi i temi: hover e pressione schiariscono,
+     perche' scurire porterebbe il contrasto sotto 4,5:1 nel tema chiaro. */
+  --color-brand-solid-hover:  light-dark(#F5691A, #FF864E);
+  --color-brand-solid-active: light-dark(#FF864E, #D85600);
   --color-brand-surface:      light-dark(#FFEEE7, #351B10);
   --color-brand-border:       light-dark(#FBCCB8, #5E321F);
 

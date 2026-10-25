@@ -1,6 +1,6 @@
 # ADR 0005: Sincronizzazione opzionale, documenti opachi, vince l'ultima scrittura
 
-- **Stato**: accettata
+- **Stato**: accettata; per l accesso vedi l ADR 0006 (codice di sincronizzazione)
 - **Data**: 12 settembre 2026
 
 ## Contesto

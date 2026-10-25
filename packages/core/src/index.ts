@@ -8,6 +8,8 @@ export * from './engine/catalog';
 export * from './engine/equipment';
 export * from './engine/volume';
 export * from './engine/rest';
+export * from './engine/supersets';
+export * from './engine/workout-flow';
 export * from './engine/splits';
 export * from './engine/prescription';
 export * from './engine/generator';

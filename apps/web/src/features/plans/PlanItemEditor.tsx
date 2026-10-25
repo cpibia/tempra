@@ -11,6 +11,8 @@ interface PlanItemEditorProps {
   item: PlanItem;
   goal: Goal;
   experience: Experience;
+  /** In un superset la pausa conta solo dopo l'ultimo esercizio del giro. */
+  supersetRole?: 'inner' | 'last';
   onChange: (item: PlanItem) => void;
 }
 
@@ -30,7 +32,9 @@ const TECHNIQUES: { value: SetTechnique; label: string; hint: string }[] = [
  * un eventuale peso di zavorra. La pausa arriva gia' calcolata, ma resta
  * sempre modificabile: il valore proposto e' un consiglio, non un vincolo.
  */
-export function PlanItemEditor({ exercise, item, goal, experience, onChange }: PlanItemEditorProps) {
+export function PlanItemEditor({
+  exercise, item, goal, experience, supersetRole, onChange,
+}: PlanItemEditorProps) {
   const isTimed = exercise.loadType === 'time';
   const showWeight = exercise.loadType === 'weight' || exercise.loadType === 'bodyweight_loadable';
 
@@ -104,37 +108,50 @@ export function PlanItemEditor({ exercise, item, goal, experience, onChange }: P
         )}
       </div>
 
-      <div className="item-editor__rest">
-        <NumberStepper
-          label="Pausa" unit="secondi"
-          value={item.restSec}
-          onChange={(v) => {
-            const rest = roundTo15(v ?? suggestedRest);
-            onChange({ ...item, restSec: rest, sets: item.sets.map((s) => ({ ...s, restSec: rest })) });
-          }}
-          step={15} min={0} max={600} compact
-        />
+      {supersetRole === 'inner' ? (
         <p className="tiny muted" style={{ margin: 0 }}>
           <Info size={13} aria-hidden="true" style={{ verticalAlign: '-2px' }} />
-          {' '}Consigliata {formatDuration(suggestedRest)} per questo esercizio con il tuo obiettivo.
-          {item.restSec !== suggestedRest && (
-            <>
-              {' '}
-              <button
-                type="button"
-                className="link-button"
-                onClick={() => onChange({
-                  ...item,
-                  restSec: suggestedRest,
-                  sets: item.sets.map((s) => ({ ...s, restSec: suggestedRest })),
-                })}
-              >
-                <RotateCcw size={12} aria-hidden="true" /> usa la consigliata
-              </button>
-            </>
-          )}
+          {' '}E in superset: dopo questo esercizio non c e pausa, si passa subito al
+          successivo. La pausa si imposta sull ultimo esercizio del superset.
         </p>
-      </div>
+      ) : (
+        <div className="item-editor__rest">
+          <NumberStepper
+            label="Pausa" unit="secondi"
+            value={item.restSec}
+            onChange={(v) => {
+              const rest = roundTo15(v ?? suggestedRest);
+              onChange({ ...item, restSec: rest, sets: item.sets.map((s) => ({ ...s, restSec: rest })) });
+            }}
+            step={15} min={0} max={600} compact
+          />
+          <p className="tiny muted" style={{ margin: 0 }}>
+            <Info size={13} aria-hidden="true" style={{ verticalAlign: '-2px' }} />
+            {' '}Consigliata {formatDuration(suggestedRest)} per questo esercizio con il tuo obiettivo.
+            {item.restSec !== suggestedRest && (
+              <>
+                {' '}
+                <button
+                  type="button"
+                  className="link-button"
+                  onClick={() => onChange({
+                    ...item,
+                    restSec: suggestedRest,
+                    sets: item.sets.map((s) => ({ ...s, restSec: suggestedRest })),
+                  })}
+                >
+                  <RotateCcw size={12} aria-hidden="true" /> usa la consigliata
+                </button>
+              </>
+            )}
+          </p>
+          {supersetRole === 'last' && (
+            <p className="tiny muted" style={{ margin: 0 }}>
+              E l ultimo esercizio del superset: questa pausa arriva dopo ogni giro completo.
+            </p>
+          )}
+        </div>
+      )}
 
       {!isTimed && (
         <div className="field">

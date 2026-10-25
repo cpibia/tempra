@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import {
   getExercise, GOAL_LABELS, MUSCLE_GROUP_LABELS,
+  isLinkedWithNext, linkWithNext, normalizeSupersets, supersetPositions, unlinkFromNext,
   type Exercise, type Goal, type Plan, type PlanDay, type PlanItem,
 } from '@tempra/core';
 import { getProfile } from '../../db/db';
@@ -20,6 +21,7 @@ import { ConfirmDialog } from '../../components/ui/Sheet';
 import { ExercisePicker } from '../catalog/ExercisePicker';
 import { ExerciseImage } from '../../components/ExerciseImage';
 import { PlanItemEditor } from './PlanItemEditor';
+import { SupersetLink, SupersetTag, supersetEdge } from '../../components/SupersetLink';
 import { useAnnounce } from '../../lib/announce';
 
 const GOALS: Goal[] = ['muscle', 'fat_loss', 'strength', 'recomp', 'endurance', 'health'];
@@ -91,7 +93,8 @@ export default function PlanEditorPage() {
   const removeItem = (itemId: string) => {
     if (!day) return;
     const exercise = getExercise(day.items.find((i) => i.id === itemId)?.exerciseId ?? '');
-    updateDay({ items: day.items.filter((i) => i.id !== itemId).map((i, order) => ({ ...i, order })) });
+    const remaining = day.items.filter((i) => i.id !== itemId);
+    updateDay({ items: normalizeSupersets(remaining).map((i, order) => ({ ...i, order })) });
     announce(`${exercise?.name ?? 'Esercizio'} rimosso.`);
   };
 
@@ -107,14 +110,28 @@ export default function PlanEditorPage() {
     const target = index + direction;
     if (index < 0 || target < 0 || target >= day.items.length) return;
 
+    // Chi si sposta esce dal superset: restare collegato a un esercizio che non
+    // e' piu' accanto non avrebbe senso durante l'allenamento.
     const items = [...day.items];
     const [moved] = items.splice(index, 1);
-    items.splice(target, 0, moved!);
-    updateDay({ items: items.map((item, order) => ({ ...item, order })) });
+    items.splice(target, 0, { ...moved!, supersetGroup: undefined });
+    updateDay({ items: normalizeSupersets(items).map((item, order) => ({ ...item, order })) });
 
     const exercise = getExercise(moved!.exerciseId);
     announce(`${exercise?.name ?? 'Esercizio'} spostato alla posizione ${target + 1} di ${items.length}.`);
     requestAnimationFrame(() => moveButtonRefs.current[`${itemId}-${direction}`]?.focus());
+  };
+
+  const toggleSuperset = (index: number) => {
+    if (!day) return;
+    const linked = isLinkedWithNext(day.items, index);
+    const items = linked ? unlinkFromNext(day.items, index) : linkWithNext(day.items, index);
+    updateDay({ items });
+    const first = getExercise(day.items[index]!.exerciseId)?.name ?? 'Esercizio';
+    const second = getExercise(day.items[index + 1]!.exerciseId)?.name ?? 'esercizio successivo';
+    announce(linked
+      ? `${first} e ${second} non sono piu in superset.`
+      : `${first} e ${second} ora sono in superset: si alternano senza pausa.`);
   };
 
   const addDay = () => {
@@ -125,6 +142,7 @@ export default function PlanEditorPage() {
   };
 
   const totalSets = day?.items.reduce((sum, item) => sum + item.sets.length, 0) ?? 0;
+  const positions = day ? supersetPositions(day.items) : [];
 
   return (
     <>
@@ -240,62 +258,85 @@ export default function PlanEditorPage() {
                   ? `${first.timeSec} s`
                   : Array.isArray(first?.reps) ? `${first.reps[0]}-${first.reps[1]}` : String(first?.reps ?? '');
 
+                const position = positions[index] ?? null;
+                const restsAfter = !position || position.index === position.size - 1;
+                const next = day.items[index + 1];
+                const nextExercise = next ? getExercise(next.exerciseId) : undefined;
+                const linkedWithNext = isLinkedWithNext(day.items, index);
+
                 return (
-                  <li key={item.id} className="card" style={{ padding: 'calc(var(--spacing) * 3)' }}>
-                    <div className="row" style={{ gap: 'calc(var(--spacing) * 3)' }}>
-                      <ExerciseImage exercise={exercise} size="thumb" className="exercise-thumb" />
-                      <button
-                        type="button"
-                        className="plan-item__toggle"
-                        aria-expanded={isOpen}
-                        onClick={() => setExpanded(isOpen ? null : item.id)}
-                      >
-                        <span className="exercise-item__name">{exercise.name}</span>
-                        <span className="tiny muted num">
-                          {item.sets.length} x {target}
-                          {first?.weightKg ? ` - ${first.weightKg} kg` : ''}
-                          {` - pausa ${item.restSec} s`}
-                        </span>
-                      </button>
-                      <div className="plan-item__move">
+                  <li key={item.id} className="plan-entry">
+                    <div
+                      className="card"
+                      data-superset={supersetEdge(position)}
+                      style={{ padding: 'calc(var(--spacing) * 3)' }}
+                    >
+                      {position && <SupersetTag position={position} />}
+                      <div className="row" style={{ gap: 'calc(var(--spacing) * 3)' }}>
+                        <ExerciseImage exercise={exercise} size="thumb" className="exercise-thumb" />
                         <button
-                          type="button" className="icon-btn"
-                          ref={(el) => { moveButtonRefs.current[`${item.id}--1`] = el; }}
-                          onClick={() => moveItem(item.id, -1)}
-                          disabled={index === 0}
-                          aria-label={`Sposta ${exercise.name} in alto`}
+                          type="button"
+                          className="plan-item__toggle"
+                          aria-expanded={isOpen}
+                          onClick={() => setExpanded(isOpen ? null : item.id)}
                         >
-                          <ChevronUp size={18} aria-hidden="true" />
+                          <span className="exercise-item__name">{exercise.name}</span>
+                          <span className="tiny muted num">
+                            {item.sets.length} x {target}
+                            {first?.weightKg ? ` - ${first.weightKg} kg` : ''}
+                            {restsAfter ? ` - pausa ${item.restSec} s` : ' - poi subito il successivo'}
+                          </span>
                         </button>
-                        <button
-                          type="button" className="icon-btn"
-                          ref={(el) => { moveButtonRefs.current[`${item.id}-1`] = el; }}
-                          onClick={() => moveItem(item.id, 1)}
-                          disabled={index === day.items.length - 1}
-                          aria-label={`Sposta ${exercise.name} in basso`}
-                        >
-                          <ChevronDown size={18} aria-hidden="true" />
-                        </button>
+                        <div className="plan-item__move">
+                          <button
+                            type="button" className="icon-btn"
+                            ref={(el) => { moveButtonRefs.current[`${item.id}--1`] = el; }}
+                            onClick={() => moveItem(item.id, -1)}
+                            disabled={index === 0}
+                            aria-label={`Sposta ${exercise.name} in alto`}
+                          >
+                            <ChevronUp size={18} aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button" className="icon-btn"
+                            ref={(el) => { moveButtonRefs.current[`${item.id}-1`] = el; }}
+                            onClick={() => moveItem(item.id, 1)}
+                            disabled={index === day.items.length - 1}
+                            aria-label={`Sposta ${exercise.name} in basso`}
+                          >
+                            <ChevronDown size={18} aria-hidden="true" />
+                          </button>
+                        </div>
                       </div>
+
+                      {isOpen && (
+                        <>
+                          <PlanItemEditor
+                            exercise={exercise}
+                            item={item}
+                            goal={plan.goal}
+                            experience={profile?.experience ?? 'beginner'}
+                            supersetRole={position ? (restsAfter ? 'last' : 'inner') : undefined}
+                            onChange={updateItem}
+                          />
+                          <div className="row" style={{ justifyContent: 'space-between', marginBlockStart: 'calc(var(--spacing) * 3)' }}>
+                            <a className="btn btn--sm btn--ghost" href={`/esercizi/${exercise.slug}`}>Come si esegue</a>
+                            <Button size="sm" variant="ghost" onClick={() => removeItem(item.id)}
+                              style={{ color: 'var(--color-danger-text)' }}>
+                              <Trash2 size={16} aria-hidden="true" /> Rimuovi
+                            </Button>
+                          </div>
+                        </>
+                      )}
                     </div>
 
-                    {isOpen && (
-                      <>
-                        <PlanItemEditor
-                          exercise={exercise}
-                          item={item}
-                          goal={plan.goal}
-                          experience={profile?.experience ?? 'beginner'}
-                          onChange={updateItem}
-                        />
-                        <div className="row" style={{ justifyContent: 'space-between', marginBlockStart: 'calc(var(--spacing) * 3)' }}>
-                          <a className="btn btn--sm btn--ghost" href={`/esercizi/${exercise.slug}`}>Come si esegue</a>
-                          <Button size="sm" variant="ghost" onClick={() => removeItem(item.id)}
-                            style={{ color: 'var(--color-danger-text)' }}>
-                            <Trash2 size={16} aria-hidden="true" /> Rimuovi
-                          </Button>
-                        </div>
-                      </>
+                    {nextExercise && (
+                      <SupersetLink
+                        linked={linkedWithNext}
+                        currentName={exercise.name}
+                        nextName={nextExercise.name}
+                        onToggle={() => toggleSuperset(index)}
+                      />
                     )}
                   </li>
                 );

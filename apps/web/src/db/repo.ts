@@ -157,6 +157,7 @@ export async function startSessionFromDay(plan: Plan, day: PlanDay): Promise<Ses
       order: item.order,
       supersetGroup: item.supersetGroup,
       technique: item.technique,
+      notes: item.notes,
       sets: item.sets.map((set, index) => {
         const prior = previous?.sets[index];
         return {

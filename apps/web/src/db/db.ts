@@ -56,6 +56,8 @@ export const DEFAULT_SETTINGS: Settings = {
   reduceMotion: false,
   speakRestCountdown: false,
   firstDayOfWeek: 1,
+  timeSets: true,
+  autoAdvance: true,
   syncEnabled: false,
 };
 

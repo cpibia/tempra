@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Zap, Search } from 'lucide-react';
+import { Zap, Search, CalendarCheck, Clock, Weight, Flame, ChevronRight } from 'lucide-react';
 import {
-  estimateOneRm, formatWeight, getExercise, MUSCLE_GROUP_LABELS,
-  searchExercises, type MuscleGroup,
+  estimateCalories, estimateOneRm, formatWeight, getExercise, MUSCLE_GROUP_LABELS,
+  searchExercises, type MuscleGroup, type Session,
 } from '@tempra/core';
-import { getSettings } from '../../db/db';
+import { getProfile, getSettings } from '../../db/db';
 import { getExerciseHistory, listRecords, listSessions } from '../../db/repo';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { Chart, type ChartPoint } from '../../components/Chart';
@@ -13,9 +13,41 @@ import { Chart, type ChartPoint } from '../../components/Chart';
 const shortDate = (iso: string) =>
   new Date(iso).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
 
+const DAY_MS = 86_400_000;
+
+const hoursAndMinutes = (seconds: number): string => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.round((seconds % 3600) / 60);
+  return hours > 0 ? `${hours} h ${minutes} min` : `${minutes} min`;
+};
+const WEEKS_SHOWN = 8;
+
+/** Inizio della settimana che contiene `date`, alla mezzanotte locale. */
+function weekStart(date: Date, firstDay: 0 | 1): Date {
+  const start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const offset = (start.getDay() - firstDay + 7) % 7;
+  start.setDate(start.getDate() - offset);
+  return start;
+}
+
+function weeklyCounts(sessions: Session[], firstDay: 0 | 1) {
+  const current = weekStart(new Date(), firstDay);
+  return Array.from({ length: WEEKS_SHOWN }, (_, i) => {
+    const start = new Date(current);
+    start.setDate(start.getDate() - (WEEKS_SHOWN - 1 - i) * 7);
+    const end = start.getTime() + 7 * DAY_MS;
+    const count = sessions.filter((s) => {
+      const at = new Date(s.startedAt).getTime();
+      return at >= start.getTime() && at < end;
+    }).length;
+    return { label: shortDate(start.toISOString()), value: count };
+  });
+}
+
 export default function ProgressPage() {
   const settings = useLiveQuery(() => getSettings(), [], undefined);
-  const sessions = useLiveQuery(() => listSessions(60), [], undefined);
+  const sessions = useLiveQuery(() => listSessions(200), [], undefined);
+  const profile = useLiveQuery(() => getProfile(), [], undefined);
   const records = useLiveQuery(() => listRecords(), [], undefined);
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
@@ -68,12 +100,30 @@ export default function ProgressPage() {
   }, [sessions]);
 
   const maxMuscleSets = muscleVolume[0]?.sets ?? 1;
+
+  const overview = useMemo(() => {
+    const list = sessions ?? [];
+    const firstDay = settings?.firstDayOfWeek ?? 1;
+    const weeks = weeklyCounts(list, firstDay);
+    const monthAgo = Date.now() - 30 * DAY_MS;
+    const month = list.filter((s) => new Date(s.startedAt).getTime() >= monthAgo);
+    const monthSeconds = month.reduce((sum, s) => sum + s.durationSec, 0);
+    return {
+      weeks,
+      thisWeek: weeks[weeks.length - 1]?.value ?? 0,
+      weeklyAverage: Math.round((weeks.slice(0, -1).reduce((sum, w) => sum + w.value, 0) / (WEEKS_SHOWN - 1)) * 10) / 10,
+      monthSessions: month.length,
+      monthSeconds,
+      monthVolume: Math.round(month.reduce((sum, s) => sum + s.totalVolumeKg, 0)),
+      monthCalories: estimateCalories(monthSeconds, profile?.weightKg),
+    };
+  }, [sessions, settings?.firstDayOfWeek, profile?.weightKg]);
   const searchResults = query.trim() ? searchExercises(query, 8) : [];
   const selectedExercise = selected ? getExercise(selected) : null;
 
   return (
     <>
-      <PageHeader title="Progressi" />
+      <PageHeader title="Statistiche" />
 
       <div className="stack" style={{ gap: 'calc(var(--spacing) * 6)', paddingBlockStart: 'calc(var(--spacing) * 4)' }}>
 
@@ -89,6 +139,56 @@ export default function ProgressPage() {
 
         {sessions && sessions.length > 0 && (
           <>
+            <section aria-labelledby="overview-title" className="stack" style={{ gap: 'calc(var(--spacing) * 3)' }}>
+              <h2 id="overview-title" className="section-title">Ultimi 30 giorni</h2>
+              <div className="stat-grid stat-grid--2">
+                <div className="card stat-tile">
+                  <CalendarCheck size={18} aria-hidden="true" />
+                  <span className="stat-tile__value num">{overview.monthSessions}</span>
+                  <span className="tiny muted">allenamenti</span>
+                </div>
+                <div className="card stat-tile">
+                  <Clock size={18} aria-hidden="true" />
+                  <span className="stat-tile__value num">{hoursAndMinutes(overview.monthSeconds)}</span>
+                  <span className="tiny muted">di allenamento</span>
+                </div>
+                <div className="card stat-tile">
+                  <Weight size={18} aria-hidden="true" />
+                  <span className="stat-tile__value num">{overview.monthVolume.toLocaleString('it-IT')}</span>
+                  <span className="tiny muted">kg sollevati</span>
+                </div>
+                <div className="card stat-tile">
+                  <Flame size={18} aria-hidden="true" />
+                  <span className="stat-tile__value num">
+                    {overview.monthCalories === null ? '-' : `~${overview.monthCalories.toLocaleString('it-IT')}`}
+                  </span>
+                  <span className="tiny muted">kcal stimate</span>
+                </div>
+              </div>
+              <a className="exercise-item" href="/storico">
+                <span className="exercise-item__text">
+                  <span className="exercise-item__name">Storico degli allenamenti</span>
+                  <span className="tiny muted">Ogni seduta con serie, carichi e durata</span>
+                </span>
+                <ChevronRight size={18} aria-hidden="true" />
+              </a>
+            </section>
+
+            <section aria-labelledby="frequency-title">
+              <h2 id="frequency-title" className="section-title" style={{ marginBlockEnd: 'calc(var(--spacing) * 3)' }}>
+                Allenamenti per settimana
+              </h2>
+              <div className="card" style={{ padding: 'calc(var(--spacing) * 4)' }}>
+                <Chart
+                  title="Allenamenti per settimana"
+                  type="bar"
+                  points={overview.weeks}
+                  summary={`Questa settimana ${overview.thisWeek} ${overview.thisWeek === 1 ? 'allenamento' : 'allenamenti'}. Media delle ${WEEKS_SHOWN - 1} settimane precedenti: ${
+                    String(overview.weeklyAverage).replace('.', ',')}.`}
+                />
+              </div>
+            </section>
+
             <section aria-labelledby="volume-title">
               <h2 id="volume-title" className="section-title" style={{ marginBlockEnd: 'calc(var(--spacing) * 3)' }}>
                 Volume per allenamento

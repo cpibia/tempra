@@ -5,7 +5,7 @@ const TABS = [
   { to: '/', label: 'Oggi', Icon: CalendarDays, end: true },
   { to: '/schede', label: 'Schede', Icon: ListChecks, end: false },
   { to: '/esercizi', label: 'Esercizi', Icon: Dumbbell, end: false },
-  { to: '/progressi', label: 'Progressi', Icon: LineChart, end: false },
+  { to: '/statistiche', label: 'Statistiche', Icon: LineChart, end: false },
 ];
 
 export function TabBar() {

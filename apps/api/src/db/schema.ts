@@ -11,14 +11,22 @@ import { pgTable, text, timestamp, jsonb, uniqueIndex, index, integer } from 'dr
  * cambiare la struttura di una scheda senza una migrazione lato server.
  */
 
+/**
+ * Un utente e' un insieme di dispositivi che condividono lo stesso codice di
+ * sincronizzazione. Del codice si conserva solo l'impronta: chi legge il
+ * database non puo' collegarsi ai dati altrui. Email e password non si usano
+ * piu': restano facoltative per non dover riscrivere le righe gia' presenti.
+ */
 export const users = pgTable('users', {
   id: text('id').primaryKey(),
-  email: text('email').notNull(),
-  passwordHash: text('password_hash').notNull(),
+  email: text('email'),
+  passwordHash: text('password_hash'),
+  syncCodeHash: text('sync_code_hash'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   lastSeenAt: timestamp('last_seen_at', { withTimezone: true }),
 }, (table) => [
   uniqueIndex('users_email_unique').on(table.email),
+  uniqueIndex('users_sync_code_hash_unique').on(table.syncCodeHash),
 ]);
 
 export const documents = pgTable('documents', {

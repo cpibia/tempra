@@ -227,6 +227,10 @@ export interface LoggedSet {
   restSec: number;
   completed: boolean;
   completedAt?: string;
+  /** Inizio della serie cronometrata: finche' manca la durata, la serie e' in corso. */
+  startedAt?: string;
+  /** Durata misurata fra "Avvia" e "Fine"; 0 se registrata senza cronometro. */
+  durationSec?: number;
   /** Impostato dal motore dei record quando la serie supera il precedente primato. */
   prType?: 'weight' | 'reps' | 'volume' | 'e1rm' | 'time';
 }
@@ -250,6 +254,10 @@ export interface Session {
   name: string;
   status: SessionStatus;
   startedAt: string;
+  /** Momento in cui si e' premuto "Inizia" dopo l'anteprima. */
+  begunAt?: string;
+  /** Esercizio mostrato nell'allenamento guidato. */
+  currentEntryId?: string;
   endedAt?: string;
   /** Durata effettiva al netto delle pause dell'app, in secondi. */
   durationSec: number;
@@ -310,6 +318,10 @@ export interface Settings {
   /** Annuncia i tempi di recupero a voce tramite sintesi vocale. */
   speakRestCountdown: boolean;
   firstDayOfWeek: 0 | 1;
+  /** Cronometra ogni serie con "Avvia" e "Fine". */
+  timeSets: boolean;
+  /** Passa da solo all'esercizio successivo dopo un conto alla rovescia. */
+  autoAdvance: boolean;
   syncEnabled: boolean;
   lastSyncAt?: string;
 }

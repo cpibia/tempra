@@ -1,33 +1,36 @@
+import { randomInt } from 'node:crypto';
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { and, eq, gt, isNull } from 'drizzle-orm';
 import { db, schema } from '../db/client';
-import { hashPassword, verifyPassword, newId, randomToken, sha256 } from '../lib/crypto';
+import { newId, randomToken, sha256 } from '../lib/crypto';
 import { signAccessToken, requireAuth, clientIp, type AuthedContext } from '../lib/auth';
-import { consumeRateLimit, resetRateLimit } from '../lib/rate-limit';
+import { consumeRateLimit } from '../lib/rate-limit';
 import { env } from '../lib/env';
 
 /**
- * Hash fittizio con gli stessi parametri di quelli reali: la verifica costa
- * lo stesso tempo anche quando l'indirizzo non esiste, e la durata della
- * risposta non rivela quali email sono registrate.
+ * Codice di sincronizzazione: otto caratteri scritti a mano su un telefono,
+ * quindi senza 0/O e 1/I/L. Con 31 simboli fanno circa 8,5 * 10^11 combinazioni:
+ * insieme al limite di tentativi per indirizzo, indovinarne uno non e' praticabile.
  */
-const DUMMY_HASH =
-  'scrypt$65536$8$2$AAAAAAAAAAAAAAAAAAAAAA==$'
-  + 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
+const CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const CODE_LENGTH = 8;
 
-const credentials = z.object({
-  email: z.string().trim().toLowerCase().email('Indirizzo email non valido').max(254),
-  password: z.string()
-    .min(10, 'La password deve avere almeno 10 caratteri')
-    .max(200, 'La password e troppo lunga'),
+const codeSchema = z.object({
+  code: z.string()
+    .transform((value) => value.toUpperCase().replace(/[^A-Z0-9]/g, ''))
+    .pipe(z.string().length(CODE_LENGTH, 'Il codice ha 8 caratteri')),
 });
+
+function generateCode(): string {
+  return Array.from({ length: CODE_LENGTH }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join('');
+}
 
 export const authRoutes = new Hono<AuthedContext>();
 
-async function issueSession(userId: string, email: string) {
-  const accessToken = await signAccessToken({ sub: userId, email });
+async function issueSession(userId: string, email: string | null) {
+  const accessToken = await signAccessToken({ sub: userId, email: email ?? '' });
   const refreshToken = randomToken();
 
   await db.insert(schema.refreshTokens).values({
@@ -40,61 +43,51 @@ async function issueSession(userId: string, email: string) {
   return { accessToken, refreshToken, expiresIn: env.accessTokenTtlSec };
 }
 
-authRoutes.post('/register', zValidator('json', credentials), async (c) => {
+/** Crea un nuovo spazio dati e restituisce il codice per collegarci altri dispositivi. */
+authRoutes.post('/sync-code', async (c) => {
   if (!env.registrationOpen) {
-    return c.json({ error: 'Le registrazioni sono chiuse su questa istanza' }, 403);
+    return c.json({ error: 'La creazione di nuovi codici e chiusa su questa istanza' }, 403);
   }
 
-  const limit = await consumeRateLimit(`register:${clientIp(c)}`, 5, 3600);
+  const limit = await consumeRateLimit(`sync-code:${clientIp(c)}`, 5, 3600);
   if (!limit.allowed) {
     return c.json({ error: 'Troppi tentativi, riprova piu tardi' }, 429, {
       'Retry-After': String(limit.retryAfterSec),
     });
   }
 
-  const { email, password } = c.req.valid('json');
-  const existing = await db.query.users.findFirst({ where: eq(schema.users.email, email) });
-  if (existing) {
-    // Il messaggio e' volutamente identico a quello di successo lato client:
-    // non si conferma a un estraneo se un indirizzo e' registrato.
-    return c.json({ error: 'Registrazione non riuscita' }, 409);
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const code = generateCode();
+    const userId = newId('usr');
+    const inserted = await db.insert(schema.users)
+      .values({ id: userId, syncCodeHash: sha256(code) })
+      .onConflictDoNothing()
+      .returning({ id: schema.users.id });
+    if (inserted.length) {
+      return c.json({ code, ...(await issueSession(userId, null)) }, 201);
+    }
   }
 
-  const userId = newId('usr');
-  await db.insert(schema.users).values({
-    id: userId,
-    email,
-    passwordHash: await hashPassword(password),
-  });
-
-  return c.json(await issueSession(userId, email), 201);
+  return c.json({ error: 'Nessun codice libero, riprova' }, 503);
 });
 
-authRoutes.post('/login', zValidator('json', credentials), async (c) => {
+/** Collega questo dispositivo ai dati di un codice esistente. */
+authRoutes.post('/sync-code/join', zValidator('json', codeSchema), async (c) => {
   const ip = clientIp(c);
-  const { email, password } = c.req.valid('json');
-
-  const limit = await consumeRateLimit(`login:${ip}:${email}`, 10, 900);
+  const limit = await consumeRateLimit(`sync-join:${ip}`, 10, 900);
   if (!limit.allowed) {
     return c.json({ error: 'Troppi tentativi, riprova fra qualche minuto' }, 429, {
       'Retry-After': String(limit.retryAfterSec),
     });
   }
 
-  const user = await db.query.users.findFirst({ where: eq(schema.users.email, email) });
-
-  // La verifica si esegue anche quando l'utente non esiste, con un hash fittizio:
-  // altrimenti la differenza di tempo rivelerebbe quali indirizzi sono registrati.
-  const hash = user?.passwordHash ?? DUMMY_HASH;
-  const valid = await verifyPassword(password, hash);
-
-  if (!user || !valid) {
-    return c.json({ error: 'Email o password non corretti' }, 401);
+  const { code } = c.req.valid('json');
+  const user = await db.query.users.findFirst({ where: eq(schema.users.syncCodeHash, sha256(code)) });
+  if (!user) {
+    return c.json({ error: 'Codice non trovato. Controlla di averlo scritto bene.' }, 404);
   }
 
-  await resetRateLimit(`login:${ip}:${email}`);
   await db.update(schema.users).set({ lastSeenAt: new Date() }).where(eq(schema.users.id, user.id));
-
   return c.json(await issueSession(user.id, user.email));
 });
 

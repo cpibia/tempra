@@ -14,7 +14,7 @@ progressi. Funziona completamente offline e non richiede alcun account.
 
 <div align="center">
 <img src="docs/screenshots/00-home.png" width="200" alt="Schermata principale con l'aderenza settimanale e il prossimo allenamento" />
-<img src="docs/screenshots/05-allenamento.png" width="200" alt="Allenamento in corso con le righe delle serie e il timer di recupero" />
+<img src="docs/screenshots/05-allenamento.png" width="200" alt="Allenamento guidato con un esercizio alla volta e il cronometro della serie" />
 <img src="docs/screenshots/06-catalogo.png" width="200" alt="Catalogo degli esercizi con ricerca e filtri" />
 <img src="docs/screenshots/07-esercizio.png" width="200" alt="Scheda di un esercizio con immagini e istruzioni passo passo" />
 </div>
@@ -75,8 +75,11 @@ rapporto fra lavoro e recupero invece che sul carico.
 
 ### Durante l'allenamento
 
-- **Un tocco per registrare una serie.** I campi arrivano gia' compilati con il carico dell'ultima volta: se ripeti la stessa serie, ti basta la spunta.
-- **Il recupero parte da solo** quando spunti una serie, con suono, vibrazione e conto alla rovescia grande e leggibile a distanza. Puoi aggiungere o togliere quindici secondi, metterlo in pausa, saltarlo.
+- **Un esercizio alla volta.** Foto, note, obiettivo e cosa hai fatto l'ultima volta; le frecce e l'elenco ti portano a qualsiasi altro esercizio, nell'ordine che preferisci.
+- **Avvia e Fine.** La serie si cronometra; alla fine ripetizioni e carico arrivano gia' compilati e basta confermare. Il cronometro si spegne dalle impostazioni, e c'e' sempre "Registra senza cronometro".
+- **Il recupero parte da solo** quando finisci una serie, con suono, vibrazione e barra di avanzamento. Puoi aggiungere o togliere quindici secondi, metterlo in pausa, saltarlo.
+- **Superset.** Due o piu' esercizi collegati si alternano senza pausa; il recupero arriva dopo l'ultimo del giro.
+- **Passaggio automatico.** Finito un esercizio, dopo cinque secondi si passa al successivo; si annulla con un tocco o si disattiva.
 - **Lo schermo resta acceso** per tutta la sessione, e se il sistema spegne il blocco quando l'app va in secondo piano, Tempra lo riprende da sola.
 - **Niente pulsante Salva.** Ogni valore viene scritto subito. Se il telefono si blocca o chiudi l'app per sbaglio, riapri e ritrovi l'allenamento esattamente dov'era.
 - **Il timer non si ferma** quando il telefono va in standby: il tempo residuo si calcola dall'orologio, non contando i tick.
@@ -169,22 +172,23 @@ lo screen reader, che annuncia la nuova posizione.
 Dalla home tocchi **Inizia** e parte la sessione. Tempra propone il giorno meno
 recente della scheda, quindi la rotazione resta corretta anche se salti una seduta.
 
-Nella schermata di allenamento:
+Prima vedi l'anteprima della seduta, con esercizi, serie e durata stimata; il
+cronometro parte quando tocchi **Inizia**. Da li':
 
-- ogni riga e' una serie: numero, obiettivo, cosa hai fatto la volta scorsa, i campi da compilare e la spunta;
-- la spunta e' grande e presa su tutta la sua area: si centra con il pollice senza guardare;
-- **Serie** aggiunge una serie, il meno toglie l'ultima;
-- **Come si fa** apre la scheda dell'esercizio con le immagini e le istruzioni;
-- **Aggiungi esercizio** ti fa infilare qualcosa che non era in programma;
-- in alto vedi il tempo trascorso, le serie completate e i chili sollevati.
+- un esercizio alla volta, con le frecce per spostarti e l'elenco per saltare a uno qualsiasi, aggiungerne uno o collegarne due in superset;
+- **Avvia serie** fa partire il cronometro, **Fine serie** lo ferma e avvia il recupero;
+- durante il recupero confermi ripetizioni e carico, gia' compilati;
+- i pallini in alto mostrano le serie fatte con i valori: toccandone uno lo correggi;
+- **Serie** aggiunge una serie, il meno toglie l'ultima, **Come si fa** apre le istruzioni.
 
-Quando spunti una serie il recupero parte da solo. La barra in basso mostra il
-conto alla rovescia, diventa ambra negli ultimi dieci secondi e verde quando il
-recupero e' finito, poi conta il tempo in eccesso. Se non vuoi il suono o la
-vibrazione, si spengono dalle impostazioni.
+La barra del recupero in basso mostra il conto alla rovescia, diventa ambra
+negli ultimi dieci secondi e verde quando il recupero e' finito, poi conta il
+tempo in eccesso.
 
-Alla fine tocchi **Fine**: le serie non spuntate non vengono registrate, e il
-riepilogo ti dice com'e' andata.
+Alla fine tocchi **Fine**: il riepilogo mostra durata, serie, ripetizioni, chili
+sollevati, calorie stimate, record, il confronto con la volta precedente e i
+grafici per esercizio e per distretto. Lo storico completo e' nella scheda
+**Statistiche**.
 
 <br clear="right" />
 
@@ -218,9 +222,16 @@ telefono, senza backup non si recupera nulla. Dalle impostazioni puoi:
 - **ripristinarlo** su un altro dispositivo;
 - **cancellare tutto** in modo definitivo.
 
-Se hai installato anche il backend, puoi creare un account e attivare la
-sincronizzazione: gli allenamenti vengono copiati sul server e li ritrovi altrove.
-Resta facoltativo, e si puo' disattivare in qualsiasi momento.
+Se hai installato anche il backend, puoi usare Tempra su piu' dispositivi con un
+**codice di sincronizzazione**: lo crei in Impostazioni sul primo, lo inserisci
+sugli altri (anche alla prima apertura, senza rifare la configurazione) e
+restano allineati da soli a ogni modifica. Niente email, niente password.
+Resta facoltativo, e si puo' scollegare in qualsiasi momento.
+
+In Impostazioni trovi anche la data della versione installata, **Cerca
+aggiornamenti** e **Ricarica da zero**, che svuota la cache dell'app senza
+toccare i tuoi dati. Le versioni nuove si installano da sole, ma mai a meta'
+allenamento.
 
 ---
 
@@ -272,8 +283,8 @@ Quello che succede:
 - aprendo un esercizio escluso, la sua scheda ti spiega il motivo;
 - puoi comunque **aggiungerlo a mano** alla tua scheda: se il tuo fisioterapista ti dice che puoi farlo, ha ragione lui.
 
-Queste informazioni **non lasciano il dispositivo** a meno che tu non attivi la
-sincronizzazione creando un account.
+Queste informazioni **non lasciano mai il dispositivo**, nemmeno con la
+sincronizzazione attiva: vengono tolte dal profilo prima dell'invio.
 
 Le regole vengono dalla ricerca clinica in
 [`docs/research/03-salute-sicurezza.md`](docs/research/03-salute-sicurezza.md),

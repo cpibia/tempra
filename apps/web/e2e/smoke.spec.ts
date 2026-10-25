@@ -52,28 +52,57 @@ async function startFirstDay(page: Page) {
   await expect(page).toHaveURL(/\/allenamento/);
 }
 
-test('registra una serie, avvia il recupero e chiude l allenamento', async ({ page }) => {
+test('allenamento guidato: anteprima, serie cronometrata, recupero e riepilogo', async ({ page }) => {
   await completeOnboarding(page);
   await startFirstDay(page);
 
-  const firstCheckbox = page.getByRole('checkbox').first();
-  await firstCheckbox.check();
-  await expect(firstCheckbox).toBeChecked();
+  // Prima l'anteprima: nessun cronometro finche' non si preme Inizia.
+  await expect(page.getByText('Anteprima')).toBeVisible();
+  await page.getByRole('button', { name: 'Inizia', exact: true }).click();
 
-  // Il recupero parte da solo: e' la scelta predefinita.
+  await expect(page.getByRole('button', { name: /Esercizio 1 di/ })).toBeVisible();
+  await page.getByRole('button', { name: 'Avvia serie 1' }).click();
   await expect(page.getByRole('timer')).toBeVisible();
+  await page.getByRole('button', { name: 'Fine serie' }).click();
+
+  // Il recupero parte alla fine della serie, mentre si registrano i valori.
   await expect(page.getByRole('region', { name: 'Recupero in corso' })).toBeVisible();
+  await page.getByRole('button', { name: /Aumenta ripetizioni/ }).click();
+  await page.getByRole('button', { name: 'Salva la serie' }).click();
+  await expect(page.getByRole('button', { name: 'Avvia serie 2' })).toBeVisible();
 
   await page.getByRole('button', { name: 'Aggiungi 15 secondi al recupero' }).click();
   await page.getByRole('button', { name: 'Salta', exact: true }).click();
-  await expect(page.getByRole('timer')).toHaveCount(0);
+  await expect(page.getByRole('region', { name: 'Recupero in corso' })).toHaveCount(0);
 
-  await page.getByRole('button', { name: 'Fine' }).click();
+  // Le frecce portano a un altro esercizio senza obbligare all'ordine della scheda.
+  await page.getByRole('button', { name: 'Esercizio successivo' }).click();
+  await expect(page.getByRole('button', { name: /Esercizio 2 di/ })).toBeVisible();
+
+  await page.getByRole('button', { name: 'Fine', exact: true }).click();
   await page.getByRole('button', { name: 'Termina', exact: true }).click();
 
   await expect(page).toHaveURL(/riepilogo/);
   await expect(page.getByText('Allenamento completato', { exact: true })).toBeVisible();
   await expect(page.getByText('serie', { exact: true })).toBeVisible();
+  await expect(page.getByText('kcal stimate')).toBeVisible();
+});
+
+test('in superset si passa al secondo esercizio senza recupero', async ({ page }) => {
+  await completeOnboarding(page);
+  await page.getByRole('button', { name: 'Crea la mia scheda' }).click();
+  await expect(page).toHaveURL(/\/schede\//);
+
+  await page.getByRole('button', { name: /^Superset / }).first().click();
+  await expect(page.getByText('Superset A, 1 di 2')).toBeVisible();
+  await page.getByRole('button', { name: /Allenati con questo giorno/ }).click();
+  await page.getByRole('button', { name: 'Inizia', exact: true }).click();
+
+  await page.getByRole('button', { name: 'Registra senza cronometro' }).click();
+  await page.getByRole('button', { name: 'Salva la serie' }).click();
+
+  await expect(page.getByRole('heading', { level: 2 }).locator('..').getByText('Superset A, 2 di 2')).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Recupero in corso' })).toHaveCount(0);
 });
 
 test('il catalogo cerca e apre un esercizio', async ({ page }) => {
@@ -94,14 +123,22 @@ test('il catalogo cerca e apre un esercizio', async ({ page }) => {
 test('la sessione sopravvive a un ricaricamento della pagina', async ({ page }) => {
   await completeOnboarding(page);
   await startFirstDay(page);
+  await page.getByRole('button', { name: 'Inizia', exact: true }).click();
 
-  const weightField = page.locator('.set-row__input').first();
-  await weightField.fill('62,5');
-  await page.getByRole('checkbox').first().check();
+  // Una serie in corso resta in corso: il cronometro riparte dall'inizio salvato.
+  await page.getByRole('button', { name: 'Avvia serie 1' }).click();
+  await expect(page.getByRole('timer')).toBeVisible();
+  await page.waitForTimeout(300);
+  await page.reload();
+  await expect(page.getByRole('button', { name: 'Fine serie' })).toBeVisible();
+  await page.getByRole('button', { name: 'Fine serie' }).click();
+  await page.getByRole('button', { name: 'Salva la serie' }).click();
+  await expect(page.getByRole('button', { name: 'Avvia serie 2' })).toBeVisible();
+  await page.waitForTimeout(300);
 
   await page.reload();
-  await expect(page.locator('.set-row__input').first()).toHaveValue('62,5');
-  await expect(page.getByRole('checkbox').first()).toBeChecked();
+  await expect(page.getByRole('button', { name: 'Avvia serie 2' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Serie 1: .*Tocca per correggere/ })).toBeVisible();
 });
 
 /**
@@ -109,7 +146,7 @@ test('la sessione sopravvive a un ricaricamento della pagina', async ({ page }) 
  * viola il criterio 1.4.10 sul reflow. axe non lo rileva, quindi va verificato qui.
  */
 test.describe('nessuno scorrimento orizzontale', () => {
-  const routes = ['/', '/schede', '/esercizi', '/progressi', '/impostazioni', '/storico'];
+  const routes = ['/', '/schede', '/esercizi', '/statistiche', '/impostazioni', '/storico'];
 
   for (const route of routes) {
     test(`la pagina ${route} sta nella larghezza dello schermo`, async ({ page }) => {
@@ -166,7 +203,7 @@ test.describe('accessibilita', () => {
     ['/', 'home'],
     ['/schede', 'schede'],
     ['/esercizi', 'catalogo'],
-    ['/progressi', 'progressi'],
+    ['/statistiche', 'statistiche'],
     ['/impostazioni', 'impostazioni'],
   ];
 
@@ -189,5 +226,30 @@ test.describe('accessibilita', () => {
         expect(results.violations.map((v) => `${v.id}: ${v.nodes.length} nodi`)).toEqual([]);
       });
     }
+
+    test(`allenamento guidato non ha violazioni WCAG AA in tema ${theme}`, async ({ page }) => {
+      await completeOnboarding(page);
+      await page.evaluate((t) => {
+        localStorage.setItem('tempra.theme', t);
+        document.documentElement.dataset.theme = t;
+      }, theme);
+      await startFirstDay(page);
+      const violations = async () => (await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+        // Le foto degli esercizi si alternano: il contrasto non si misura su un fotogramma.
+        .exclude('.exercise-image')
+        .analyze()).violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`);
+
+      expect(await violations()).toEqual([]);
+      await page.getByRole('button', { name: 'Inizia', exact: true }).click();
+      await page.getByRole('button', { name: 'Avvia serie 1' }).click();
+      await page.waitForTimeout(400);
+      expect(await violations()).toEqual([]);
+      await page.getByRole('button', { name: 'Fine serie' }).click();
+      await expect(page.getByRole('button', { name: 'Salva la serie' })).toBeVisible();
+      // Il pannello entra in dissolvenza: a meta' animazione il contrasto misurato e' falso.
+      await page.waitForTimeout(400);
+      expect(await violations()).toEqual([]);
+    });
   }
 });

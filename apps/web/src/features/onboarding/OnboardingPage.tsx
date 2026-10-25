@@ -11,6 +11,8 @@ import { saveProfile, savePlan, setActivePlan } from '../../db/repo';
 import { PROFILE_ID } from '../../db/db';
 import { Button } from '../../components/ui/Button';
 import { useAnnounce } from '../../lib/announce';
+import { isSyncConfigured } from '../../lib/api';
+import { SyncPanel } from '../settings/SyncPanel';
 
 type Draft = Pick<Profile,
   'goal' | 'place' | 'equipment' | 'daysPerWeek' | 'sessionMinutes' | 'experience' |
@@ -166,6 +168,20 @@ export default function OnboardingPage() {
               </div>
             </div>
             <Button variant="ghost" onClick={skipAll}>Salta la configurazione</Button>
+            {isSyncConfigured() && (
+              <details className="card" style={{ padding: 'calc(var(--spacing) * 4)' }}>
+                <summary style={{ cursor: 'pointer', fontWeight: 'var(--font-weight-semibold)' }}>
+                  Usi gia Tempra su un altro dispositivo?
+                </summary>
+                <div style={{ marginBlockStart: 'calc(var(--spacing) * 3)' }}>
+                  <p className="tiny muted" style={{ marginBlockStart: 0 }}>
+                    Inserisci il codice che trovi nelle impostazioni dell altro dispositivo:
+                    ritrovi qui schede, allenamenti e record, senza rifare la configurazione.
+                  </p>
+                  <SyncPanel compact onLinked={() => navigate('/', { replace: true })} />
+                </div>
+              </details>
+            )}
           </div>
         )}
 

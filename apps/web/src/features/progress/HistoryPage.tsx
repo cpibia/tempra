@@ -9,7 +9,7 @@ export default function HistoryPage() {
 
   return (
     <>
-      <PageHeader title="Storico" back="/progressi" />
+      <PageHeader title="Storico" back="/statistiche" />
 
       <div className="stack" style={{ gap: 'calc(var(--spacing) * 3)', paddingBlockStart: 'calc(var(--spacing) * 4)' }}>
         {sessions && sessions.length === 0 && (

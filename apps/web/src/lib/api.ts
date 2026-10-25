@@ -11,6 +11,7 @@ const BASE_URL = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '');
 export const isSyncConfigured = (): boolean => BASE_URL.length > 0;
 
 const TOKEN_KEY = 'tempra.tokens';
+const CODE_KEY = 'tempra.syncCode';
 
 interface Tokens {
   accessToken: string;
@@ -38,6 +39,31 @@ function writeTokens(tokens: Tokens | null): void {
 }
 
 export const isSignedIn = (): boolean => readTokens() !== null;
+
+export function getSyncCode(): string | null {
+  try {
+    return localStorage.getItem(CODE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeSyncCode(code: string | null): void {
+  try {
+    if (code) localStorage.setItem(CODE_KEY, code);
+    else localStorage.removeItem(CODE_KEY);
+  } catch {
+    // Senza storage il codice vale solo per questa visita.
+  }
+}
+
+/** Maiuscole e solo lettere e cifre: trattini e spazi servono solo a leggerlo. */
+export const normalizeSyncCode = (input: string): string =>
+  input.toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+/** "ABCD2345" diventa "ABCD-2345", piu' facile da dettare e ricopiare. */
+export const formatSyncCode = (code: string): string =>
+  code.length === 8 ? `${code.slice(0, 4)}-${code.slice(4)}` : code;
 
 export class ApiError extends Error {
   constructor(message: string, readonly status: number) {
@@ -86,6 +112,12 @@ function storeSession(session: SessionResponse): void {
   });
 }
 
+/**
+ * Rinnova la sessione. Se anche il token di rinnovo e' scaduto (un dispositivo
+ * rimasto chiuso per mesi) si rientra con il codice salvato: e' la stessa
+ * credenziale che l'utente ha gia' inserito, chiederla di nuovo non aggiunge
+ * sicurezza e interromperebbe la sincronizzazione in silenzio.
+ */
 async function refreshSession(refreshToken: string): Promise<boolean> {
   try {
     const response = await fetch(`${BASE_URL}/api/auth/refresh`, {
@@ -93,29 +125,44 @@ async function refreshSession(refreshToken: string): Promise<boolean> {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refreshToken }),
     });
-    if (!response.ok) {
-      writeTokens(null);
-      return false;
+    if (response.ok) {
+      storeSession(await response.json() as SessionResponse);
+      return true;
     }
-    storeSession(await response.json() as SessionResponse);
+    writeTokens(null);
+    const code = getSyncCode();
+    if (!code) return false;
+    const rejoin = await fetch(`${BASE_URL}/api/auth/sync-code/join`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code }),
+    });
+    if (!rejoin.ok) return false;
+    storeSession(await rejoin.json() as SessionResponse);
     return true;
   } catch {
     return false;
   }
 }
 
-export async function register(email: string, password: string): Promise<void> {
-  storeSession(await request<SessionResponse>('/api/auth/register', {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-  }));
+/** Crea un nuovo codice: i dati di questo dispositivo diventano la base comune. */
+export async function createSyncCode(): Promise<string> {
+  const session = await request<SessionResponse & { code: string }>('/api/auth/sync-code', { method: 'POST' });
+  storeSession(session);
+  writeSyncCode(session.code);
+  return session.code;
 }
 
-export async function login(email: string, password: string): Promise<void> {
-  storeSession(await request<SessionResponse>('/api/auth/login', {
+/** Collega questo dispositivo a un codice creato altrove. */
+export async function joinSyncCode(input: string): Promise<string> {
+  const code = normalizeSyncCode(input);
+  if (code.length !== 8) throw new ApiError('Il codice ha 8 caratteri, lettere e numeri', 400);
+  storeSession(await request<SessionResponse>('/api/auth/sync-code/join', {
     method: 'POST',
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ code }),
   }));
+  writeSyncCode(code);
+  return code;
 }
 
 /**
@@ -136,6 +183,7 @@ export async function clearCaches(): Promise<void> {
 export async function logout(): Promise<void> {
   const tokens = readTokens();
   writeTokens(null);
+  writeSyncCode(null);
   await clearCaches();
   if (tokens) {
     await fetch(`${BASE_URL}/api/auth/logout`, {
@@ -153,6 +201,7 @@ export async function currentAccount(): Promise<{ id: string; email: string }> {
 export async function deleteAccount(): Promise<void> {
   await request('/api/auth/me', { method: 'DELETE' });
   writeTokens(null);
+  writeSyncCode(null);
   await clearCaches();
 }
 

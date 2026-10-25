@@ -12,9 +12,11 @@ import { applyTheme, type ThemeChoice } from '../../lib/theme';
 import { clearCaches } from '../../lib/api';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { Button } from '../../components/ui/Button';
+import { NumberStepper } from '../../components/ui/NumberStepper';
 import { ConfirmDialog } from '../../components/ui/Sheet';
 import { useAnnounce } from '../../lib/announce';
-import { AccountPanel } from './AccountPanel';
+import { SyncPanel } from './SyncPanel';
+import { UpdatePanel } from './UpdatePanel';
 
 const GOALS: Goal[] = ['muscle', 'fat_loss', 'strength', 'recomp', 'endurance', 'health'];
 const PLACES: TrainingPlace[] = ['gym', 'home_basic', 'home_bodyweight', 'outdoor'];
@@ -52,8 +54,17 @@ export default function SettingsPage() {
   };
 
   const importData = async (file: File) => {
-    const text = await file.text();
-    const payload = JSON.parse(text) as Record<string, unknown[]>;
+    let payload: Record<string, unknown[]>;
+    try {
+      payload = JSON.parse(await file.text()) as Record<string, unknown[]>;
+    } catch {
+      announce('Il file non e un backup di Tempra valido.');
+      return;
+    }
+    if (typeof payload !== 'object' || payload === null || !('plans' in payload || 'sessions' in payload)) {
+      announce('Il file non e un backup di Tempra valido.');
+      return;
+    }
     const tables = [db.profiles, db.plans, db.sessions, db.records, db.measurements, db.settings];
     await db.transaction('rw', tables, async () => {
       if (payload.profile) await db.profiles.bulkPut(payload.profile as never);
@@ -131,6 +142,8 @@ export default function SettingsPage() {
               ['restTimerSound', 'Suono a fine recupero'],
               ['restTimerVibration', 'Vibrazione a fine recupero'],
               ['keepAwake', 'Tieni lo schermo acceso'],
+              ['timeSets', 'Cronometra ogni serie con Avvia e Fine'],
+              ['autoAdvance', 'Passa da solo all esercizio successivo dopo 5 secondi'],
             ] as const).map(([key, label]) => (
               <label key={key} className="switch-row">
                 <input
@@ -216,6 +229,16 @@ export default function SettingsPage() {
                 </div>
               </div>
 
+              <NumberStepper
+                label="Peso corporeo" unit="kg"
+                value={profile.weightKg}
+                onChange={(weightKg) => void saveProfile({ weightKg })}
+                step={0.5} min={0} max={250} decimals
+              />
+              <p className="field__hint" style={{ marginBlockStart: 'calc(var(--spacing) * -2)' }}>
+                Serve solo a stimare le calorie consumate.
+              </p>
+
               <div className="field">
                 <label className="field__label" htmlFor="experience">Livello</label>
                 <select
@@ -253,8 +276,8 @@ export default function SettingsPage() {
         )}
 
         <section aria-labelledby="account-title" className="stack" style={{ gap: 'calc(var(--spacing) * 3)' }}>
-          <h2 id="account-title" className="section-title">Account e sincronizzazione</h2>
-          <AccountPanel />
+          <h2 id="account-title" className="section-title">Sincronizzazione fra dispositivi</h2>
+          <SyncPanel />
         </section>
 
         <section aria-labelledby="data-title" className="stack" style={{ gap: 'calc(var(--spacing) * 3)' }}>
@@ -272,13 +295,22 @@ export default function SettingsPage() {
             <Upload size={18} aria-hidden="true" /> Ripristina da backup
             <input
               type="file" accept="application/json" className="visually-hidden"
-              onChange={(e) => { const f = e.target.files?.[0]; if (f) void importData(f); }}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                e.target.value = '';
+                if (f) void importData(f);
+              }}
             />
           </label>
 
           <Button variant="ghost" block onClick={() => setConfirmWipe(true)} style={{ color: 'var(--color-danger-text)' }}>
             <Trash2 size={18} aria-hidden="true" /> Cancella tutti i dati
           </Button>
+        </section>
+
+        <section aria-labelledby="update-title" className="stack" style={{ gap: 'calc(var(--spacing) * 3)' }}>
+          <h2 id="update-title" className="section-title">Versione e aggiornamenti</h2>
+          <UpdatePanel />
         </section>
 
         <section aria-labelledby="about-title" className="stack" style={{ gap: 'calc(var(--spacing) * 3)' }}>

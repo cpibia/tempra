@@ -9,6 +9,7 @@ import { useRestTimer } from './lib/rest-timer';
 import { unlockAudio } from './lib/sound';
 import { RestTimerBar } from './features/workout/RestTimerBar';
 import { UpdatePrompt } from './components/UpdatePrompt';
+import { installSyncTriggers } from './lib/sync';
 
 const HomePage = lazy(() => import('./features/home/HomePage'));
 const OnboardingPage = lazy(() => import('./features/onboarding/OnboardingPage'));
@@ -48,6 +49,7 @@ export function App() {
     applyTheme(readStoredTheme());
     const stopWatching = watchSystemTheme(() => applyTheme(readStoredTheme()));
     const stopWakeLock = installWakeLockRecovery();
+    const stopSync = installSyncTriggers();
     restore();
     // iOS sblocca l'audio solo dopo un gesto: il primo tocco basta per tutta la sessione.
     const onFirstTouch = () => unlockAudio();
@@ -56,6 +58,7 @@ export function App() {
     return () => {
       stopWatching();
       stopWakeLock();
+      stopSync();
       window.removeEventListener('pointerdown', onFirstTouch);
     };
   }, [restore]);
@@ -86,7 +89,8 @@ export function App() {
           <Route path="/esercizi/:slug" element={<ExercisePage />} />
           <Route path="/allenamento" element={<WorkoutPage />} />
           <Route path="/allenamento/:sessionId/riepilogo" element={<SessionSummaryPage />} />
-          <Route path="/progressi" element={<ProgressPage />} />
+          <Route path="/statistiche" element={<ProgressPage />} />
+          <Route path="/progressi" element={<Navigate to="/statistiche" replace />} />
           <Route path="/storico" element={<HistoryPage />} />
           <Route path="/impostazioni" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
