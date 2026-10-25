@@ -81,11 +81,11 @@ export default function SessionSummaryPage() {
   const maxGroupSets = groupRows[0]?.sets ?? 1;
 
   return (
-    <div className="stack" style={{ gap: 'calc(var(--spacing) * 5)', paddingBlockStart: 'calc(var(--layout-safe-top) + var(--spacing) * 8)' }}>
+    <div className="stack summary-layout" style={{ gap: 'calc(var(--spacing) * 5)', paddingBlockStart: 'calc(var(--layout-safe-top) + var(--spacing) * 8)' }}>
       <div style={{ textAlign: 'center' }}>
-        <p className="label-caps">Allenamento completato</p>
-        <h1 className="page-title" style={{ marginBlockStart: 'calc(var(--spacing) * 1)' }}>{session.name}</h1>
-        <p className="muted tiny">
+        <h1 className="page-title" style={{ margin: 0 }}>Allenamento completato</h1>
+        <p className="muted" style={{ margin: 'calc(var(--spacing) * 1) 0 0' }}>
+          <strong style={{ color: 'var(--color-text-primary)' }}>{session.name}</strong>{', '}
           {new Date(session.endedAt ?? session.startedAt).toLocaleDateString('it-IT', {
             weekday: 'long', day: 'numeric', month: 'long',
           })}

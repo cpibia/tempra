@@ -27,7 +27,7 @@ export function UpdatePrompt() {
   if (!needsRefresh && !offlineReady) return null;
 
   return (
-    <div className="update-prompt" role="status">
+    <div className="update-prompt" role="status" data-kind={needsRefresh ? 'update' : 'offline'}>
       {needsRefresh ? (
         <>
           <Download size={20} aria-hidden="true" />

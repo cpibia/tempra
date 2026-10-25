@@ -125,10 +125,10 @@ export default function ProgressPage() {
     <>
       <PageHeader title="Statistiche" />
 
-      <div className="stack" style={{ gap: 'calc(var(--spacing) * 6)', paddingBlockStart: 'calc(var(--spacing) * 4)' }}>
+      <div className="stack stats-layout" style={{ gap: 'calc(var(--spacing) * 6)', paddingBlockStart: 'calc(var(--spacing) * 4)' }}>
 
         {(!sessions || sessions.length === 0) && (
-          <div className="empty-state">
+          <div className="empty-state stats-layout__full">
             <p>Qui compaiono i tuoi progressi.</p>
             <p className="tiny">
               Completa il primo allenamento: da li in poi troverai volume, record personali
@@ -139,7 +139,7 @@ export default function ProgressPage() {
 
         {sessions && sessions.length > 0 && (
           <>
-            <section aria-labelledby="overview-title" className="stack" style={{ gap: 'calc(var(--spacing) * 3)' }}>
+            <section aria-labelledby="overview-title" className="stack stats-layout__full" style={{ gap: 'calc(var(--spacing) * 3)' }}>
               <h2 id="overview-title" className="section-title">Ultimi 30 giorni</h2>
               <div className="stat-grid stat-grid--2">
                 <div className="card stat-tile">

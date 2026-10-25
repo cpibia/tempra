@@ -20,6 +20,8 @@ export default defineConfig({
   projects: [
     { name: 'mobile', use: { viewport: { width: 412, height: 840 }, hasTouch: true } },
     { name: 'small', use: { viewport: { width: 320, height: 720 }, hasTouch: true } },
+    // Barra laterale e layout a due colonne: le pagine larghe hanno difetti propri.
+    { name: 'desktop', use: { viewport: { width: 1280, height: 800 } }, testIgnore: /screenshots/ },
   ],
   webServer: {
     command: 'npm run preview -- --port 4173 --host 127.0.0.1',

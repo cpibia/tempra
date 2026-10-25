@@ -22,7 +22,7 @@ export default function HistoryPage() {
     <>
       <PageHeader title="Storico" back="/statistiche" />
 
-      <div className="stack" style={{ gap: 'calc(var(--spacing) * 3)', paddingBlockStart: 'calc(var(--spacing) * 4)' }}>
+      <div className="stack history-layout" style={{ gap: 'calc(var(--spacing) * 3)', paddingBlockStart: 'calc(var(--spacing) * 4)' }}>
         {sessions && sessions.length === 0 && (
           <div className="empty-state">
             <p>Nessun allenamento registrato, per ora.</p>
@@ -32,14 +32,20 @@ export default function HistoryPage() {
         {sessions?.map((session) => (
           <details key={session.id} className="card" style={{ padding: 'calc(var(--spacing) * 4)' }}>
             <summary style={{ cursor: 'pointer' }}>
-              <span style={{ fontWeight: 'var(--font-weight-semibold)' }}>{session.name}</span>
-              <span className="tiny muted num" style={{ display: 'block', marginBlockStart: '2px' }}>
-                {new Date(session.endedAt ?? session.startedAt).toLocaleDateString('it-IT', {
-                  weekday: 'short', day: 'numeric', month: 'short', year: '2-digit',
-                })}
-                {' - '}<Timer size={11} aria-hidden="true" /> {formatDuration(session.durationSec)}
-                {' - '}<Layers size={11} aria-hidden="true" /> {session.totalSets}
-                {session.totalVolumeKg > 0 && <> {' - '}<Weight size={11} aria-hidden="true" /> {session.totalVolumeKg.toLocaleString('it-IT')} kg</>}
+              <span className="history-row">
+                <span className="history-row__title">{session.name}</span>
+                <span className="tiny muted">
+                  {new Date(session.endedAt ?? session.startedAt).toLocaleDateString('it-IT', {
+                    weekday: 'short', day: 'numeric', month: 'short', year: '2-digit',
+                  })}
+                </span>
+                <span className="history-row__stats tiny muted num">
+                  <span><Timer size={13} aria-hidden="true" /> {formatDuration(session.durationSec)}</span>
+                  <span><Layers size={13} aria-hidden="true" /> {session.totalSets} serie</span>
+                  {session.totalVolumeKg > 0 && (
+                    <span><Weight size={13} aria-hidden="true" /> {session.totalVolumeKg.toLocaleString('it-IT')} kg</span>
+                  )}
+                </span>
               </span>
             </summary>
 

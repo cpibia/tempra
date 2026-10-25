@@ -35,6 +35,9 @@ function Loading() {
 /** Rotte a schermo intero: qui la barra di navigazione sparisce. */
 const IMMERSIVE = ['/onboarding', '/allenamento'];
 
+/** Rotte a colonna singola anche su schermo largo: moduli e testi da leggere in fila. */
+const NARROW = ['/onboarding', '/impostazioni', '/schede/genera'];
+
 export function App() {
   const { pathname } = useLocation();
   const [ready, setReady] = useState(false);
@@ -77,7 +80,7 @@ export function App() {
   if (!ready || !profileLoaded) return <Loading />;
 
   return (
-    <AppShell hideTabBar={immersive}>
+    <AppShell hideTabBar={immersive} wide={!NARROW.some((route) => pathname.startsWith(route))}>
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={needsOnboarding ? <Navigate to="/onboarding" replace /> : <HomePage />} />

@@ -277,7 +277,7 @@
   }
 
   /* Nella riga che scorre in orizzontale i chip restano invece su una riga sola. */
-  .chip-row .chip { white-space: nowrap; border-radius: var(--radius-full); }
+  .chip-row .chip { flex: none; white-space: nowrap; border-radius: var(--radius-full); }
 
   .chip[aria-pressed='true'],
   .chip[data-selected='true'] {
@@ -355,8 +355,9 @@
     color: var(--color-text-on-brand);
   }
 
-  .choice__title { font-weight: var(--font-weight-semibold); }
+  .choice__title { display: block; font-weight: var(--font-weight-semibold); }
   .choice__desc {
+    display: block;
     font-size: var(--text-body-sm);
     color: var(--color-text-secondary);
     margin-block-start: 2px;
@@ -1396,7 +1397,8 @@
     background: linear-gradient(to top, var(--color-bg-canvas) 65%, transparent);
   }
 
-  .action-bar > * { max-inline-size: var(--layout-content-max); margin-inline: auto; }
+  .action-bar { display: flex; justify-content: center; }
+  .action-bar > * { inline-size: 100%; max-inline-size: var(--layout-action-max); }
 }
 
 @layer components {
@@ -1487,8 +1489,10 @@
    */
   .plan-entry, .workout-entry { display: flex; flex-direction: column; }
 
-  .card[data-superset] {
-    border-inline-start: 4px solid var(--color-info-solid);
+  .card[data-superset],
+  .exercise-item[data-superset] {
+    border-color: var(--color-info-border);
+    background-color: color-mix(in srgb, var(--color-info-surface) 55%, var(--color-bg-surface));
   }
 
   .workout-exercise { scroll-margin-block-start: calc(var(--layout-header-h) + var(--layout-safe-top) + var(--spacing) * 2); }
@@ -1649,7 +1653,11 @@
 
   /* Durante la serie e la registrazione contano il tempo e i numeri: la foto si
      riduce perche' cronometro e comandi restino sopra la barra del recupero. */
-  .guided-stage[data-focus] .guided-stage__image { inline-size: 112px; }
+  .guided-stage[data-focus] .guided-stage__image { inline-size: 88px; }
+  .guided-stage[data-focus] { gap: calc(var(--spacing) * 2); padding: calc(var(--spacing) * 3); }
+  .guided-stage[data-focus] .guided-stage__title { font-size: var(--text-title-md); }
+  .guided-stage[data-focus] .guided-target__value { font-size: var(--text-title-lg); }
+  .guided-stage[data-focus] .log-panel { padding: calc(var(--spacing) * 3); gap: calc(var(--spacing) * 2); }
   .guided-stage[data-focus] .exercise-image__toggle { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1791,4 +1799,271 @@
     .guided-stage, .log-panel { animation: none; }
     .guided-done__track > span { animation: none; transform: none; }
   }
+}
+
+@layer components {
+
+  /* --- Layout adattivo -------------------------------------------------------
+     Classi di larghezza di Material 3: sotto 600px barra in basso; da 600px
+     barra laterale; da 840px due colonne sulle pagine di pianificazione; da
+     1200px barra laterale con etichette. Le barre fisse (azione primaria,
+     recupero, avvisi) stanno fuori da <main> e si spostano di --nav-offset. */
+
+  :root {
+    --nav-w: 0px;
+    --nav-offset: 0px;
+    --page-max: var(--layout-content-max);
+    --layout-action-max: 560px;
+  }
+
+  :root[data-nav='on'] { --nav-offset: var(--nav-w); }
+
+  .tabbar__brand, .tabbar__item--settings { display: none; }
+
+  .action-bar, .rest-bar, .update-prompt { inset-inline-start: var(--nav-offset); }
+  .update-prompt { inset-inline-end: 0; margin-inline: auto; inline-size: calc(100% - var(--nav-offset) - var(--layout-gutter) * 2); inset-inline-start: calc(var(--nav-offset) + var(--layout-gutter)); }
+
+  /* Senza barra in basso (onboarding, allenamento) l'avviso sta in alto e non
+     copre i comandi Avanti e Indietro. */
+  /* "Funziona offline" e' solo informativo: a tutto schermo non deve coprire nulla. */
+  :root[data-nav='off'] .update-prompt[data-kind='offline'] { display: none; }
+
+  :root[data-nav='off'] .update-prompt {
+    inset-block-end: auto;
+    inset-block-start: calc(var(--layout-safe-top) + var(--spacing) * 3);
+  }
+
+  .app-main { max-inline-size: var(--page-max); }
+
+  @media (min-width: 600px) {
+    :root {
+      --nav-w: 88px;
+      --layout-gutter: 24px;
+      --layout-content-max: 680px;
+    }
+
+    /* Con la barra laterale non c'e' piu' nulla da scavalcare in basso. */
+    :root[data-nav='on'] { --layout-tabbar-h: 0px; }
+
+    :root[data-nav='on'] .app-shell { padding-inline-start: var(--nav-w); }
+
+    .tabbar {
+      inset-block: 0;
+      inset-inline-start: 0;
+      inset-inline-end: auto;
+      inline-size: var(--nav-w);
+      grid-auto-flow: row;
+      grid-auto-rows: max-content;
+      align-content: start;
+      gap: calc(var(--spacing) * 1);
+      padding: calc(var(--layout-safe-top) + var(--spacing) * 4) calc(var(--spacing) * 2) calc(var(--layout-safe-bottom) + var(--spacing) * 4);
+      border-block-start: 0;
+      border-inline-end: 1px solid var(--color-border-subtle);
+      background-color: var(--color-bg-surface);
+      backdrop-filter: none;
+    }
+
+    .tabbar__brand {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: calc(var(--spacing) * 2.5);
+      margin-block-end: calc(var(--spacing) * 5);
+    }
+
+    .tabbar__brand img { border-radius: 8px; }
+    .tabbar__brand-name { display: none; }
+
+    .tabbar__item {
+      min-block-size: 64px;
+      border-radius: var(--radius-lg);
+      transition: color var(--duration-2) var(--ease-standard), background-color var(--duration-2) var(--ease-standard);
+    }
+
+    .tabbar__item:hover { color: var(--color-text-primary); background-color: var(--color-state-hover); }
+
+    .tabbar__item[aria-current='page'] { background-color: var(--color-brand-surface); }
+
+    /* Nella barra laterale l'indicatore della voce attiva sta sul bordo sinistro. */
+    .tabbar__item[aria-current='page']::before {
+      inset-block-start: 50%;
+      inset-inline-start: calc(var(--spacing) * -2);
+      inline-size: 3px;
+      block-size: 28px;
+      translate: 0 -50%;
+      border-radius: 0 var(--radius-full) var(--radius-full) 0;
+    }
+
+    .tabbar__item--settings { display: flex; margin-block-start: auto; }
+    .tabbar { grid-template-rows: auto repeat(4, max-content) 1fr; }
+    .tabbar__item--settings { align-self: end; }
+
+    /* Fogli: da pannello a tutta larghezza a finestra centrata. */
+    .sheet__panel {
+      inset-inline: var(--nav-offset) 0;
+      inset-block-end: calc(var(--spacing) * 4);
+      margin-inline: auto;
+      max-inline-size: 600px;
+      border-radius: var(--layout-sheet-radius);
+    }
+
+    .chip-row { margin-inline: 0; padding-inline: 0; }
+  }
+
+  @media (min-width: 840px) {
+    .app-main[data-width='wide'] { --page-max: 1120px; }
+
+    /* Oggi: prossimo allenamento accanto alla settimana e agli ultimi allenamenti. */
+    .home-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      align-items: start;
+      column-gap: calc(var(--spacing) * 6);
+    }
+
+    .home-layout > * { grid-column: 2; }
+    .home-layout > .home-layout__primary { grid-column: 1; grid-row: 1 / span 6; }
+
+    /* Editor della scheda: giorni e dettagli a sinistra, esercizi a destra. */
+    .plan-editor {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      align-items: start;
+      gap: calc(var(--spacing) * 6);
+    }
+
+    .plan-editor__side {
+      position: sticky;
+      inset-block-start: calc(var(--layout-header-total) + var(--spacing) * 4);
+    }
+
+    .plan-editor__side .chip-row { flex-wrap: wrap; overflow: visible; }
+
+    /* Statistiche: dashboard a due colonne, la panoramica su tutta la riga. */
+    .stats-layout {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: calc(var(--spacing) * 6);
+    }
+
+    .stats-layout > .stats-layout__full { grid-column: 1 / -1; }
+    .stats-layout .stat-grid--2 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    /* Catalogo e storico: righe su piu' colonne, non card piu' grandi. */
+    .catalog-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .history-layout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: calc(var(--spacing) * 3); }
+
+    /* Scheda esercizio: immagine ferma a sinistra, testo a destra. */
+    .exercise-layout {
+      display: grid !important;
+      grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+      align-items: start;
+      column-gap: calc(var(--spacing) * 8);
+    }
+
+    .exercise-layout > * { grid-column: 2; }
+    .exercise-layout > .exercise-hero {
+      grid-column: 1;
+      grid-row: 1 / span 8;
+      position: sticky;
+      inset-block-start: calc(var(--layout-header-total) + var(--spacing) * 4);
+      max-inline-size: none;
+      inline-size: 100%;
+    }
+
+    .exercise-layout .steps-list { max-inline-size: 65ch; }
+
+    /* Riepilogo: le sei cifre su una riga. */
+    .summary-layout .stat-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .summary-layout { max-inline-size: 880px; margin-inline: auto; }
+
+    /* Allenamento guidato su tablet: foto a sinistra, comandi a destra. */
+    .app-main[data-width='wide']:has(.guided) { --page-max: 1040px; }
+
+    .guided-stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      column-gap: calc(var(--spacing) * 8);
+      align-items: start;
+      padding: calc(var(--spacing) * 6);
+    }
+
+    .guided-stage > * { grid-column: 2; }
+    .guided-stage > .guided-stage__media { grid-column: 1; grid-row: 1 / span 12; align-self: start; }
+    .guided-stage .guided-stage__image,
+    .guided-stage[data-focus] .guided-stage__image { inline-size: 100%; }
+    .guided-stage__title { text-align: start; }
+    .guided-stage .set-dots { justify-content: flex-start; }
+    .guided-stage .guided-target { align-items: flex-start; text-align: start; }
+  }
+
+  @media (min-width: 1200px) {
+    :root { --nav-w: 232px; }
+
+    .tabbar { padding-inline: calc(var(--spacing) * 3); }
+
+    .tabbar__brand { justify-content: flex-start; padding-inline: calc(var(--spacing) * 3); }
+    .tabbar__brand-name {
+      display: inline;
+      font-size: var(--text-title-md);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: -0.02em;
+      color: var(--color-text-primary);
+    }
+
+    .tabbar__item {
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: calc(var(--spacing) * 3);
+      min-block-size: 48px;
+      padding-inline: calc(var(--spacing) * 3);
+      font-size: var(--text-label-sm);
+    }
+
+    .tabbar__item[aria-current='page']::before { inset-inline-start: calc(var(--spacing) * -3); }
+
+    .catalog-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+}
+
+@layer components {
+
+  /* --- Righe dello storico -------------------------------------------------- */
+
+  .history-row { display: flex; flex-direction: column; gap: 2px; min-inline-size: 0; }
+  .history-row__title { font-weight: var(--font-weight-semibold); }
+
+  .history-row__stats { display: flex; flex-wrap: wrap; column-gap: calc(var(--spacing) * 3); row-gap: 2px; }
+  .history-row__stats > span { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+
+  /* --- Intestazione dell allenamento ---------------------------------------- */
+
+  @media (max-width: 359px) { .workout-meta__unit { display: none; } }
+
+  .workout-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  /* --- Numeri leggibili a un metro ------------------------------------------
+     Telefono appoggiato a circa 1 m: per 16-20 arcominuti servono cifre alte
+     35-40px, cioe' un corpo di 48px o piu'. */
+
+  .guided-target__count {
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+  }
+
+  .guided-target__value {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .rest-bar:not(.rest-bar--compact) .rest-bar__time { font-size: clamp(2.25rem, 10vw, 3rem); }
 }

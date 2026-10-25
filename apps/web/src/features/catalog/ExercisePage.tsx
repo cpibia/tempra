@@ -63,7 +63,7 @@ export default function ExercisePage() {
     <>
       <PageHeader title={exercise.name} back />
 
-      <div className="stack" style={{ gap: 'calc(var(--spacing) * 5)', paddingBlockStart: 'calc(var(--spacing) * 4)' }}>
+      <div className="stack exercise-layout" style={{ gap: 'calc(var(--spacing) * 5)', paddingBlockStart: 'calc(var(--spacing) * 4)' }}>
         <ExerciseImage exercise={exercise} animated size="full" className="exercise-hero" />
 
         {verdict && (

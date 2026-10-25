@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Play, Sparkles, Plus, ChevronRight, Flame, CalendarCheck } from 'lucide-react';
+import { Play, Sparkles, Plus, ChevronRight, Flame } from 'lucide-react';
 import { formatDuration, getExercise, MUSCLE_GROUP_LABELS } from '@tempra/core';
 import { getProfile } from '../../db/db';
 import { getActivePlan, getActiveSession, listSessions, startSessionFromDay, startEmptySession } from '../../db/repo';
@@ -52,10 +52,10 @@ export default function HomePage() {
         </a>
       </header>
 
-      <div className="stack" style={{ gap: 'calc(var(--spacing) * 5)', paddingBlockStart: 'calc(var(--spacing) * 4)' }}>
+      <div className="stack home-layout" style={{ gap: 'calc(var(--spacing) * 5)', paddingBlockStart: 'calc(var(--spacing) * 4)' }}>
 
         {active && (
-          <section className="card" style={{ padding: 'calc(var(--spacing) * 4)', borderColor: 'var(--color-brand-solid)' }}>
+          <section className="card home-layout__primary" style={{ padding: 'calc(var(--spacing) * 4)', borderColor: 'var(--color-brand-solid)' }}>
             <span className="label-caps">Allenamento in corso</span>
             <h2 className="section-title" style={{ marginBlock: 'calc(var(--spacing) * 1) calc(var(--spacing) * 3)' }}>
               {active.name}
@@ -92,7 +92,7 @@ export default function HomePage() {
         </section>
 
         {!active && plan && nextDay && (
-          <section aria-labelledby="next-title">
+          <section aria-labelledby="next-title" className="home-layout__primary">
             <h2 id="next-title" className="label-caps" style={{ marginBlockEnd: 'calc(var(--spacing) * 2)' }}>
               Prossimo allenamento
             </h2>
@@ -100,8 +100,7 @@ export default function HomePage() {
               <p className="tiny muted" style={{ margin: 0 }}>{plan.name}</p>
               <h3 className="section-title" style={{ marginBlock: '2px calc(var(--spacing) * 1)' }}>{nextDay.name}</h3>
               <p className="tiny muted" style={{ marginBlock: '0 calc(var(--spacing) * 3)' }}>
-                <CalendarCheck size={13} aria-hidden="true" style={{ verticalAlign: '-2px' }} />
-                {' '}{nextDay.items.length} esercizi, circa {nextDay.estimatedMinutes} minuti
+                {nextDay.items.length} esercizi, circa {nextDay.estimatedMinutes} minuti
                 {nextDay.focus.length > 0 && ` - ${nextDay.focus.map((f) => MUSCLE_GROUP_LABELS[f]).join(', ')}`}
               </p>
 
@@ -128,7 +127,7 @@ export default function HomePage() {
         )}
 
         {!plan && (
-          <section className="card" style={{ padding: 'calc(var(--spacing) * 5)' }}>
+          <section className="card home-layout__primary" style={{ padding: 'calc(var(--spacing) * 5)' }}>
             <Flame size={28} aria-hidden="true" style={{ color: 'var(--color-brand-text)' }} />
             <h2 className="section-title" style={{ marginBlock: 'calc(var(--spacing) * 2) calc(var(--spacing) * 1)' }}>
               Non hai ancora una scheda

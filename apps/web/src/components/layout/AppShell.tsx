@@ -6,6 +6,8 @@ interface AppShellProps {
   children: ReactNode;
   /** Nasconde la barra di navigazione: onboarding e allenamento occupano tutto lo schermo. */
   hideTabBar?: boolean;
+  /** Pagine di pianificazione: sugli schermi larghi usano piu' colonne. */
+  wide?: boolean;
 }
 
 /**
@@ -14,7 +16,7 @@ interface AppShellProps {
  * a ogni navigazione, cosi' chi usa screen reader o tastiera riparte dall'inizio
  * della pagina invece che dal punto in cui si trovava prima.
  */
-export function AppShell({ children, hideTabBar = false }: AppShellProps) {
+export function AppShell({ children, hideTabBar = false, wide = false }: AppShellProps) {
   const mainRef = useRef<HTMLElement>(null);
   const { pathname } = useLocation();
   const isFirstRender = useRef(true);
@@ -28,10 +30,19 @@ export function AppShell({ children, hideTabBar = false }: AppShellProps) {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  // Le barre fisse (azione primaria, recupero, avvisi) vivono fuori dal
+  // contenitore principale: leggono da qui quanto spazio occupa la navigazione.
+  useEffect(() => {
+    document.documentElement.dataset.nav = hideTabBar ? 'off' : 'on';
+  }, [hideTabBar]);
+
   return (
     <div className="app-shell">
       <a className="skip-link" href="#contenuto">Vai al contenuto</a>
-      <main id="contenuto" ref={mainRef} tabIndex={-1} className="app-main" style={{ outline: 'none' }}>
+      <main
+        id="contenuto" ref={mainRef} tabIndex={-1} className="app-main"
+        data-width={wide ? 'wide' : undefined} style={{ outline: 'none' }}
+      >
         {children}
       </main>
       {!hideTabBar && <TabBar />}

@@ -342,9 +342,9 @@ export default function WorkoutPage() {
       </IconButton>
       <div style={{ flex: 1, minInlineSize: 0 }}>
         <h1 className="app-header__title" style={{ fontSize: 'var(--text-title-sm)' }}>{session.name}</h1>
-        <p className="tiny muted num" style={{ margin: 0 }}>
+        <p className="tiny muted num workout-meta">
           {begun
-            ? <><Timer size={12} aria-hidden="true" style={{ verticalAlign: '-2px' }} /> {formatDuration(elapsed)} - {doneSets}/{totalSets} serie</>
+            ? <><Timer size={13} aria-hidden="true" /> {formatDuration(elapsed)}<span aria-hidden="true">·</span>{doneSets}/{totalSets}<span className="workout-meta__unit"> serie</span></>
             : 'Anteprima'}
         </p>
       </div>
@@ -533,7 +533,7 @@ export default function WorkoutPage() {
           ) : set ? (
             <>
               <div className="guided-target">
-                <p className="label-caps" style={{ margin: 0 }}>Serie {setIndex + 1} di {entry.sets.length}</p>
+                <p className="guided-target__count" style={{ margin: 0 }}>Serie {setIndex + 1} di {entry.sets.length}</p>
                 <p className="guided-target__value num">
                   {targetLabel}{weightLabel && <> <span aria-hidden="true">-</span> {weightLabel}</>}
                 </p>

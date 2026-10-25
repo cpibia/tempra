@@ -164,7 +164,7 @@ export default function PlanEditorPage() {
       />
 
       <div
-        className="stack"
+        className="stack plan-editor"
         style={{
           gap: 'calc(var(--spacing) * 4)',
           paddingBlockStart: 'calc(var(--spacing) * 4)',
@@ -172,75 +172,81 @@ export default function PlanEditorPage() {
         }}
       >
 
-        <details className="card" style={{ padding: 'calc(var(--spacing) * 4)' }}>
-          <summary style={{ cursor: 'pointer', fontWeight: 'var(--font-weight-semibold)' }}>
-            <Settings2 size={16} aria-hidden="true" style={{ verticalAlign: '-3px' }} /> Dettagli della scheda
-          </summary>
-          <div className="stack" style={{ gap: 'calc(var(--spacing) * 3)', marginBlockStart: 'calc(var(--spacing) * 4)' }}>
-            <div className="field">
-              <label className="field__label" htmlFor="plan-name">Nome</label>
-              <input
-                id="plan-name" className="input" type="text" value={plan.name}
-                onChange={(e) => persist({ ...plan, name: e.target.value })}
-              />
-            </div>
-            <div className="field">
-              <label className="field__label" htmlFor="plan-goal">Obiettivo</label>
-              <select
-                id="plan-goal" className="input" value={plan.goal}
-                onChange={(e) => persist({ ...plan, goal: e.target.value as Goal })}
-              >
-                {GOALS.map((g) => <option key={g} value={g}>{GOAL_LABELS[g]}</option>)}
-              </select>
-              <p className="field__hint">Determina le pause e le ripetizioni consigliate.</p>
-            </div>
-            {plan.generation && (
-              <div className="callout callout--info">
-                <div>
-                  <strong>Scheda generata</strong>
-                  <ul style={{ margin: '6px 0 0', paddingInlineStart: '1.1em' }}>
-                    {plan.generation.rationale.map((line, i) => <li key={i} className="tiny">{line}</li>)}
-                  </ul>
-                </div>
+        <div className="stack plan-editor__side" style={{ gap: 'calc(var(--spacing) * 4)' }}>
+          <details className="card" style={{ padding: 'calc(var(--spacing) * 4)' }}>
+            <summary style={{ cursor: 'pointer', fontWeight: 'var(--font-weight-semibold)' }}>
+              <Settings2 size={16} aria-hidden="true" style={{ verticalAlign: '-3px' }} /> Dettagli della scheda
+            </summary>
+            <div className="stack" style={{ gap: 'calc(var(--spacing) * 3)', marginBlockStart: 'calc(var(--spacing) * 4)' }}>
+              <div className="field">
+                <label className="field__label" htmlFor="plan-name">Nome</label>
+                <input
+                  id="plan-name" className="input" type="text" value={plan.name}
+                  onChange={(e) => persist({ ...plan, name: e.target.value })}
+                />
               </div>
-            )}
-          </div>
-        </details>
+              <div className="field">
+                <label className="field__label" htmlFor="plan-goal">Obiettivo</label>
+                <select
+                  id="plan-goal" className="input" value={plan.goal}
+                  onChange={(e) => persist({ ...plan, goal: e.target.value as Goal })}
+                >
+                  {GOALS.map((g) => <option key={g} value={g}>{GOAL_LABELS[g]}</option>)}
+                </select>
+                <p className="field__hint">Determina le pause e le ripetizioni consigliate.</p>
+              </div>
+              {plan.generation && (
+                <div className="callout callout--info">
+                  <div>
+                    <strong>Scheda generata</strong>
+                    <ul style={{ margin: '6px 0 0', paddingInlineStart: '1.1em' }}>
+                      {plan.generation.rationale.map((line, i) => <li key={i} className="tiny">{line}</li>)}
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+          </details>
 
-        <div className="chip-row" role="tablist" aria-label="Giorni della scheda">
-          {plan.days.map((d, index) => (
-            <button
-              key={d.id}
-              type="button"
-              role="tab"
-              className="chip"
-              aria-selected={index === dayIndex}
-              data-selected={index === dayIndex ? 'true' : undefined}
-              onClick={() => setDayIndex(index)}
-            >
-              {d.name}
+          <div className="chip-row" role="tablist" aria-label="Giorni della scheda">
+            {plan.days.map((d, index) => (
+              <button
+                key={d.id}
+                type="button"
+                role="tab"
+                className="chip"
+                aria-selected={index === dayIndex}
+                data-selected={index === dayIndex ? 'true' : undefined}
+                onClick={() => setDayIndex(index)}
+              >
+                {d.name}
+              </button>
+            ))}
+            <button type="button" className="chip" onClick={addDay}>
+              <CalendarPlus size={15} aria-hidden="true" /> Giorno
             </button>
-          ))}
-          <button type="button" className="chip" onClick={addDay}>
-            <CalendarPlus size={15} aria-hidden="true" /> Giorno
-          </button>
+          </div>
+
+          {day && (
+            <>
+              <div className="field">
+                <label className="field__label" htmlFor="day-name">Nome del giorno</label>
+                <input
+                  id="day-name" className="input" type="text" value={day.name}
+                  onChange={(e) => updateDay({ name: e.target.value })}
+                />
+              </div>
+
+              <p className="tiny muted" role="status">
+                {day.items.length} esercizi, {totalSets} serie in totale
+                {day.focus.length > 0 && ` - ${day.focus.map((f) => MUSCLE_GROUP_LABELS[f]).join(', ')}`}
+              </p>
+            </>
+          )}
         </div>
 
         {day && (
-          <section aria-label={`Esercizi di ${day.name}`} className="stack" style={{ gap: 'calc(var(--spacing) * 3)' }}>
-            <div className="field">
-              <label className="field__label" htmlFor="day-name">Nome del giorno</label>
-              <input
-                id="day-name" className="input" type="text" value={day.name}
-                onChange={(e) => updateDay({ name: e.target.value })}
-              />
-            </div>
-
-            <p className="tiny muted" role="status">
-              {day.items.length} esercizi, {totalSets} serie in totale
-              {day.focus.length > 0 && ` - ${day.focus.map((f) => MUSCLE_GROUP_LABELS[f]).join(', ')}`}
-            </p>
-
+          <section aria-label={`Esercizi di ${day.name}`} className="stack plan-editor__main" style={{ gap: 'calc(var(--spacing) * 3)' }}>
             {day.items.length === 0 && (
               <div className="empty-state">
                 <p>Questo giorno e vuoto.</p>

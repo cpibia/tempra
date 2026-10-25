@@ -99,7 +99,7 @@ export default function CatalogPage() {
             : `${results.length} esercizi`}
         </p>
 
-        <ul className="exercise-list">
+        <ul className="exercise-list catalog-list">
           {results.slice(0, visible).map((exercise) => (
             <li key={exercise.id}>
               <a className="exercise-item" href={`/esercizi/${exercise.slug}`}>

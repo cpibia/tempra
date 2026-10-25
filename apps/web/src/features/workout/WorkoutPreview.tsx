@@ -27,9 +27,9 @@ export function WorkoutPreview({ session, onBegin, onDiscard }: WorkoutPreviewPr
 
   return (
     <div className="stack" style={{ gap: 'calc(var(--spacing) * 4)', paddingBlock: 'calc(var(--spacing) * 4) calc(var(--spacing) * 24)' }}>
-      <div className="row" style={{ gap: 'calc(var(--spacing) * 4)' }}>
-        <span className="tiny muted num"><Layers size={14} aria-hidden="true" style={{ verticalAlign: '-2px' }} /> {session.entries.length} esercizi, {totalSets} serie</span>
-        <span className="tiny muted num"><Clock size={14} aria-hidden="true" style={{ verticalAlign: '-2px' }} /> circa {estimateMinutes(session)} minuti</span>
+      <div className="history-row__stats tiny muted num" style={{ columnGap: 'calc(var(--spacing) * 4)' }}>
+        <span><Layers size={14} aria-hidden="true" /> {session.entries.length} esercizi, {totalSets} serie</span>
+        <span><Clock size={14} aria-hidden="true" /> circa {estimateMinutes(session)} minuti</span>
       </div>
 
       {session.entries.length === 0 ? (
