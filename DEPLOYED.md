@@ -3,7 +3,7 @@
 Registro di cosa esiste davvero sul server. Se diverge da `docs/deploy/coolify.md`,
 sui fatti vince questo file.
 
-Ultima verifica: 12 settembre 2026.
+Ultima verifica: 25 ottobre 2026.
 
 ## Identificativi
 
@@ -14,7 +14,8 @@ Ultima verifica: 12 settembre 2026.
 | Applicazione | `tempra`, uuid `kkhjrm3pd5wllnodthtzutvv` |
 | Sorgente | Public Repository, `https://github.com/cpibia/tempra`, branch `main` |
 | Build pack | `dockercompose`, `docker_compose_location` = `/docker-compose.coolify.yml` |
-| Commit deployato | `3cf805e2d11579ccb71f58ffd99fe1b9f1daece9` |
+| Commit deployato | `60b43e7ece0a0b281e06a9b8b074914cf827f5c2` |
+| Ultimo deployment | `vtkzwex3kqw2zpwhue5gmbbf`, 25 ottobre 2026, `finished` in circa 70 secondi |
 
 Nessuna deploy key: il repository e' pubblico, quindi e' stata usata la sorgente
 *Public Repository* (`POST /applications/public`). Piu' semplice e senza la
@@ -24,13 +25,14 @@ limitazione di GitHub che rifiuta la stessa chiave su due repository.
 
 | Oggetto | Nome reale |
 | --- | --- |
-| Container web | `web-kkhjrm3pd5wllnodthtzutvv-201613870014` |
-| Container api | `api-kkhjrm3pd5wllnodthtzutvv-201613858872` |
-| Container db | `db-kkhjrm3pd5wllnodthtzutvv-201613846330` |
+| Container web | `web-kkhjrm3pd5wllnodthtzutvv-20261025T065448` |
+| Container api | `api-kkhjrm3pd5wllnodthtzutvv-20261025T065447` |
+| Container db | `db-kkhjrm3pd5wllnodthtzutvv-20261025T065447` |
 | Volume Postgres | `kkhjrm3pd5wllnodthtzutvv_db-data` |
 | Rete Docker | `kkhjrm3pd5wllnodthtzutvv` (bridge) |
 
-I suffissi numerici cambiano a ogni deploy: per gli script usare i filtri
+I suffissi cambiano a ogni deploy (dal deploy del 25 ottobre 2026 sono un
+timestamp, prima erano numerici): per gli script usare i filtri
 `--filter "name=web-kkhjrm3pd5wllnodthtzutvv"` e simili.
 
 ## Domini
@@ -69,7 +71,58 @@ l'esadecimale evita del tutto il problema dei caratteri `/`, `+` e `$`.
 `API_ORIGIN` non e' stata creata a mano: il compose la deriva da `VITE_API_URL` e
 il container `web` la riceve correttamente a runtime (verificato con `printenv`).
 
-## Verifica eseguita dall'esterno
+## Verifica del 25 ottobre 2026 (commit `60b43e7`)
+
+Rilascio con codice di sincronizzazione al posto di email e password, data di
+build nella PWA e sezione aggiornamenti.
+
+```
+https://tempra.nereidi.app/                       200, <title>Tempra</title>
+https://api.tempra.nereidi.app/health             200, {"status":"ok","database":true}
+POST /api/auth/register                           404 (rotta rimossa)
+POST /api/auth/login                              404 (rotta rimossa)
+OPTIONS /api/auth/sync-code (Origin tempra)       204, access-control-allow-origin: https://tempra.nereidi.app
+POST /api/auth/sync-code                          201, chiavi code, accessToken, refreshToken, expiresIn
+POST /api/auth/sync-code/join (minuscolo, col trattino, es. abcd-efgh)
+                                                  200, chiavi accessToken, refreshToken, expiresIn
+POST /api/auth/sync-code/join con codice inesistente  404
+GET  /api/auth/me con il token del join           200
+DELETE /api/auth/me                               200, {"ok":true}
+GET  /api/auth/me con il token della creazione    401 (account cancellato)
+```
+
+Il codice restituito dalla creazione e' di 8 caratteri maiuscoli senza trattino;
+il join lo accetta anche in minuscolo e spezzato con il trattino. Dopo la prova
+la tabella `users` e' tornata a `0` righe.
+
+Log di avvio dell'API, righe reali:
+
+```
+Applico le migrazioni del database...
+Migrazioni applicate.
+Avvio del servizio.
+API Tempra in ascolto sulla porta 3000 (production)
+```
+
+Migrazioni registrate in `drizzle.__drizzle_migrations`: 2 (`0000` e
+`0001_sync_codes`). Effetto della `0001_sync_codes` su `users`, verificato con
+`\d users`: `email` e `password_hash` ora nullable, nuova colonna
+`sync_code_hash text` con indice unico `users_sync_code_hash_unique`. Nessuna
+tabella nuova: restano `documents`, `rate_limits`, `refresh_tokens`, `users`.
+
+`VITE_API_URL` e' nel bundle, ma in questo rilascio sta nel chunk di ingresso
+`/assets/index-Cg9vQVEO.js` (`const Tt="https://api.tempra.nereidi.app"`) e non
+piu' nel chunk differito `SettingsPage`, che ora non contiene il dominio. Per
+verificarla vanno quindi cercati tutti i chunk, ingresso compreso. La data di
+build `2026-10-25T06:55:17.315Z` e' nello stesso chunk di ingresso; la sezione
+aggiornamenti ("Hai gia l ultima versione, del ...") e' in
+`/assets/SettingsPage-Drxidwm_.js`. CSP invariata:
+`connect-src 'self' https://api.tempra.nereidi.app`.
+
+Container tutti `healthy`, nessuna porta pubblicata sull'host (`3000/tcp`,
+`5432/tcp`, `80/tcp, 8080/tcp`).
+
+## Verifica del primo deploy (12 settembre 2026, commit `3cf805e`)
 
 ```
 https://tempra.nereidi.app/                200, <title>Tempra</title>
@@ -153,9 +206,9 @@ dall'immagine `nginx:alpine`: nginx ascolta esclusivamente sulla 8080.
 
 ## Cosa manca
 
-- [ ] Creare il proprio account, poi mettere `REGISTRATION_OPEN=false` e
-      riavviare il servizio `api` (e' una variabile di runtime, non serve
-      un rebuild).
+- [ ] Chiudere eventualmente le creazioni di nuovi codici con
+      `REGISTRATION_OPEN=false` dopo aver creato il proprio codice (variabile di
+      runtime: basta riavviare il servizio `api`, non serve un rebuild).
 - [ ] Backup del volume Postgres: non e' ancora configurato nulla. La procedura
       con `pg_dump` e il cron giornaliero sono nella sezione 11 della guida.
 - [ ] Auto Deploy da webhook GitHub: non attivato, i deploy sono manuali.
