@@ -220,6 +220,23 @@ export async function discardSession(sessionId: string): Promise<void> {
   await db.sessions.put({ ...session, status: 'discarded', endedAt: nowIso(), updatedAt: nowIso() });
 }
 
+/**
+ * Elimina un allenamento concluso, per esempio una prova. Non si cancella la
+ * riga: la sessione diventa scartata e i suoi record vengono marcati come
+ * eliminati, cosi' la sincronizzazione porta la cancellazione anche sugli
+ * altri dispositivi invece di farla ricomparire al prossimo scaricamento.
+ */
+export async function deleteCompletedSession(sessionId: string): Promise<void> {
+  const now = nowIso();
+  await db.transaction('rw', db.sessions, db.records, async () => {
+    const session = await db.sessions.get(sessionId);
+    if (!session) return;
+    await db.sessions.put({ ...session, status: 'discarded', updatedAt: now });
+    const records = await db.records.filter((r) => r.sessionId === sessionId).toArray();
+    if (records.length) await db.records.bulkPut(records.map((r) => ({ ...r, deletedAt: now })));
+  });
+}
+
 export interface CompletionSummary {
   session: Session;
   newRecords: PersonalRecord[];
@@ -243,7 +260,8 @@ export async function completeSession(session: Session): Promise<CompletionSumma
 
   const newRecords: PersonalRecord[] = [];
   for (const entry of cleaned.entries) {
-    const existing = await db.records.where('exerciseId').equals(entry.exerciseId).toArray();
+    const existing = (await db.records.where('exerciseId').equals(entry.exerciseId).toArray())
+      .filter((r) => !r.deletedAt);
     const winners = detectNewRecords(candidatesFromSets(entry.exerciseId, entry.sets), existing);
     for (const winner of winners) {
       const record: PersonalRecord = {
@@ -309,7 +327,7 @@ export async function getExerciseHistory(exerciseId: string, limit = 30): Promis
 }
 
 export async function listRecords(): Promise<PersonalRecord[]> {
-  const records = await db.records.toArray();
+  const records = (await db.records.toArray()).filter((r) => !r.deletedAt);
   const best = new Map<string, PersonalRecord>();
   for (const record of records) {
     const key = `${record.exerciseId}::${record.type}`;

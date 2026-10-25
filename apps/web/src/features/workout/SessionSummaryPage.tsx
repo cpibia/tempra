@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Zap, Timer, Layers, Weight, Home, Repeat, Flame, TrendingUp, TrendingDown } from 'lucide-react';
@@ -9,17 +9,20 @@ import {
 import { db, getProfile, getSettings } from '../../db/db';
 import { Chart } from '../../components/Chart';
 import { Button } from '../../components/ui/Button';
+import { ConfirmDialog } from '../../components/ui/Sheet';
+import { deleteCompletedSession } from '../../db/repo';
 import { useAnnounce } from '../../lib/announce';
 
 export default function SessionSummaryPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
   const announce = useAnnounce();
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const session = useLiveQuery(() => (sessionId ? db.sessions.get(sessionId) : undefined), [sessionId], undefined);
   const records = useLiveQuery(
     () => (sessionId
-      ? db.records.filter((r) => r.sessionId === sessionId).toArray()
+      ? db.records.filter((r) => r.sessionId === sessionId && !r.deletedAt).toArray()
       : Promise.resolve([] as PersonalRecord[])),
     [sessionId],
     [] as PersonalRecord[],
@@ -240,6 +243,25 @@ export default function SessionSummaryPage() {
       <Button size="lg" block onClick={() => navigate('/', { replace: true })}>
         <Home size={20} aria-hidden="true" /> Torna alla home
       </Button>
+
+      <Button variant="ghost" block style={{ color: 'var(--color-danger-text)' }} onClick={() => setConfirmDelete(true)}>
+        Era una prova: elimina questo allenamento
+      </Button>
+
+      <ConfirmDialog
+        open={confirmDelete}
+        title="Eliminare l allenamento?"
+        message="Sparisce dallo storico e dalle statistiche, insieme ai record di questa seduta, anche sugli altri dispositivi collegati. Non si puo annullare."
+        confirmLabel="Elimina"
+        destructive
+        onCancel={() => setConfirmDelete(false)}
+        onConfirm={async () => {
+          setConfirmDelete(false);
+          await deleteCompletedSession(session.id);
+          announce('Allenamento eliminato.');
+          navigate('/', { replace: true });
+        }}
+      />
     </div>
   );
 }

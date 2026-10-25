@@ -105,6 +105,24 @@ test('in superset si passa al secondo esercizio senza recupero', async ({ page }
   await expect(page.getByRole('region', { name: 'Recupero in corso' })).toHaveCount(0);
 });
 
+test('un allenamento di prova si elimina con conferma', async ({ page }) => {
+  await completeOnboarding(page);
+  await startFirstDay(page);
+  await page.getByRole('button', { name: 'Inizia', exact: true }).click();
+  await page.getByRole('button', { name: 'Registra senza cronometro' }).click();
+  await page.getByRole('button', { name: 'Salva la serie' }).click();
+  await page.getByRole('button', { name: 'Fine', exact: true }).click();
+  await page.getByRole('button', { name: 'Termina', exact: true }).click();
+  await expect(page).toHaveURL(/riepilogo/);
+
+  await page.getByRole('button', { name: /elimina questo allenamento/ }).click();
+  await page.getByRole('button', { name: 'Elimina', exact: true }).click();
+  await expect(page).toHaveURL(/\/$/);
+
+  await page.goto('/storico');
+  await expect(page.getByText('Nessun allenamento registrato, per ora.')).toBeVisible();
+});
+
 test('il catalogo cerca e apre un esercizio', async ({ page }) => {
   await completeOnboarding(page);
   await page.getByRole('button', { name: 'No grazie, la costruisco da solo' }).click();

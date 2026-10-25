@@ -96,7 +96,7 @@ async function collectLocalDocuments(): Promise<SyncDocument[]> {
     add('session', session.id, session, session.updatedAt);
   }
   for (const record of await db.records.toArray()) {
-    add('record', record.id, record, record.achievedAt);
+    add('record', record.id, record, record.deletedAt ?? record.achievedAt, record.deletedAt);
   }
   for (const measurement of await db.measurements.toArray()) {
     add('measurement', measurement.id, measurement, measurement.date);
@@ -156,7 +156,9 @@ async function applyRemoteDocuments(documents: SyncDocument[], preferRemote = fa
       }
       case 'record': {
         const remote = doc.payload as PersonalRecord;
-        if (!(await db.records.get(remote.id))) {
+        // Un record non cambia mai, tranne quando il suo allenamento viene eliminato.
+        const local = await db.records.get(remote.id);
+        if (!local || (remote.deletedAt && !local.deletedAt)) {
           await db.records.put(remote);
           applied += 1;
         }

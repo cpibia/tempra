@@ -284,6 +284,8 @@ export interface PersonalRecord {
   weightKg?: number;
   sessionId: string;
   achievedAt: string;
+  /** Il record resta come tombstone per propagare la cancellazione dell'allenamento. */
+  deletedAt?: string;
 }
 
 export interface BodyMeasurement {

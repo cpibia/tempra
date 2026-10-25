@@ -1,11 +1,22 @@
+import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Timer, Layers, Weight } from 'lucide-react';
-import { formatDuration, getExercise } from '@tempra/core';
-import { listSessions } from '../../db/repo';
+import { Timer, Layers, Weight, Trash2 } from 'lucide-react';
+import { formatDuration, getExercise, type Session } from '@tempra/core';
+import { deleteCompletedSession, listSessions } from '../../db/repo';
 import { PageHeader } from '../../components/ui/PageHeader';
+import { Button } from '../../components/ui/Button';
+import { ConfirmDialog } from '../../components/ui/Sheet';
+import { useAnnounce } from '../../lib/announce';
+
+const longDate = (session: Session) =>
+  new Date(session.endedAt ?? session.startedAt).toLocaleDateString('it-IT', {
+    weekday: 'long', day: 'numeric', month: 'long',
+  });
 
 export default function HistoryPage() {
+  const announce = useAnnounce();
   const sessions = useLiveQuery(() => listSessions(200), [], undefined);
+  const [toDelete, setToDelete] = useState<Session | null>(null);
 
   return (
     <>
@@ -51,9 +62,34 @@ export default function HistoryPage() {
                 </li>
               ))}
             </ul>
+
+            <Button
+              size="sm" variant="ghost"
+              style={{ color: 'var(--color-danger-text)', marginBlockStart: 'calc(var(--spacing) * 2)' }}
+              onClick={() => setToDelete(session)}
+            >
+              <Trash2 size={16} aria-hidden="true" /> Elimina questo allenamento
+            </Button>
           </details>
         ))}
       </div>
+
+      <ConfirmDialog
+        open={toDelete !== null}
+        title="Eliminare l allenamento?"
+        message={toDelete
+          ? `${toDelete.name} di ${longDate(toDelete)} sparisce dallo storico e dalle statistiche, insieme ai record ottenuti in quella seduta, anche sugli altri dispositivi collegati. Non si puo annullare.`
+          : ''}
+        confirmLabel="Elimina"
+        destructive
+        onCancel={() => setToDelete(null)}
+        onConfirm={async () => {
+          if (!toDelete) return;
+          await deleteCompletedSession(toDelete.id);
+          announce('Allenamento eliminato.');
+          setToDelete(null);
+        }}
+      />
     </>
   );
 }
