@@ -3,7 +3,7 @@
 Registro di cosa esiste davvero sul server. Se diverge da `docs/deploy/coolify.md`,
 sui fatti vince questo file.
 
-Ultima verifica: 25 ottobre 2026.
+Ultima verifica: 26 ottobre 2026.
 
 ## Identificativi
 
@@ -14,8 +14,8 @@ Ultima verifica: 25 ottobre 2026.
 | Applicazione | `tempra`, uuid `kkhjrm3pd5wllnodthtzutvv` |
 | Sorgente | Public Repository, `https://github.com/cpibia/tempra`, branch `main` |
 | Build pack | `dockercompose`, `docker_compose_location` = `/docker-compose.coolify.yml` |
-| Commit deployato | `bd6dfb560e8ab98be97b8b978a2e469910aacd35` |
-| Ultimo deployment | `eknebq08d9qa5utdshrxjrvd`, 25 ottobre 2026, `finished` in circa 60 secondi |
+| Commit deployato | `7ac6439df88bffa78d4327ed05257e8b6abe11d2` |
+| Ultimo deployment | `pe0loxgezlttsxfuschtbfyw`, 26 ottobre 2026, `finished` in 61 secondi |
 
 Nessuna deploy key: il repository e' pubblico, quindi e' stata usata la sorgente
 *Public Repository* (`POST /applications/public`). Piu' semplice e senza la
@@ -25,9 +25,9 @@ limitazione di GitHub che rifiuta la stessa chiave su due repository.
 
 | Oggetto | Nome reale |
 | --- | --- |
-| Container web | `web-kkhjrm3pd5wllnodthtzutvv-20261025T074859` |
-| Container api | `api-kkhjrm3pd5wllnodthtzutvv-20261025T074859` |
-| Container db | `db-kkhjrm3pd5wllnodthtzutvv-20261025T074859` |
+| Container web | `web-kkhjrm3pd5wllnodthtzutvv-20261026T082717` |
+| Container api | `api-kkhjrm3pd5wllnodthtzutvv-20261026T082717` |
+| Container db | `db-kkhjrm3pd5wllnodthtzutvv-20261026T082717` |
 | Volume Postgres | `kkhjrm3pd5wllnodthtzutvv_db-data` |
 | Rete Docker | `kkhjrm3pd5wllnodthtzutvv` (bridge) |
 
@@ -70,6 +70,36 @@ l'esadecimale evita del tutto il problema dei caratteri `/`, `+` e `$`.
 
 `API_ORIGIN` non e' stata creata a mano: il compose la deriva da `VITE_API_URL` e
 il container `web` la riceve correttamente a runtime (verificato con `printenv`).
+
+## Verifica del 26 ottobre 2026 (commit `7ac6439`)
+
+Rilascio della sola PWA (CSS e un test e2e): il link "Vai al contenuto" e'
+nascosto come gli elementi sr-only e compare solo da tastiera, l'intestazione
+delle pagine occupa tutta la larghezza con il titolo allineato al contenuto.
+Nessuna migrazione nuova, API invariata, nessuna variabile toccata. Deployment
+`pe0loxgezlttsxfuschtbfyw`, `finished` in 61 secondi (08:27:09-08:28:10 UTC).
+
+```
+https://tempra.nereidi.app/                       200, <title>Tempra</title>
+https://tempra.nereidi.app/esercizi               200 (fallback SPA)
+https://api.tempra.nereidi.app/health             200, {"status":"ok","database":true}
+/sw.js                                            200, cache-control: no-cache, must-revalidate,
+                                                  service-worker-allowed: /
+```
+
+Build nuova confermata: la data di build nel chunk di ingresso
+`/assets/index-6gFeAMyj.js` e' `2026-10-26T08:27:44.495Z`, nello stesso chunk
+c'e' `https://api.tempra.nereidi.app`. Il CSS servito
+`/assets/index-kYbhFzNg.css` contiene la nuova regola:
+
+```
+.skip-link:not(:focus-visible){clip-path:inset(50%);white-space:nowrap;border:0;block-size:1px;inline-size:1px;padding:0;overflow:hidden}
+```
+
+e non contiene piu' `translateY(-200%)`. Log di avvio dell'API identico ai
+rilasci precedenti (migrazioni applicate, nessuna nuova). Container tutti
+`healthy` con `RestartCount` 0, nessuna porta pubblicata sull'host (`3000/tcp`,
+`5432/tcp`, `80/tcp, 8080/tcp`).
 
 ## Verifica del 25 ottobre 2026 (commit `bd6dfb5`)
 
