@@ -216,6 +216,40 @@ test.describe('nessuno scorrimento orizzontale', () => {
   });
 });
 
+test.describe('intestazione e salto al contenuto', () => {
+  test('il titolo della pagina e allineato al contenuto', async ({ page }) => {
+    await completeOnboarding(page);
+    await page.getByRole('button', { name: 'No grazie, la costruisco da solo' }).click();
+    await page.goto('/statistiche');
+    await expect(page.getByRole('heading', { level: 1, name: 'Statistiche' })).toBeVisible();
+
+    const offsets = await page.evaluate(() => {
+      const main = document.querySelector('.app-main') as HTMLElement;
+      const title = document.querySelector('.app-header__title') as HTMLElement;
+      return {
+        content: main.getBoundingClientRect().left + parseFloat(getComputedStyle(main).paddingLeft),
+        title: title.getBoundingClientRect().left,
+      };
+    });
+    expect(Math.abs(offsets.title - offsets.content)).toBeLessThanOrEqual(1);
+  });
+
+  test('il link per saltare al contenuto compare solo da tastiera', async ({ page }) => {
+    await completeOnboarding(page);
+    await page.getByRole('button', { name: 'No grazie, la costruisco da solo' }).click();
+    await page.goto('/statistiche');
+    const skipLink = page.getByRole('link', { name: 'Vai al contenuto' });
+
+    // Spostarlo fuori dallo schermo non basta: su iOS il rimbalzo dello scroll lo scopre.
+    expect((await skipLink.boundingBox())?.width ?? 0).toBeLessThanOrEqual(1);
+
+    await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+    await page.keyboard.press('Tab');
+    await expect(skipLink).toBeFocused();
+    expect((await skipLink.boundingBox())?.width ?? 0).toBeGreaterThan(40);
+  });
+});
+
 test.describe('accessibilita', () => {
   const routes: [string, string][] = [
     ['/', 'home'],
